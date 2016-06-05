@@ -7,7 +7,8 @@ var path = {
     sass: ['./landing/**/*.scss', '!./landing/static/'],
     js: ['./landing/**/*.js', '!./landing/static/'],
     assets: [
-        './langing/(blocks|templates)/**/assets/**/*',
+        './langing/blocks/**/assets/**/*',
+        './langing/**/templates/**/assets/**/*',
         './bower_components/**/dist/*.*',
         './bower_components/*/*.css',
         './bower_components/*/*.js',
@@ -43,7 +44,7 @@ gulp.task('assets', function() {
 });
 
 gulp.task('clean', function() {
-    return del([path.dest]);
+    return del([path.dest, './**/__pycache__/']);
 });
 
 gulp.task('default', ['sass', 'js', 'assets']);

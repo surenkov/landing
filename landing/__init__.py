@@ -1,9 +1,12 @@
-"""
-The flask application package.
-"""
-
 from flask import Flask
-app = Flask(__name__)
+from flask_mongoengine import MongoEngine
 
+
+app = Flask(__name__)
+db = MongoEngine(app)
+
+import landing.blocks
 import landing.views
-import landing.manager
+from landing.manager import manager_app
+
+app.register_blueprint(manager_app)
