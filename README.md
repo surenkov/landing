@@ -1,46 +1,28 @@
 INSTALLATION
 ------------
 
+1. Install Python 3.3+, Node
+2. Create Python virtual env
+3. From env's source run:
 ```
-(sudo) apt get install uwsgi
 pip install -r requirements.txt
 (sudo) npm install -g gulp-cli bower
-npm install
 bower install
+npm install
+gulp
 ```
 
 DEPLOYMENT
 ----------
 
-In files
-
--	`uwsgi.ini.template`
--	`server/rudoit/settings.py.template`
-
-edit deployment parameters, remove `.template` from file names.
-
-Collect static files & apply migrations:
-
-```
-npm build
-python manage.py makemigrations
-python manage.py migrate
-```
-
 ### Development server:
 
-`python manage.py runserver`
+`flask run runserver.py`
 
 **Note: never use dev server in production!**
 
 ### Production server:
 
-**TODO: configure Django to collect static files**
-
-```
-python manage.py collectstatic
-```
-
-Configure `uwsgi.ini`, then run `uwsgi uwsgi.ini`.
+**TODO**
 
 For additional info about uWSGI params, see [it's docs](https://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
