@@ -12,3 +12,4 @@ __pycache__
 /web.*.config
 /*.pyproj
 /*.sln
+*.pyperf
