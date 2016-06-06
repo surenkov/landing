@@ -1,3 +1,4 @@
+import os
 import unittest
 from landing import app
 
@@ -17,11 +18,9 @@ class Test_Blocks(unittest.TestCase):
                 f.write("from landing.blocks import Block\n"
                         "class Block%d(Block): pass\n" % i)
 
-
     def tearDown(self):
         import shutil
         shutil.rmtree(self.blocks_dir, True)
-
 
     def test__load_blocks(self):
         import tempfile
@@ -35,7 +34,6 @@ class Test_Blocks(unittest.TestCase):
         self.assertRaises(FileNotFoundError, lambda: 
                           load_blocks(next(tempfile._get_candidate_names())))
 
-
     def test__register_blocks(self):
         from landing.blocks import Block
         class _A(Block): pass
@@ -46,6 +44,9 @@ class Test_Blocks(unittest.TestCase):
         self.assertIn(_B, app.registered_blocks)
         self.assertNotIn(_C, app.registered_blocks)
 
+
+class Test_Langing(unittest.TestCase):
+    pass
 
 if __name__ == '__main__':
     unittest.main()
