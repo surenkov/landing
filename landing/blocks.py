@@ -15,7 +15,7 @@ class BlockType(DocumentMetaclass):
 
 
 class Block(db.EmbeddedDocument, metaclass=BlockType):
-    """ Base class for all landing blocks """
+    """ Base class for all landing blocks. """
     meta = {
         'abstract': True,
         'allow_inheritance': True
