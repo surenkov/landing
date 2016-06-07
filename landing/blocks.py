@@ -1,28 +1,19 @@
 import os
 from importlib.util import spec_from_file_location, module_from_spec
-from mongoengine.base import DocumentMetaclass
-from landing import app, db
 
 
-app.registered_blocks = set()
+__block_registry = set()
 
-class BlockType(DocumentMetaclass):
+def register_block(block):
+    __block_registry.add(block)
+    return block
 
-    def __new__(cls, name, bases, attrs):
-        new_cls = super().__new__(cls, name, bases, attrs)
-        app.registered_blocks.add(new_cls)
-        return new_cls
+def unregister_block(block):
+    __block_registry.discard(block)
+    return block
 
-
-class Block(db.EmbeddedDocument, metaclass=BlockType):
-    """ Base class for all landing blocks. """
-    background = db.StringField()
-    title = db.StringField()
-    meta = {
-        'abstract': True,
-        'allow_inheritance': True
-    }
-
+def registered_blocks():
+    return set(__block_registry)
 
 def load_blocks(path, base_filename='block.py'):
     block_dirs = [(p, d) for p, d in 
@@ -33,8 +24,3 @@ def load_blocks(path, base_filename='block.py'):
         spec = spec_from_file_location('%s.%s' % (__name__, bname), bpath)
         module = module_from_spec(spec)
         spec.loader.exec_module(module)
-
-
-load_blocks(app.config.get('BLOCKS_DIR', 
-                           os.path.join(os.path.dirname(__file__), 'blocks')))
-app.registered_blocks.remove(Block)

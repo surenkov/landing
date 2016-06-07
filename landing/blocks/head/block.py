@@ -1,4 +1,4 @@
-from landing.blocks import Block
+from landing.models import Block
 
 
 class HeadBlock(Block):

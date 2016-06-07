@@ -1,6 +1,5 @@
 import os
 import unittest
-from landing import app
 
 
 class Test_Blocks(unittest.TestCase):
@@ -15,7 +14,7 @@ class Test_Blocks(unittest.TestCase):
             bd = path.join(self.blocks_dir, 'block%d' % i)
             mkdir(bd)
             with open(path.join(bd, 'block.py'), 'w+') as f:
-                f.write("from landing.blocks import Block\n"
+                f.write("from landing.models import Block\n"
                         "class Block%d(Block): pass\n" % i)
 
     def tearDown(self):
@@ -24,25 +23,27 @@ class Test_Blocks(unittest.TestCase):
 
     def test__load_blocks(self):
         import tempfile
-        from landing.blocks import load_blocks
+        from landing.blocks import load_blocks, registered_blocks
         load_blocks(self.blocks_dir)
+
+        def contains(b):
+            return b._class_name == 'Block%d' % i
+
         for i in range(self.blocks_count):
-            def contains(b):
-                return b._class_name == 'Block%d' % i
-            self.assertTrue(lambda: any(map(contains, app.registered_blocks)),
-                            'blocks folder does not contain Block%d' % i)
-        self.assertRaises(FileNotFoundError, lambda: 
+            self.assertTrue(any(map(contains, registered_blocks())))
+        self.assertRaises(FileNotFoundError, lambda:
                           load_blocks(next(tempfile._get_candidate_names())))
 
     def test__register_blocks(self):
-        from landing.blocks import Block
+        from landing.models import Block
+        from landing.blocks import registered_blocks
         class _A(Block): pass
         class _B(Block): pass
         class _C: pass
 
-        self.assertIn(_A, app.registered_blocks)
-        self.assertIn(_B, app.registered_blocks)
-        self.assertNotIn(_C, app.registered_blocks)
+        self.assertIn(_A, registered_blocks())
+        self.assertIn(_B, registered_blocks())
+        self.assertNotIn(_C, registered_blocks())
 
 
 class Test_Langing(unittest.TestCase):

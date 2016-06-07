@@ -1,40 +1,52 @@
-from landing import app, db
-from landing.blocks import Block
+from flask_mongoengine import BaseQuerySet
+from mongoengine.base import DocumentMetaclass
+from landing import db
+from landing.blocks import register_block, unregister_block
 
 
-class LandingQuerySet(db.QuerySet):
+class BlockType(DocumentMetaclass):
 
-    """ QuerySet for singleton landing instance. """
-    
-    def create(self, **kwargs):
-        return self.first() or super().create(**kwargs)
-
-    def delete(self, explicit=False, *args, **kwargs):
-        if not explicit:
-            raise NotImplementedError()
-        return super().delete(*args, **kwargs)
-
-    def insert(self, doc, *args, **kwargs):
-        if self.count() > 0 or len(doc) > 1:
-            raise db.MultipleObjectsReturned()
-        return super().insert(doc, *args, **kwargs)
+    def __new__(cls, name, bases, attrs):
+        new_cls = super().__new__(cls, name, bases, attrs)
+        register_block(new_cls)
+        return new_cls
 
 
-class Landing(db.Document):
+@unregister_block
+class Block(db.EmbeddedDocument, metaclass=BlockType):
 
-    """ Singleton landing instance. """
+    """ Base class for all landing blocks. """
 
-    blocks = db.EmbeddedDocumentListField(Block)
+    # DB saved params
+    background = db.StringField()
+    title = db.StringField()
     meta = {
-        'max_documents': 1,
-        'queryset_class': LandingQuerySet
+        'abstract': True,
+        'allow_inheritance': True
     }
 
-    def __new__(cls, *args, **kwargs):
-        rv = cls.objects.first() or super().__new__(*args, **kwargs)
-        return rv
+    def render(self):
+        pass
 
-    def delete(self, explicit=False, *args, **kwargs):
-        if not explicit:
-            raise NotImplementedError()
-        super().delete(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        pass
+
+    def validate(self):
+        pass
+
+
+class LandingModel(db.Document):
+    blocks = db.EmbeddedDocumentListField(Block)
+
+
+class SingletonLandingFactory:
+    _singleton = LandingModel.objects.first()
+
+    def __call__(self):
+        cls = type(self)
+        if type(self)._singleton is None:
+            type(self)._singleton = LandingModel()
+        return type(self)._singleton
+
+
+landing_factory = SingletonLandingFactory()
