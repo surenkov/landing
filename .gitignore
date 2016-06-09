@@ -1,8 +1,8 @@
 .DS_Store
 node_modules/
 bower_components/
-landing/static
-env/
+/env
+/dist
 __pycache__
 /ptvs_virtualenv_proxy.py
 /bin
@@ -13,3 +13,4 @@ __pycache__
 /*.pyproj
 /*.sln
 *.pyperf
+/WebEssentials2015-Settings.json

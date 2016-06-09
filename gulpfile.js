@@ -1,19 +1,17 @@
-/// <binding Clean='clean' ProjectOpened='run' />
+/// <binding AfterBuild='default' Clean='clean' />
 var gulp = require('gulp');
 var del = require('del');
 var $ = require('gulp-load-plugins')();
 
 var path = {
-    sass: ['./landing/**/*.scss', '!./landing/static/'],
-    js: ['./landing/**/*.js', '!./landing/static/'],
+    sass: ['./landing/**/*.scss'],
+    js: ['./landing/**/*.js'],
+    static: ['./landing/**/static/dist/**/*.*'],
     assets: [
-        './langing/blocks/**/assets/**/*',
-        './langing/**/templates/**/assets/**/*',
         './bower_components/**/dist/*.*',
-        './bower_components/*/*.css',
-        './bower_components/*/*.js',
+        './bower_components/*/*.*'
     ],
-    dest: './landing/static'
+    dest: './dist'
 };
 
 var sassIncludes = [
@@ -22,35 +20,33 @@ var sassIncludes = [
 ];
 
 
-gulp.task('sass', function() {
+gulp.task('sass', function () {
     return gulp.src(path.sass)
+        .pipe($.sourcemaps.init())
         .pipe($.sass({ includePaths: sassIncludes })
             .on('error', $.sass.logError))
         .pipe($.autoprefixer({ browsers: ['last 2 versions', 'ie >= 9'] }))
-        .pipe(gulp.dest(path.dest + '/styles'));
-});
-
-gulp.task('js', function() {
-    return gulp.src(path.js)
-        .pipe($.sourcemaps.init())
-        .pipe($.concat('bundle.js'))
         .pipe($.sourcemaps.write())
-        .pipe(gulp.dest(path.dest + '/scripts'));
-});
-
-gulp.task('assets', function() {
-    return gulp.src(path.assets)
         .pipe(gulp.dest(path.dest));
 });
 
-gulp.task('clean', function() {
+gulp.task('js', function () {
+    return gulp.src(path.js)
+        .pipe(gulp.dest(path.dest));
+});
+
+gulp.task('static', function () {
+    return gulp.src(path.static)
+        .pipe(gulp.dest(path.dest))
+})
+
+gulp.task('assets', function () {
+    return gulp.src(path.assets)
+        .pipe(gulp.dest(path.dest + '/dist'));
+});
+
+gulp.task('clean', function () {
     return del([path.dest, './**/__pycache__/']);
 });
 
-gulp.task('default', ['sass', 'js', 'assets']);
-
-gulp.task('run', ['default'], function() {
-    gulp.watch([path.sass], ['sass']);
-    gulp.watch([path.js], ['js']);
-    gulp.watch([path.assets], ['assets']);
-});
+gulp.task('default', ['sass', 'js', 'static', 'assets']);
