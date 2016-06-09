@@ -1,0 +1,33 @@
+{% set body_class = 'login' %}
+{% extends "manager/layout.html" %}
+{% block body %}
+<div class="large-4 medium-5 small-11 small-centered column">
+    <div class="callout">
+        <h5 class="text-center">Вход в панель управления</h5>
+        <form method="POST" action="{{ url_for('manager.authorize') }}">
+            {{ form.hidden_tag() }}
+
+            <label for="{{ form.email.id }}">
+                Email:
+                {{ form.email(placeholder='ivanov.i@example.com') }}
+            </label>
+            {% if form.email.errors %}
+            <span class="form-error is-visible">{% for error in form.email.errors %}{{ error }}{% endfor %}</span>
+            {% endif %}
+
+            <label for="{{ form.password.id }}">
+                Пароль:
+                {{ form.password(placeholder='Пароль') }}
+            </label>
+            {% if form.password.errors %}
+            <span class="form-error is-visible">{% for error in form.password.errors %}{{ error }}{% endfor %}</span>
+            {% endif %}
+
+            <button type="submit" class="expanded button">
+                <i class="fi-arrow-right"></i>
+                <span>Войти</span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
