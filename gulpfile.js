@@ -32,6 +32,9 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     return gulp.src(path.js)
+        .pipe($.sourcemaps.init())
+        .pipe($.uglify())
+        .pipe($.sourcemaps.write())
         .pipe(gulp.dest(path.dest));
 });
 
