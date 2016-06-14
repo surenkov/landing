@@ -1,3 +1,33 @@
 {% extends "manager/layout.html" %}
+
+{% block menu %}
+<div class="top-bar">
+    <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">Превед, админ!</li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <a class="button" href="{{ url_for('manager.configure_login', action='logout') }}">Выйти отсюда!</a>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
+<form class="table-form row" method="POST" action="{{ url_for('manager.configure') }}">
+    <section class="large-6 medium-12 small-12 columns">
+        <div class="callout">
+            {{ form.user_form }}
+        </div>
+    </section>
+
+    <section class="large-6 medium-12 small-12 end columns">
+        <div class="callout">
+            {{ form.blocks_form }}
+        </div>
+    </section>
+    <section class="small-12 text-right columns">
+        <button type="submit" class="button">Сохранить</button>
+    </section>
+</form>
 {% endblock %}

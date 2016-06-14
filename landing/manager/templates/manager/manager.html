@@ -1,10 +1,7 @@
-{% extends 'manager/manager.html' %}
+{% extends 'manager/layout.html' %}
 
 {% block body %}
-{% endblock %}
-
-{% block scripts %}
-<script type="text/javascript" src="url_for('static', filename='dist/jquery/dist/jquery.js')"></script>
-<script type="text/javascript" src="url_for('static', filename='dist/underscore/underscore.js')"></script>
-<script type="text/javascript" src="url_for('static', filename='dist/backbone/backbone.js')"></script>
+{% for block in blocks %}
+    {{ block.render_form() | safe }}
+{% endfor %}
 {% endblock %}

@@ -2,7 +2,7 @@
 {% extends 'manager/layout.html' %}
 {% block body %}
 <div class="large-4 medium-5 small-11 small-centered column">
-    <div class="callout">
+    <div class="callout login-form">
         <h5 class="text-center">Интерфейс управления</h5>
         <form method="POST" action="{{ url_for('manager.configure_login') }}">
             {{ form.hidden_tag() }}
