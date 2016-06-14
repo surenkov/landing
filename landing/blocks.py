@@ -2,18 +2,17 @@ import os
 from importlib.util import spec_from_file_location, module_from_spec
 
 
-__block_registry = set()
+__block_registry = dict()
 
 def register_block(block):
-    __block_registry.add(block)
+    __block_registry[block._class_name] = block
     return block
 
 def unregister_block(block):
-    __block_registry.discard(block)
-    return block
+    return __block_registry.pop(block._class_name, block)
 
 def registered_blocks():
-    return set(__block_registry)
+    return dict(__block_registry)
 
 def load_blocks(path, base_filename='block.py'):
     block_dirs = [(p, d) for p, d in 
