@@ -14,3 +14,4 @@ __pycache__
 /*.sln
 *.pyperf
 /WebEssentials2015-Settings.json
+_references.js

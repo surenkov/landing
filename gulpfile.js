@@ -9,6 +9,7 @@ var path = {
     static: ['./landing/**/static/dist/**/*.*'],
     assets: [
         './bower_components/**/dist/*.*',
+        './bower_components/**/lib/*.*',
         './bower_components/*/*.*'
     ],
     dest: './dist'

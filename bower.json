@@ -9,9 +9,8 @@
   "dependencies": {
     "foundation-sites": "~6.2.0",
     "motion-ui": "~1.2.2",
-    "backbone": "^1.3.3",
-    "underscore": "^1.8.3",
-    "foundation-icon-fonts": "*"
+    "foundation-icon-fonts": "*",
+    "backbone.marionette": "marionette#^2.4.7"
   },
   "ignore": [
     "**/.*",
