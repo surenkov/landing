@@ -8,3 +8,4 @@ manager = Blueprint('manager', __name__,
 
 import landing.manager.views
 import landing.manager.auth
+import landing.manager.api

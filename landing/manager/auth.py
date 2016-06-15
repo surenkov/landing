@@ -68,5 +68,5 @@ def _authenticate_by_session():
     from bson import ObjectId
     user_id = session.get('userid')
     if user_id is not None:
-        g.user = User.objects.get(id=ObjectId(user_id))
+        g.user = User.objects.filter(id=ObjectId(user_id)).first()
 

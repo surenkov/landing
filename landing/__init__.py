@@ -19,9 +19,8 @@ csrf = CsrfProtect(app)
 db = MongoEngine(app)
 load_blocks(app.config.get('BLOCKS_DIR'))
 
-from landing.models import landing_factory
-landing_page = landing_factory()
-
+import landing.models
 import landing.views
+
 from landing.manager import manager
 app.register_blueprint(manager)

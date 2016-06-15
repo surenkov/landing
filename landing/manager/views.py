@@ -1,23 +1,20 @@
-from flask import request, redirect, render_template, url_for, g, session
+from flask import request, redirect, render_template, url_for, g, \
+    session, jsonify
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, ValidationError
 from wtforms.validators import Email, DataRequired
+from landing.models import landing_factory
 from landing.blocks import registered_blocks
 from landing.manager import manager
 from landing.manager.auth import User, login_required, \
-                                 is_authenticated, secure_api
+    is_authenticated, secure_api
 
 
 @manager.route('/')
 @login_required
 def manager_index():
-    blocks = [cls() for cls in registered_blocks().values()]
-    return render_template('manager/manager.html', blocks=blocks)
-
-@manager.route('/blocks')
-@secure_api
-def blocks():
-    pass
+    landing = landing_factory()
+    return render_template('manager/manager.html', landing=landing)
 
 @manager.route('/authorize', methods=['GET', 'POST'])
 def authorize():
@@ -54,7 +51,6 @@ def authorize():
 
     return render_template('manager/login.html', form=form)
 
-
 # Manager configuration views
 
 ADMIN_UNAME = 'rudoit'
@@ -74,7 +70,7 @@ def configure():
     class UserForm(Form):
         name = StringField(validators=[DataRequired()])
         email = StringField(validators=[DataRequired(), Email()])
-        password = PasswordField(validators=[DataRequired()])
+        password = PasswordField()
 
     class BlocksForm(Form):
         pass
@@ -88,9 +84,10 @@ def configure():
     user_form = form.user_form.form
     if form.is_submitted() and user_form.validate():
         user = User.objects.first() or User()
-        user.name = user_form.data['name']
-        user.email = user_form.data['email']
-        user.set_password(user_form.data['password'])
+        user.name = user_form.name.data
+        user.email = user_form.email.data
+        if user_form.password.data:
+            user.set_password(user_form.password.data)
         user.save()
 
     return render_template('manager/configure.html', form=form)
