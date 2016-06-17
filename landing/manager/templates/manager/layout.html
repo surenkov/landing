@@ -11,13 +11,14 @@
     {% block menu %}{% endblock %}
     {% block body %}{% endblock %}
     <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.iframe-transport/jquery.iframe-transport.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/foundation-sites/dist/foundation.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/underscore/underscore.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone/backbone.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone.marionette/lib/backbone.marionette.js') }}"></script>
     <script type="text/javascript">
         $(document).foundation();
     </script>
-    {% include 'manager/partial/csrf_protect.html' %}
     {% block scripts %}{% endblock %}
 </body>
 </html>

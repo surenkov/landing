@@ -1,7 +1,6 @@
 import os
 from flask import Flask
 from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
-from flask_wtf import CsrfProtect
 from landing.blocks import load_blocks
 
 
@@ -12,10 +11,13 @@ app.config.update(dict(
         host = '127.0.0.1',
     ),
     BLOCKS_DIR = os.path.join(os.path.dirname(__file__), 'blocks'),
+    MEDIA_ROOT = os.path.join(os.path.dirname(__file__),
+                              '..', 'dist', 'media'),
+    MEDIA_URL = app.static_url_path + '/media/',
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024,
     SECRET_KEY = 'Development key'  # Check if key is overridden in prod environ
 ))
 
-csrf = CsrfProtect(app)
 db = MongoEngine(app)
 load_blocks(app.config.get('BLOCKS_DIR'))
 

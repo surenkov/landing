@@ -1,4 +1,33 @@
 {% extends 'manager/layout.html' %}
 
+{% block menu %}
+<div class="top-bar">
+    <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">Панель управления лэндингом</li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <a class="button" href="{{ url_for('manager.authorize', action='logout') }}">Выйти</a>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
+<div id="landing-blocks"></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/template" id="blocks-container">
+    <div class="small-12 medium-10 large-8 small-centered columns">
+        <h3>Управление блоками</h3>
+        <section class="blocks row"></section>
+        <div class="clearfix">
+            <button class="add button float-right"><i class="fi-plus"></i>&nbsp;Добавить блок</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>
 {% endblock %}

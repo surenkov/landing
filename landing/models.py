@@ -1,9 +1,12 @@
+import sys
 from flask import render_template, render_template_string
 from flask_mongoengine import BaseQuerySet
 from flask_mongoengine.wtf import model_form
+from flask_wtf import Form
 from mongoengine.base import DocumentMetaclass
+from mongoengine import Document
 from bson import ObjectId
-from landing import db
+from landing import app, db
 from landing.blocks import register_block, unregister_block
 
 
@@ -56,16 +59,20 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
     def render_form(self):
         form = self._form()
         template = self._block_meta.get('manager_template', None)
-        id = self._cls
         if template is not None:
-            return render_template_string(template, form=form)
-        return render_template('manager/partial/block.html', form=form)
+            return render_template_string(template,
+                                          form=form,
+                                          block=self)
+        return render_template('manager/partial/block.html', 
+                               form=form,
+                               block=self)
 
     def submit_form(self, data=None, commit=True):
         form = self._form(data)
         is_valid = form.validate()
         if is_valid:
-            form.save(commit=commit)
+            form.populate_obj(self)
+            if commit: self.save()
         return is_valid
 
 

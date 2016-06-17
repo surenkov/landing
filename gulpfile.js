@@ -1,4 +1,4 @@
-/// <binding AfterBuild='default' Clean='clean' />
+/// <binding BeforeBuild='default' Clean='clean' />
 var gulp = require('gulp');
 var del = require('del');
 var $ = require('gulp-load-plugins')();
@@ -33,16 +33,16 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     return gulp.src(path.js)
-        .pipe($.sourcemaps.init())
-        .pipe($.uglify())
-        .pipe($.sourcemaps.write())
+        //.pipe($.sourcemaps.init())
+        //.pipe($.uglify())
+        //.pipe($.sourcemaps.write())
         .pipe(gulp.dest(path.dest));
 });
 
 gulp.task('static', function () {
     return gulp.src(path.static)
-        .pipe(gulp.dest(path.dest))
-})
+        .pipe(gulp.dest(path.dest));
+});
 
 gulp.task('assets', function () {
     return gulp.src(path.assets)

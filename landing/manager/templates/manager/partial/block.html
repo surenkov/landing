@@ -1,6 +1,18 @@
-{% for field in form %}
-<tr>
-    <th>{{ field.label }}</th>
-    <td>{{ field(placeholder=field.description) }}</td>
-</tr>
-{% endfor %}
+<h4 class="title"><%= name || '' %></h4>
+<form>
+    {% block formdata %}
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    <div class="row">
+        <div class="small-4 columns">{{ field.label }}</div>
+        <div class="small-8 end columns">{{ field(placeholder=field.description) }}</div>
+    </div>
+    {% endfor %}
+    {% endblock %}
+    <div class="clearfix">
+        <div class="button-group float-right">
+            <button class="save button" disabled title="Сохранить блок"><i class="fi-save"></i></button>
+            <button class="delete alert button" title="Удалить блок"><i class="fi-x"></i></button>
+        </div>
+    </div>
+</form>
