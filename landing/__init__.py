@@ -19,7 +19,7 @@ app.config.update(dict(
 ))
 
 db = MongoEngine(app)
-load_blocks(app.config.get('BLOCKS_DIR'))
+load_blocks(app.config.get('BLOCKS_DIR'), app.jinja_loader)
 
 import landing.models
 import landing.views

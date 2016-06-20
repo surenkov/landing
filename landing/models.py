@@ -51,21 +51,16 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
         return form_cls(data, self)
 
     def render_template(self, **kwargs):
-        template = self._block_meta.get('template', None)
-        if template is not None:
-            return render_template_string(template, block=self)
-        return render_template('partial/block.html', block=self)
+        template = self._block_meta.get('template')
+        landing = landing_factory()
+        try: return render_template(template, block=self, landing=landing)
+        except: return ''
 
     def render_form(self):
         form = self._form()
-        template = self._block_meta.get('manager_template', None)
-        if template is not None:
-            return render_template_string(template,
-                                          form=form,
-                                          block=self)
-        return render_template('manager/partial/block.html', 
-                               form=form,
-                               block=self)
+        template = self._block_meta.get('manager_template', 
+                                        'manager/partial/block.html')
+        return render_template(template, form=form, block=self)
 
     def submit_form(self, data=None, commit=True):
         form = self._form(data)

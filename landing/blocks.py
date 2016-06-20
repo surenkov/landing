@@ -14,7 +14,7 @@ def unregister_block(block):
 def registered_blocks():
     return dict(__block_registry)
 
-def load_blocks(path, base_filename='block.py'):
+def load_blocks(path, template_loader, base_filename='block.py'):
     block_dirs = [(p, d) for p, d in 
                     [(os.path.join(path, d, base_filename), d) 
                      for d in os.listdir(path)] 
@@ -23,3 +23,6 @@ def load_blocks(path, base_filename='block.py'):
         spec = spec_from_file_location('%s.%s' % (__name__, bname), bpath)
         module = module_from_spec(spec)
         spec.loader.exec_module(module)
+    if block_dirs:
+        template_loader.searchpath.append(path)
+        
