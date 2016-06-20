@@ -81,8 +81,12 @@ var Views = Views || {};
             var model = this.model;
             var fields = Models.App.request('fields', model.get('_cls'));
             _(fields).each(function (fname) {
+                var hierarchy = fname.split('-');
+                var val = model.attributes;
                 try {
-                    this.$('[name=' + fname + ']').val(model.get(fname));
+                    for (var i = 0; i < hierarchy.length; i++)
+                        val = val[hierarchy[i]];
+                    this.$('[name=' + fname + ']').val(val);
                 } catch (e) {
                     console.log(e);
                 }

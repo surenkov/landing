@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from flask.views import MethodView
+from wtforms import FormField, HiddenField
 from werkzeug.datastructures import CombinedMultiDict, ImmutableMultiDict
 from landing.models import landing_factory
 from landing.blocks import registered_blocks
@@ -81,10 +82,23 @@ register_api(BlockAPIView, 'blocks_api', '/blocks/')
 @manager.route('/api/blocks/all')
 @secure_api
 def all_available_blocks():
+    instances =[cls() for cls in registered_blocks().values()] 
     blocks = {b._cls: {
-                'fields': list(filter(lambda k: not k.startswith('_'),
-                                      b._fields.keys())), 
+                'fields': _collect_fields_from_form(b._form()),
                 'form': b.render_form(),
                 'name': b._block_meta['verbose_name']
-            } for b in [cls() for cls in registered_blocks().values()]} 
+            } for b in instances }
     return jsonify(blocks)
+
+def _collect_fields_from_form(form):
+    fields = []
+    for field in form:
+        if isinstance(field, HiddenField):
+            continue
+        elif isinstance(field, FormField):
+            fields.extend(_collect_fields_from_form(field.form))
+        else:
+            fields.append(field.name)
+    return fields
+
+            
