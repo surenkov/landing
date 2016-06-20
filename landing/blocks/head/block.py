@@ -16,4 +16,3 @@ class HeadBlock(Block):
     class Meta:
         verbose_name = 'Блок с заголовком'
         manager_form = HeadForm
-        template = None
