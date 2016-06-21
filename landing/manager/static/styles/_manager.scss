@@ -28,3 +28,16 @@ body.login {
     }
 }
 
+.blocks {
+    table {
+        border-collapse: separate;
+
+        tbody {
+            background: none;
+
+            th, td {
+                padding: 0;
+            }
+        }
+    }
+}

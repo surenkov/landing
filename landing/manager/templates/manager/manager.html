@@ -3,12 +3,15 @@
 {% block menu %}
 <div class="top-bar">
     <div class="top-bar-left">
-        <ul class="dropdown menu" data-dropdown-menu>
+        <ul class="menu" data-dropdown-menu>
             <li class="menu-text">Панель управления лэндингом</li>
+            <li><a href="/" target="_blank">Перейти к сайту</a></li>
         </ul>
     </div>
     <div class="top-bar-right">
-        <a class="button" href="{{ url_for('manager.authorize', action='logout') }}">Выйти</a>
+        <ul class="menu">
+            <li><a class="button" href="{{ url_for('manager.authorize', action='logout') }}">Выйти</a></li>
+        </ul>
     </div>
 </div>
 {% endblock %}

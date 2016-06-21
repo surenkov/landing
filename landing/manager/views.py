@@ -68,7 +68,6 @@ def configure():
 
 
     class UserForm(Form):
-        name = StringField(validators=[DataRequired()])
         email = StringField(validators=[DataRequired(), Email()])
         password = PasswordField()
 
@@ -84,7 +83,6 @@ def configure():
     user_form = form.user_form.form
     if form.is_submitted() and user_form.validate():
         user = User.objects.first() or User()
-        user.name = user_form.name.data
         user.email = user_form.email.data
         if user_form.password.data:
             user.set_password(user_form.password.data)

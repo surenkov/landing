@@ -5,7 +5,6 @@ from landing.manager import manager
 
 
 class User(db.Document):
-    name = db.StringField()
     email = db.EmailField(unique=True, required=True)
     _hash = db.StringField()
 
