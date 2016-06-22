@@ -1,7 +1,10 @@
 <div class="top-bar">
     <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
-            <li class="menu-text"></li>
+            <li class="menu-text">{{ block.title }}</li>
+            {% for item in block.menu_items() %}
+            <li><a href="#{{ item.id }}">{{ item.menu_title }}</a></li>
+            {% endfor %}
         </ul>
     </div>
     <div class="top-bar-right">
