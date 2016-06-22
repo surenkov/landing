@@ -3,7 +3,7 @@ from landing import app
 
 
 class UploadMediaFileField(FileField):
-    
+
     def populate_obj(self, obj, name):
         from os import path, makedirs
         from werkzeug.utils import secure_filename
@@ -21,5 +21,5 @@ class UploadMediaFileField(FileField):
             uploaded_name = '%s/%s' % (id, filename)
 
             value.save(path.join(app.config['MEDIA_ROOT'], uploaded_name))
-            setattr(obj, name, path.join(app.config['MEDIA_URL'], uploaded_name))
-
+            setattr(obj, name, path.join(app.config['MEDIA_URL'], 
+                                         uploaded_name))
