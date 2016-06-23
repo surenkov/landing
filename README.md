@@ -5,6 +5,7 @@ INSTALLATION
 2. Create Python virtual env
 3. From env's source run:
 ```
+(sudo) apt install python3 python3-pip mongodb-org
 pip install -r requirements.txt
 (sudo) npm install -g gulp-cli bower
 bower install
@@ -24,5 +25,3 @@ DEPLOYMENT
 ### Production server:
 
 **TODO**
-
-For additional info about uWSGI params, see [it's docs](https://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html).
