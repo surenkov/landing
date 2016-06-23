@@ -1,32 +1,13 @@
 ﻿/// <reference path="_references.js" />
+/// <reference path="blocks.js" />
 /// <reference path="landing.js" />
-var Models = Models || {};
-var Views = Views || {};
 
-(function(models, views) {
-    var app = models.App = new Mn.Application({
-        initialize: function() {
-            this.blocks = new models.BlockCollection();
-        }
-    });
-
-    app.reqres.setHandler('template', function (blockType) {
-        return app.blockTemplates[blockType];
-    });
-
-    app.reqres.setHandler('name', function (blockType) {
-        return app.blockNames[blockType];
-    });
-
-    app.reqres.setHandler('fields', function (blockType) {
-        return app.blockFields[blockType];
-    });
-
-    app.on('start', function (allBlocks) {
+(function() {
+    App.on('start', function (allBlocks) {
         var blocks = this.blocks;
         var keys = _.keys(allBlocks);
         blocks.fetch().then(function () {
-            var view = new views.BlockCollectionView({
+            var view = new Views.BlockCollectionView({
                 collection: blocks
             });
             $('#landing-blocks').prepend(view.render().el);
@@ -49,5 +30,6 @@ var Views = Views || {};
         }));
     });
 
-    (function () { return $.getJSON('/manager/api/blocks/all'); })().then(_.bind(app.start, app));
-})(Models, Views);
+    (function () { return $.getJSON('/manager/api/blocks/all'); })()
+        .then(_.bind(App.start, App));
+})();
