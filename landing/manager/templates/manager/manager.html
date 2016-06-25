@@ -1,4 +1,5 @@
-{% extends 'manager/layout.html' %}
+{% extends "manager/layout.html" %}
+{% import "partial/assets.html" as assets %}
 
 {% block menu %}
 <div class="top-bar">
@@ -16,6 +17,7 @@
 </div>
 {% endblock %}
 
+
 {% block body %}
 <div id="landing-settings" class="settings row">
     <div class="small-12 medium-10 large-8 small-centered columns">
@@ -24,6 +26,7 @@
 </div>
 <div id="landing-blocks"></div>
 {% endblock %}
+
 
 {% block scripts %}
 <script type="text/template" id="blocks-container">
@@ -52,11 +55,10 @@
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/blocks.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>
+{{ assets.js(blocks, context='manager') }}
+{% endblock scripts %}
 
-{% for data in blocks if 'manager_js' in data._block_meta %}
-    {% for asset in data._block_meta['manager_js'] %}
-<script type="text/javascript" src="{{ url_for('static', filename='blocks/' + asset) }}"></script>
-    {% endfor %}
-{% endfor %}
 
+{% block styles %}
+{{ assets.css(blocks, context='manager') }}
 {% endblock %}

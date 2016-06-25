@@ -1,3 +1,4 @@
+﻿{%- import "partial/assets.html" as assets %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,12 +6,13 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/foundation-icon-fonts/foundation-icons.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='static/styles/landing.css') }}" />
+    {{ assets.css(all_blocks) }}
 </head>
 <body>
     {% block blocks %}
-        {% for block in landing.blocks %}
-            {{ block.render_template() | safe }}
-        {% endfor %}
+    {% for block in landing.blocks %}
+    {{ block.render_template() | safe }}
+    {% endfor %}
     {% endblock %}
 
     <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.js') }}"></script>
@@ -18,6 +20,8 @@
     <script type="text/javascript">
         $(document).foundation();
     </script>
+
+    {{ assets.js(all_blocks) }}
 </body>
 </html>
 

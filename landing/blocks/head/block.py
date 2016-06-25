@@ -15,4 +15,11 @@ class HeadBlock(Block, TitleBlockMixin, BackgroundBlockMixin, MenuItemMixin):
         verbose_name = 'Блок с заголовком'
         manager_form = HeadForm
         template = 'head/head.html'
-        manager_js = ( 'head/index.js', )
+        manager_assets = {
+            'js': [],
+            'css': []
+        }
+        template_assets = {
+            'js': [],
+            'css': []
+        }
