@@ -1,7 +1,4 @@
 ﻿/// <reference path="_references.js" />
-/// <reference path="blocks.js" />
-/// <reference path="landing.js" />
-
 (function() {
     App.on('start', function (allBlocks) {
         var blocks = this.blocks;

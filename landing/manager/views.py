@@ -14,7 +14,9 @@ from landing.manager.auth import User, login_required, \
 @login_required
 def manager_index():
     landing = landing_factory()
-    return render_template('manager/manager.html', landing=landing)
+    blocks = registered_blocks()
+    return render_template('manager/manager.html', landing=landing, 
+                           blocks=blocks.values())
 
 @manager.route('/authorize', methods=['GET', 'POST'])
 def authorize():

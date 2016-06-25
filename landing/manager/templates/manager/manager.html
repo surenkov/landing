@@ -36,7 +36,27 @@
     </div>
 </script>
 
+<script id="block-wrapper" type="text/template">
+    <form>
+        <div class="block-head"></div>
+        <div class="block-container"></div>
+        <div class="clearfix">
+            <div class="button-group float-right">
+                <button class="save button" title="Сохранить блок"><i class="fi-save">&nbsp;Сохранить</i></button>
+                <button class="delete alert button" title="Удалить блок"><i class="fi-x"></i></button>
+            </div>
+        </div>
+    </form>
+</script>
+
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/blocks.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>
+
+{% for data in blocks if 'manager_js' in data._block_meta %}
+    {% for asset in data._block_meta['manager_js'] %}
+<script type="text/javascript" src="{{ url_for('static', filename='blocks/' + asset) }}"></script>
+    {% endfor %}
+{% endfor %}
+
 {% endblock %}

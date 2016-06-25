@@ -1,7 +1,8 @@
 ﻿/// <reference path="_references.js" />
 /// <reference path="loader.js" />
-var Models = Models || {};
-var Views = Views || {};
+/// <reference path="landing.js" />
+var Models = {};
+var Views = {};
 
 (function () {
     Models.Block = Backbone.Model.extend({});
@@ -15,6 +16,17 @@ var Views = Views || {};
 })();
 
 (function () {
+    (function () {
+        var registeredViews = {};
+        Views.registerView = function (cls, view) {
+            registeredViews[cls] = view;
+        };
+
+        Views.getView = function (cls) {
+            return registeredViews[cls] || Views.BlockItem;
+        };
+    })();
+    
     var BlockTypeOption = Mn.ItemView.extend({
         tagName: 'option',
         render: function () {
@@ -35,14 +47,15 @@ var Views = Views || {};
         }
     });
 
-    Views.BlockView = Mn.ItemView.extend({
-        className: 'secondary callout',
-        events: {
-            'click .button.delete': 'deleteModel',
-            'click .button.save': 'saveModel',
-            'submit form': '_preventFormSubmission'
-        },
-        template: function (model) {
+    var HeadNameView = Mn.ItemView.extend({
+        tagName: 'h4',
+        render: function() {
+            this.$el.text(App.request('name', this.model.get('_cls')));
+        }
+    });
+
+    Views.BlockItem = Mn.ItemView.extend({
+        template: function(model) {
             return App.request('template', model._cls)({
                 name: App.request('name', model._cls)
             });
@@ -54,11 +67,7 @@ var Views = Views || {};
             this.fillView();
             return this;
         },
-        onDestroy: function (destroyModel) {
-            if (destroyModel)
-                this.model.destroy();
-        },
-        fillView: function () {
+        fillView: function() {
             var model = this.model;
             var fields = App.request('fields', model.get('_cls'));
             _(fields).each(function (fname) {
@@ -73,7 +82,62 @@ var Views = Views || {};
                 }
             }, this);
         },
-        saveModel: function (e) {
+        save: function(values, options) {
+            return this.model.save(values, options);
+        },
+        delete: function() {
+            this.model.destroy();
+        },
+        _extendElemWithCid: function (attr) {
+            var model = this.model;
+            this.$('[' + attr + ']').each(function () {
+                var self = $(this);
+                self.attr(attr, model.cid + '-' + self.attr(attr));
+            });
+        }
+    });
+
+    Views.BlockWrapperView = Mn.LayoutView.extend({
+        className: 'secondary callout',
+        ui: {
+            saveButton: '.button.save',
+            deleteButton: '.button.delete',
+            form: 'form',
+            container: '.block-container',
+            head: '.block-head'
+        },
+        events: {
+            'click @ui.deleteButton': 'delete',
+            'click @ui.saveButton': 'save',
+            'submit @ui.form': '_preventFormSubmission'
+        },
+        regions: {
+            container: '@ui.container',
+            head: '@ui.head'
+        },
+        template: '#block-wrapper',
+        initialize: function() {
+            this._typeChanged(this.model.get('_cls'));
+        },
+        render: function() {
+            Mn.LayoutView.prototype.render.call(this);
+            if (this.model.isNew()) {
+                var select = new BlockTypeSelect({
+                    collection: new Backbone.Collection(App.blockTypes)
+                });
+                this.listenToOnce(select, 'change', this._typeChanged);
+                this.showChildView('head', select);
+                select.$el.val(this.model.get('_cls'));
+            }
+            else {
+                this.getRegion('head').show(new HeadNameView({ model: this.model }));
+            }
+            var internalView = Views.getView(this.model.get('_cls'));
+            this.internalView = new internalView({ model: this.model });
+            this.showChildView('container', this.internalView);
+            return this;
+        },
+        save: function (e) {
             var values = {};
             var self = this;
             e.preventDefault();
@@ -84,38 +148,33 @@ var Views = Views || {};
 
             var files = this.$('form :file');
             var options = {};
-            if (files.length > 0)
+            if (files.length > 0) {
                 _.extend(options, {
                     iframe: true,
                     files: files,
                     data: values,
                     processData: false
                 });
+            }
 
-            this.model.save(values, options).done(function (data) {
+            this.internalView.save(values, options).then(function (data) {
                 self.model.set({ 'id': data['id'] });
                 self.render();
             });
         },
-        deleteModel: function (e) {
-            e.preventDefault();
-            this.destroy(true);
+        delete: function (e) {
+            if (e) e.preventDefault();
+            this.internalView.delete();
+            this.destroy();
         },
         _typeChanged: function (newCls) {
             this.model.set({ '_cls': newCls });
             this.render();
         },
-        _extendElemWithCid: function (attr) {
-            var model = this.model;
-            this.$('[' + attr + ']').each(function () {
-                var self = $(this);
-                self.attr(attr, model.cid + '-' + self.attr(attr));
-            });
-        },
         _preventFormSubmission: function (e) {
             e.preventDefault();
             e.stopPropagation();
-            this.saveModel();
+            this.save(e);
         }
     });
 
@@ -124,7 +183,7 @@ var Views = Views || {};
             'click .button.add': 'addNewModel'
         },
         className: 'row',
-        childView: Views.BlockView,
+        childView: Views.BlockWrapperView,
         childViewContainer: '.blocks',
         template: '#blocks-container',
         addNewModel: function (e) {
