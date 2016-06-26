@@ -54,3 +54,10 @@ gulp.task('clean', function () {
 });
 
 gulp.task('default', ['sass', 'js', 'static', 'assets']);
+
+gulp.task('run', function () {
+    gulp.watch(path.sass, ['sass']);
+    gulp.watch(path.js, ['js']);
+    gulp.watch(path.static, ['static']);
+    gulp.watch(path.assets, ['assets']);
+});

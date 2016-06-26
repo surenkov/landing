@@ -68,7 +68,7 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
         if is_valid:
             form.populate_obj(self)
             if commit: self.save()
-        return is_valid
+        return is_valid, form.errors
 
 
 class LandingModel(db.Document):

@@ -8,9 +8,6 @@ from landing.manager import manager
 from landing.manager.auth import secure_api
 
 
-SUCCESS_RESULT = {'success': 1}
-FAIL_RESULT = {'success': 0}
-
 def register_api(view, endpoint, url, pk='id', pk_type='string'):
     view_func = secure_api(view.as_view(endpoint))
     url = '/api/%s/' % url.strip('/')
@@ -50,32 +47,33 @@ class BlockAPIView(MethodView):
         cls = registered_blocks().get(request_data['_cls'], None)
         if cls is not None:
             block = cls()
-            is_valid = block.submit_form(request_data, commit=False)
+            is_valid, errors = block.submit_form(request_data, commit=False)
             if is_valid:
                 self.landing.blocks.append(block)
                 self.landing.save()
-                result = dict(SUCCESS_RESULT)
-                result.update(block_to_dict(block))
-                return jsonify(result)
-        return jsonify(FAIL_RESULT)
+                return jsonify(block_to_dict(block))
+            else:
+                return jsonify(errors), 400
+        return jsonify({}), 404
 
     def put(self, id):
         block = self.landing.blocks.filter(id=id).first()
-        if block is not None \
-                and block.submit_form(combined_request_data()):
+        if block is None:
+            return jsonify({}), 404
+        is_valid, errors = block.submit_form(combined_request_data())
+        if is_valid:
             self.landing.save()
-            result = dict(SUCCESS_RESULT)
-            result.update(block_to_dict(block))
-            return jsonify(result)
-        return jsonify(FAIL_RESULT)
+            return jsonify(block_to_dict(block))
+        else:
+            return jsonify(errors), 400
 
     def delete(self, id):
         block = self.landing.blocks.filter(id=id).first()
         if block is not None:
             self.landing.blocks.remove(block)
             self.landing.save()
-            return jsonify(SUCCESS_RESULT)
-        return jsonify(FAIL_RESULT)
+            return jsonify({})
+        return jsonify({}), 404
 
 register_api(BlockAPIView, 'blocks_api', '/blocks/')
 
