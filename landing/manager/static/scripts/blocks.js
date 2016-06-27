@@ -54,14 +54,14 @@ var Views = {};
         }
     });
 
-    Views.BlockItem = Mn.ItemView.extend({
+    Views.BlockItem = Mn.LayoutView.extend({
         template: function(model) {
             return App.request('template', model._cls)({
                 name: App.request('name', model._cls)
             });
         },
         render: function () {
-            Mn.ItemView.prototype.render.call(this);
+            Mn.LayoutView.prototype.render.call(this);
             this._extendElemWithCid('id');
             this._extendElemWithCid('for');
             this.fillView();

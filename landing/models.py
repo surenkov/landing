@@ -19,7 +19,7 @@ class BlockType(DocumentMetaclass):
         for mro_class in new_class.mro():
             if 'Meta' in mro_class.__dict__:
                 bases_meta.append(mro_class.Meta)
-        meta_object = {}
+        meta_object = { 'verbose_name': str(new_class) }
         for meta in reversed(bases_meta):
             for param, val in meta.__dict__.items():
                 if param.startswith('_'): continue

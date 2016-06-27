@@ -22,8 +22,6 @@ class BackgroundFormMixin:
         if field.data and not matches:
             raise ValidationError('Цвет задан в неправильном формате.')
 
-
-
 class BackgroundBlockMixin:
     """Mixin for blocks with background color, image or video.
     """
@@ -35,17 +33,24 @@ class BackgroundBlockMixin:
 class TitleFormMixin:
     title = StringField('Заголовок', description='Заголовок блока')
 
-
 class TitleBlockMixin:
     """Mixin for blocks with title.
     """
     title = db.StringField()
 
 
+class DescriptionFormMixin:
+    description = TextAreaField('Описание', description='Описание')
+
+class DescriptionBlockMixin:
+    """Mixin for blocks with description.
+    """
+    description = db.StringField()
+
+
 class MenuFormMixin:
     menu_title = StringField('Заголовок меню', validators=[DataRequired()],
                              description='Заголовок меню')
-
 
 class MenuItemMixin:
     """Mixin for blocks, shown in menu.

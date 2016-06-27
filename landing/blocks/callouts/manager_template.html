@@ -1,0 +1,28 @@
+{% extends 'manager/partial/block.html' %}
+
+{% block formdata %}
+<div>
+    <div class="small-12 row columns">
+        <div class="small-4 columns">
+            {{ form.menu_title.label }}
+        </div>
+        <div class="small-8 columns">
+            {{ form.menu_title(placeholder=form.menu_title.description) }}
+        </div>
+    </div>
+    <div class="small-12 row columns">
+        <div class="small-4 columns">
+            {{ form.title.label }}
+        </div>
+        <div class="small-8 columns">
+            {{ form.title(placeholder=form.title.description) }}
+        </div>
+    </div>
+    <div class="small-12 callouts-container row columns"></div>
+    <div class="clearfix">
+        <div class="button-group float-left">
+            <button class="add-callout button"><i class="fi-plus"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

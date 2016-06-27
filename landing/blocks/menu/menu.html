@@ -1,13 +1,15 @@
-<div class="top-bar">
-    <div class="top-bar-left">
-        <ul class="dropdown menu" data-dropdown-menu>
-            <li class="menu-text">{{ block.title }}</li>
-            {% for item in block.menu_items() %}
-            <li><a href="#{{ item.id }}">{{ item.menu_title }}</a></li>
-            {% endfor %}
-        </ul>
+<nav class="row">
+    <div class="top-bar small-12 columns">
+        <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li class="menu-text">{{ block.title }}</li>
+                {% for item in block.menu_items() %}
+                <li><a href="#{{ item.id }}">{{ item.menu_title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            <button class="button">{{ block.button_caption }}</button>
+        </div>
     </div>
-    <div class="top-bar-right">
-        <a class="button" href="{{ block.button.link }}">{{ block.button.caption }}</a>
-    </div>
-</div>
+</nav>

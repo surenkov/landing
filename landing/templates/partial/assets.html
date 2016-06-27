@@ -1,7 +1,7 @@
 {% macro css(blocks, context='template', prefix='blocks/') -%}
     {%- set assets_index = context+'_assets' %}
     {% for data in blocks if assets_index in data._block_meta -%}
-        {% for asset in data._block_meta[assets_index].get('css') -%}
+        {% for asset in data._block_meta[assets_index].get('css', []) -%}
     <link rel="stylesheet" href="{{ url_for('static', filename=prefix+asset) }}" />
         {%- endfor %}
     {%- endfor %}
@@ -10,7 +10,7 @@
 {% macro js(blocks, context='template', prefix='blocks/') -%}
     {% set assets_index = context+'_assets' %}
     {% for data in blocks if assets_index in data._block_meta -%}
-        {% for asset in data._block_meta[assets_index].get('js') -%}
+        {% for asset in data._block_meta[assets_index].get('js', []) -%}
     <script type="text/javascript" src="{{ url_for('static', filename=prefix+asset) }}"></script>
         {%- endfor %}
     {%- endfor %}
