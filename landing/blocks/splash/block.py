@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from landing import db
 from landing.models import Block
-from landing.fields import StringField, UploadMediaFileField
+from landing.fields import StringField 
 from landing.mixins import *
 
 

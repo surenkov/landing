@@ -2,7 +2,7 @@ from wtforms import Form
 from landing import db
 from landing.mixins import *
 from landing.models import Block, unregister_block
-from landing.fields import StringField, UploadMediaFileField, TypedFieldList
+from landing.fields import StringField, MediaFileField, TypedFieldList
 
 
 class ListsForm(Form, TitleFormMixin, DescriptionFormMixin):

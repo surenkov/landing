@@ -7,8 +7,8 @@ from landing.models import landing_factory
 
 class BackgroundFormMixin:
     background_color = StringField('Цвет фона', description='#ABCDEF')
-    background_image = UploadMediaFileField('Фоновое изображение')
-    background_video = UploadMediaFileField('или видео')
+    background_image = MediaFileField('Фоновое изображение')
+    background_video = MediaFileField('или видео')
 
     def validate_background_color(form, field):
         v_re = [

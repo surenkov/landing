@@ -23,7 +23,7 @@ var Views = Views || {};
                 '<tr>' +
                     '<td>Изображение</td>' +
                     '<td>' +
-                        '<input type="file" name="callouts-<%= idx %>-image" />' +
+                        '<input type="text" name="callouts-<%= idx %>-image" />' +
                     '</td>' +
                 '</tr>' +
             '</table>' +

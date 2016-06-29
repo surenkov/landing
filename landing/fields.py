@@ -2,7 +2,7 @@ from wtforms.fields import *
 from landing import app
 
 
-class UploadMediaFileField(FileField):
+class MediaFileField(StringField):
 
     def populate_obj(self, obj, name):
         from os import path, makedirs
