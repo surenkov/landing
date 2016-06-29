@@ -3,7 +3,7 @@
 # Install MongoDB
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-apt update && apt upgrade
+apt update
 apt install -y mongodb-org
 
 # Install global dev deps
@@ -26,17 +26,20 @@ chown -R landing:landing ../
 
 # Update server configs
 cp conf/gunicorn.service /etc/systemd/system/
+cp conf/mongodb.landing.service /etc/systemd/system/
 cp conf/landing.conf /etc/nginx/sites-available/
+rm /etc/nginx/sites-enabled/landing
 ln -s /etc/nginx/sites-available/landing.conf /etc/nginx/sites-enabled/landing
 rm /etc/nginx/sites-enabled/default
 
 # Start server
+systemctl daemon-reload
 systemctl start gunicorn
 systemctl enable gunicorn
 
 systemctl start nginx
 systemctl enable nginx
 
-systemctl unmask mongodb
-systemctl start mongodb
-systemctl enable mongodb
+systemctl unmask mongodb.landing
+systemctl start mongodb.landing
+systemctl enable mongodb.landing
