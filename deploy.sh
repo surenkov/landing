@@ -25,11 +25,9 @@ pip3 install -r requirements.txt
 chown -R landing:landing ../
 
 # Update server configs
-cp conf/gunicorn.service /etc/systemd/system/
-cp conf/mongodb.landing.service /etc/systemd/system/
-cp conf/landing.conf /etc/nginx/sites-available/
-rm /etc/nginx/sites-enabled/landing
-ln -s /etc/nginx/sites-available/landing.conf /etc/nginx/sites-enabled/landing
+ln -s conf/gunicorn.service /etc/systemd/system/gunicorn.service
+ln -s conf/mongodb.landing.service /etc/systemd/system/mongodb.landing.service
+ln -s conf/landing.conf /etc/nginx/sites-enabled/landing
 rm /etc/nginx/sites-enabled/default
 
 # Start server
