@@ -55,6 +55,9 @@ var Views = {};
     });
 
     Views.BlockItem = Mn.LayoutView.extend({
+        modelEvents: {
+            'error': 'invalidateFields'
+        },
         template: function(model) {
             return App.request('template', model._cls)({
                 name: App.request('name', model._cls)
@@ -82,11 +85,51 @@ var Views = {};
                 }
             }, this);
         },
-        save: function(values, options) {
+        save: function (values, options) {
+            var options = options || {};
+            _.extend(options, { wait: true });
             return this.model.save(values, options);
         },
         delete: function() {
             this.model.destroy();
+        },
+        invalidateFields: function (model, response) {
+            var errors = this._parseErrorResponse(response.responseJSON);
+            _.each(errors, this._invalidateElement, this);
+        },
+        _parseErrorResponse: function (errors) {
+            var res = {};
+            (function downFall(prev_names, obj, name) {
+                if (_.isObject(obj)) {
+                    var next_names = name !== '' ? prev_names.concat(name) : prev_names;
+                    _.each(obj, function (val, idx) { downFall(next_names, val, idx); });
+                } else {
+                    var idx = prev_names.join('-');
+                    res[idx] = res[idx] || [];
+                    res[idx].push(obj);
+                }
+            })([], errors, '');
+            return res;
+        },
+        _clearInvalidation: function (input) {
+            var label = this.$('label[for=' + input.attr('id') + ']');
+            label.removeClass('is-invalid-label');
+            input.removeClass('is-invalid-input');
+            input.siblings('.form-error').remove();
+        },
+        _invalidateElement: function (errors, name) {
+            var input = this.$('[name=' + name + ']');
+            var label = this.$('label[for=' + input.attr('id') + ']');
+            this._clearInvalidation(input);
+
+            label.addClass('is-invalid-label');
+            input.addClass('is-invalid-input');
+            if (!_.isArray(errors)) errors = [errors];
+            _.each(errors, function (error) {
+                input.after($('<span />')
+                    .addClass('form-error is-visible')
+                    .text(error));
+            });
         },
         _extendElemWithCid: function (attr) {
             var model = this.model;
@@ -111,14 +154,15 @@ var Views = {};
             'click @ui.saveButton': 'save',
             'submit @ui.form': '_preventFormSubmission'
         },
+        modelEvents: {
+            'sync': 'render',
+            'change:_cls': 'render'
+        },
         regions: {
             container: '@ui.container',
             head: '@ui.head'
         },
         template: '#block-wrapper',
-        initialize: function() {
-            this._typeChanged(this.model.get('_cls'));
-        },
         render: function() {
             Mn.LayoutView.prototype.render.call(this);
             if (this.model.isNew()) {
@@ -138,29 +182,12 @@ var Views = {};
             return this;
         },
         save: function (e) {
-            var values = {};
-            var self = this;
             e.preventDefault();
-
+            var values = {};
             _.each(this.$('form').serializeArray(), function (input) {
                 values[input.name] = input.value;
             });
-
-            var files = this.$('form :file');
-            var options = {};
-            if (files.length > 0) {
-                _.extend(options, {
-                    iframe: true,
-                    files: files,
-                    data: values,
-                    processData: false
-                });
-            }
-
-            this.internalView.save(values, options).then(function (data) {
-                self.model.set({ 'id': data['id'] });
-                self.render();
-            });
+            this.internalView.save(values);
         },
         delete: function (e) {
             if (e) e.preventDefault();
@@ -169,7 +196,6 @@ var Views = {};
         },
         _typeChanged: function (newCls) {
             this.model.set({ '_cls': newCls });
-            this.render();
         },
         _preventFormSubmission: function (e) {
             e.preventDefault();
