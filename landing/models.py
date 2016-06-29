@@ -76,16 +76,13 @@ class LandingModel(db.Document):
 
 
 class SingletonLandingFactory:
-    _singleton = None
 
     def __call__(self):
-        cls = type(self)
-        if cls._singleton is None:
-            cls._singleton = LandingModel.objects.first()
-        if cls._singleton is None:
-            cls._singleton = LandingModel()
-            cls._singleton.save()
-        return cls._singleton
+        singleton = LandingModel.objects.first()
+        if singleton is None:
+            singleton = LandingModel()
+            singleton.save()
+        return singleton
 
 
 landing_factory = SingletonLandingFactory()
