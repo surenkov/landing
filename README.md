@@ -1,16 +1,15 @@
 INSTALLATION
 ------------
 
-1. Install Python 3.3+, Node
-2. Create Python virtual env
-3. From env's source run:
+### Manual install
+1. Install Python 3.5+, Node, MongoDB.
+2. Create Python virtualenv.
+3. From env's source, run:
 ```
-(sudo) apt install python3 python3-pip mongodb-org
 pip install -r requirements.txt
-(sudo) npm install -g gulp-cli bower
+npm install -g gulp-cli bower
 bower install
 npm install
-gulp
 ```
 
 DEPLOYMENT
@@ -18,10 +17,17 @@ DEPLOYMENT
 
 ### Development server:
 
-`flask run runserver.py`
+On installed environment, run:
+
+`python3 runserver.py`
 
 **Note: never use dev server in production!**
 
 ### Production server:
 
-**TODO**
+1. Create user `landing` with `/home/landing` home folder and `sudo` privileges.
+2. Clone this repo into `~/app` folder.
+3. Run `sudo bash deploy.sh`.
+4. Update app config.
+5. ...
+6. PROFIT!
