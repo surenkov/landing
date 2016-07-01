@@ -1,4 +1,6 @@
 ﻿/// <reference path="_references.js" />
+/// <reference path="media.js" />
+
 (function() {
     App.on('start', function (allBlocks) {
         var blocks = this.blocks;
@@ -25,6 +27,10 @@
         this.blockFields = _.object(keys, _.map(allBlocks, function (b) {
             return _.toArray(b['fields'] || []);
         }));
+
+        $(document.body).on('click', '.media-manager', function (e) {
+            var manager = new MediaManager();
+        });
     });
 
     (function () { return $.getJSON('/manager/api/blocks/all'); })()

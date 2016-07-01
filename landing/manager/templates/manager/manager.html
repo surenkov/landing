@@ -34,7 +34,10 @@
         <h4>Управление блоками</h4>
         <section class="blocks row"></section>
         <div class="clearfix">
-            <button class="add button float-right"><i class="fi-plus"></i>&nbsp;Добавить блок</button>
+            <div class="button-group float-right">
+                <button class="add button"><i class="fi-plus"></i>&nbsp;Добавить блок</button>
+                <button class="media-manager button"><i class="fi-photo"></i>&nbsp;Менеджер файлов</button>
+            </div>
         </div>
     </div>
 </script>
@@ -52,6 +55,36 @@
     </form>
 </script>
 
+<script id="media-view-reveal" type="text/template">
+    <h4>Выбор медиа</h4>
+    <div class="upload-lead lead">
+        <input type="file" class="media-file" name="file" />
+        <button type="button" class="expanded secondary upload button">
+            <i class="fi-plus"></i>&nbsp;Загрузить файл
+        </button>
+    </div>
+    <table class="hover files">
+        <thead>
+            <tr>
+                <th width="100">&nbsp;</th>
+                <th>URL-адрес</th>
+                <th width="20">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</script>
+
+<script id="media-file-view" type="text/template">
+    <td><img src="<%- url %>" class="thumbnail" /></td>
+    <td><input type="text" value="<%- url %>" onClick="this.select();" /></td>
+    <td><button class="tiny alert delete button" title="Удалить"><i class="fi-x"></i></button></td>
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/media.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/blocks.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>

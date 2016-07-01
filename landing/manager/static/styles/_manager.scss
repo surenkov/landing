@@ -28,6 +28,25 @@ body.login {
     }
 }
 
+.upload-lead {
+    position: relative;
+
+    input[type=file] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        height: 0;
+        width: 0;
+        z-index: -9999;
+    }
+}
+
+.files .thumbnail {
+    margin-bottom: 0;
+    width: 100px;
+}
+
 .blocks {
     .button-group {
         margin-bottom: 0;
