@@ -63,12 +63,10 @@ var Views = {};
                 name: App.request('name', model._cls)
             });
         },
-        render: function () {
-            Mn.LayoutView.prototype.render.call(this);
+        onRender: function () {
             this._extendElemWithCid('id');
             this._extendElemWithCid('for');
             this.fillView();
-            return this;
         },
         fillView: function() {
             var model = this.model;
@@ -163,8 +161,7 @@ var Views = {};
             head: '@ui.head'
         },
         template: '#block-wrapper',
-        render: function() {
-            Mn.LayoutView.prototype.render.call(this);
+        onRender: function () {
             if (this.model.isNew()) {
                 var select = new BlockTypeSelect({
                     collection: new Backbone.Collection(App.blockTypes)
@@ -172,14 +169,12 @@ var Views = {};
                 this.listenToOnce(select, 'change', this._typeChanged);
                 this.showChildView('head', select);
                 select.$el.val(this.model.get('_cls'));
-            }
-            else {
+            } else {
                 this.getRegion('head').show(new HeadNameView({ model: this.model }));
             }
             var internalView = Views.getView(this.model.get('_cls'));
             this.internalView = new internalView({ model: this.model });
             this.showChildView('container', this.internalView);
-            return this;
         },
         save: function (e) {
             e.preventDefault();
