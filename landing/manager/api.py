@@ -1,8 +1,9 @@
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from flask.views import MethodView
 from wtforms import FormField, HiddenField
 from werkzeug.datastructures import CombinedMultiDict, ImmutableMultiDict
 from landing.models import landing_factory
+from landing.mediastorage import MediaStorage
 from landing.blocks import registered_blocks
 from landing.manager import manager
 from landing.manager.auth import secure_api
@@ -18,14 +19,13 @@ def register_api(view, endpoint, url, pk='id', pk_type='string'):
                          view_func=view_func,
                          methods=['GET', 'POST', 'PUT', 'DELETE'])
 
-def block_to_dict(block):
+def document_to_dict(block):
     bdict = dict(block._data)
     bdict['id'] = str(block.id)
     return bdict
 
 def combined_request_data():
-    return CombinedMultiDict([request.form, request.files, 
-                              ImmutableMultiDict(request.json)])
+    return CombinedMultiDict([request.form, ImmutableMultiDict(request.json)])
 
 
 class BlockAPIView(MethodView):
@@ -35,10 +35,10 @@ class BlockAPIView(MethodView):
 
     def get(self, id=None):
         if id is None:
-            blocks = [block_to_dict(b) for b in self.landing.blocks]
+            blocks = [document_to_dict(b) for b in self.landing.blocks]
             return jsonify(blocks)
         return jsonify(
-            block_to_dict(self.landing.blocks.filter(id=id).first()) or {})
+            document_to_dict(self.landing.blocks.filter(id=id).first()) or {})
 
     def post(self, id=None):
         if id is not None:
@@ -51,7 +51,7 @@ class BlockAPIView(MethodView):
             if is_valid:
                 self.landing.blocks.append(block)
                 self.landing.save()
-                return jsonify(block_to_dict(block))
+                return jsonify(document_to_dict(block))
             else:
                 return jsonify(errors), 400
         return jsonify({}), 404
@@ -63,7 +63,7 @@ class BlockAPIView(MethodView):
         is_valid, errors = block.submit_form(combined_request_data())
         if is_valid:
             self.landing.save()
-            return jsonify(block_to_dict(block))
+            return jsonify(document_to_dict(block))
         else:
             return jsonify(errors), 400
 
@@ -76,6 +76,52 @@ class BlockAPIView(MethodView):
         return jsonify({}), 404
 
 register_api(BlockAPIView, 'blocks_api', '/blocks/')
+
+
+def prepare_file_model(model):
+    serialized_model = document_to_dict(model)
+    del serialized_model['path']
+    return serialized_model
+
+
+class MediaAPIView(MethodView):
+
+    def __init__(self):
+        self.media_storage = MediaStorage()
+
+    def get(self, id=None):
+        if id is None:
+            return jsonify([prepare_file_model(f) 
+                            for f in self.media_storage.list()])
+        try:
+            return jsonify(prepare_file_model(self.media_storage.get(id)))
+        except:
+            return jsonify({}), 404
+
+    def post(self, id=None):
+        if id is not None:
+            abort(400)
+        try:
+            file = request.files['file']
+            return jsonify(prepare_file_model(self.media_storage.save(file)))
+        except TypeError as e:
+            return jsonify(e.args), 400
+        except KeyError:
+            abort(400)
+
+    def put(self, id):
+        abort(400)
+
+    def delete(self, id):
+        try:
+            file = self.media_storage.get(id)
+            file.delete()
+            return '', 200
+        except MediaFile.DoesNotExist:
+            abort(404)
+
+register_api(MediaAPIView, 'media', '/media/')
+
 
 @manager.route('/api/blocks/all')
 @secure_api
