@@ -27,10 +27,6 @@
         this.blockFields = _.object(keys, _.map(allBlocks, function (b) {
             return _.toArray(b['fields'] || []);
         }));
-
-        $(document.body).on('click', '.media-manager', function (e) {
-            var manager = new MediaManager();
-        });
     });
 
     (function () { return $.getJSON('/manager/api/blocks/all'); })()

@@ -83,7 +83,7 @@ var Views = Views || {};
         },
         addCallout: function (e) {
             e.preventDefault();
-            this.callouts.create();
+            this.callouts.add({});
         }
     });
 

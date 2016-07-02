@@ -12,7 +12,8 @@
         },
         template: '#media-file-view',
         events: {
-            'click .delete.button': 'delete'
+            'click .delete.button': 'delete',
+            'click .thumbnail': 'select'
         },
         modelEvents: {
             'destroy': 'destroy',
@@ -26,6 +27,9 @@
                 $progressRow.siblings().remove();
             else
                 $progressRow.remove();
+        },
+        select: function () {
+            this.model.trigger('select', this.model);
         },
         delete: function (e) {
             e.preventDefault();
@@ -50,7 +54,8 @@
             'click .upload.button': 'openFileDialog'
         },
         collectionEvents: {
-            'update': 'updateFilesVisibility'
+            'update': 'updateFilesVisibility',
+            'select': 'onSelect'
         },
         initialize: function () {
             this.$el.attr('id', this.cid);
@@ -85,8 +90,14 @@
                 file.remove();
             });
         },
+        onSelect: function (model) {
+            this.trigger('select', model);
+        },
         onRender: function () {
             this.updateFilesVisibility();
+        },
+        close: function () {
+            this.$el.foundation('close');
         },
         onDestroy: function () {
             this.$el.foundation('destroy');
@@ -100,4 +111,19 @@
         view.collection.fetch();
         return view;
     };
+})();
+
+(function () {
+    $(document.body).on('click', '.media-manager', function (e) {
+        var manager = new MediaManager();
+    }).on('click', '.media-open', function (e) {
+        var $input = $(e.target).parents('.input-group')
+                                .first()
+                                .children(':text');
+        var manager = new MediaManager();
+        manager.on('select', function (model) {
+            $input.val(model.get('url'));
+            manager.close();
+        });
+    });
 })();

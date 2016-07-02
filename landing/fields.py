@@ -1,28 +1,28 @@
 from wtforms.fields import *
+from wtforms.widgets import TextInput, HTMLString
 from landing import app
 
 
+class MediaFileInput(TextInput):
+    input_type = 'text'
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        kwargs.setdefault('type', self.input_type)
+        kwargs['name'] = field.name
+        return HTMLString(
+            '<div class="input-group">' +
+                (('<input class="input-group-field" %s>') % self.html_params(**kwargs)) +
+                '<div class="input-group-button">' +
+                    '<button type="button" class="media-open secondary button" title="Выбрать файл">' +
+                        '<i class="fi-photo"></i>' +
+                    '</button>' +
+                '</div>' +
+            '</div>') 
+
+
 class MediaFileField(StringField):
-
-    def populate_obj(self, obj, name):
-        from os import path, makedirs
-        from werkzeug.utils import secure_filename
-        from werkzeug.datastructures import FileStorage
-
-        id = str(obj.id)
-        value = self.data
-        if not isinstance(value, FileStorage): return
-        filename = secure_filename(value.filename)
-
-        if filename != '':
-            upload_path = path.join(app.config['MEDIA_ROOT'], id)
-            if not path.exists(upload_path):
-                makedirs(upload_path)
-            uploaded_name = '%s/%s' % (id, filename)
-
-            value.save(path.join(app.config['MEDIA_ROOT'], uploaded_name))
-            setattr(obj, name, path.join(app.config['MEDIA_URL'], 
-                                         uploaded_name))
+    widget = MediaFileInput()
 
 
 class TypedFieldList(FieldList):

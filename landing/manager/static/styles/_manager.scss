@@ -48,6 +48,7 @@ body.login {
     .thumbnail {
         margin-bottom: 0;
         width: 100px;
+        cursor: pointer;
     }
 
     .upload-preloader {
@@ -60,6 +61,12 @@ body.login {
 .blocks {
     .button-group {
         margin-bottom: 0;
+    }
+
+    .media-open.button {
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 1px 1px 0;
+        margin-left: -1px;
     }
 
     table {

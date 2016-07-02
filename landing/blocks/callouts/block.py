@@ -7,7 +7,7 @@ from landing.fields import StringField, MediaFileField, TypedFieldList
 
 class CalloutForm(Form, TitleFormMixin, DescriptionFormMixin):
     advanced_classes = StringField('Классы коллаута')
-    image = MediaFileField('Изображение')
+    image = MediaFileField('Изображение', description='/media/image.png')
 
 
 @unregister_block
