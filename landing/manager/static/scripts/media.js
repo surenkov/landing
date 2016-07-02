@@ -7,12 +7,25 @@
 
     var MediaFileView = Mn.ItemView.extend({
         tagName: 'tr',
+        defaults: {
+            '_status': 0
+        },
         template: '#media-file-view',
         events: {
             'click .delete.button': 'delete'
         },
         modelEvents: {
-            'destroy': 'destroy'
+            'destroy': 'destroy',
+            'request': 'render',
+            'sync': 'render',
+            'error': 'render'
+        },
+        onRender: function () {
+            var $progressRow = this.$('.progress-bar');
+            if (this.model.isNew())
+                $progressRow.siblings().remove();
+            else
+                $progressRow.remove();
         },
         delete: function (e) {
             e.preventDefault();
@@ -34,8 +47,7 @@
         },
         events: {
             'closed.zf.reveal': 'destroy',
-            'click .upload.button': 'openFileDialog',
-            'change .media-file': 'uploadFile'
+            'click .upload.button': 'openFileDialog'
         },
         collectionEvents: {
             'update': 'updateFilesVisibility'
@@ -46,7 +58,6 @@
             this.render();
             this.$el.foundation();
             this.$el.foundation('open');
-            this.trigger('open');
         },
         updateFilesVisibility: function () {
             var $files = this.$('.files');
@@ -57,16 +68,21 @@
         },
         openFileDialog: function (e) {
             e.preventDefault();
-            this.$('.media-file').trigger('click');
+            var $file = $('<input />').prop('type', 'file').prop('name', 'file');
+            $file.on('change', _.bind(this.uploadFile, this));
+            $file.trigger('click');
         },
-        uploadFile: function () {
-            var files = this.$(':file');
-            this.collection.create({url: '', path: ''}, {
+        uploadFile: function (e) {
+            var file = $(e.target);
+            var model = new Backbone.Model({url: ''});
+            this.collection.add(model);
+            model.save({}, {
                 iframe: true,
-                files: files,
+                files: file,
                 data: {},
-                wait: true,
                 processData: false
+            }).then(function () {
+                file.remove();
             });
         },
         onRender: function () {

@@ -79,9 +79,13 @@
 </script>
 
 <script id="media-file-view" type="text/template">
+    <td colspan="3" class="progress-bar"><div class="upload-preloader"></div></td>
     <td><img src="<%- url %>" class="thumbnail" /></td>
     <td><input type="text" value="<%- url %>" onClick="this.select();" /></td>
     <td><button class="tiny alert delete button" title="Удалить"><i class="fi-x"></i></button></td>
+</script>
+
+<script id="media-file-uploading-view" type="text/template">
 </script>
 
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/media.js') }}"></script>
