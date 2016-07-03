@@ -14,7 +14,7 @@ var Views = Views || {};
                 '</tr>' +
                 '<tr>' +
                     '<td>Описание</td>' +
-                    '<td><textarea name="callouts-<%= idx %>-description"></textarea></td>' +
+                    '<td><textarea id="callouts-<%= idx %>-description" name="callouts-<%= idx %>-description"></textarea></td>' +
                 '</tr>' +
                 '<tr>' +
                     '<td>Доп. классы:</td>' +
@@ -74,7 +74,8 @@ var Views = Views || {};
             'click @ui.addButton': 'addCallout'
         },
         initialize: function () {
-            this.callouts = new Backbone.Collection(this.model.get('callouts'))
+            this.callouts = new Backbone.Collection(this.model.get('callouts'));
+            this.listenTo(this.callouts, 'update', this.renderEditors);
         },
         render: function () {
             Views.BlockItem.prototype.render.call(this);

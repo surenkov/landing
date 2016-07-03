@@ -102,4 +102,9 @@
 
 {% block styles %}
 {{ assets.css(blocks, context='manager') }}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/tinymce/tinymce.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/tinymce/jquery.tinymce.min.js') }}"></script>
+<script type="text/javascript">
+    tinymce.init({ selector: 'textarea' });
+</script>
 {% endblock %}

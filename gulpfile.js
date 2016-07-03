@@ -7,11 +7,7 @@ var path = {
     sass: ['./landing/**/*.scss'],
     js: ['./landing/**/*.js'],
     static: ['./landing/**/static/dist/**/*.*'],
-    assets: [
-        './bower_components/**/dist/*.*',
-        './bower_components/**/lib/*.*',
-        './bower_components/*/*.*'
-    ],
+    assets: ['./bower_components/**/*.*'],
     dest: './dist'
 };
 

@@ -7,7 +7,7 @@
     <div class="small-12 columns splash-text">
         <h1 class="splash-title">{{ block.title }}</h1>
         {% if block.description %}
-        <h3 class="splash-description">{{ block.description }}</h3>
+        <h3 class="splash-description">{{ block.description | safe }}</h3>
         {% endif %}
     </div>
 </header>

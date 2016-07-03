@@ -1,7 +1,7 @@
 ﻿/// <reference path="_references.js" />
-(function (container) {
-    container.Models = {};
-    container.Views = {};
+(function () {
+    window.Models = {};
+    window.Views = {};
 
     var app = new Mn.Application({
         initialize: function () {
@@ -39,5 +39,5 @@
         return app.blockFields[blockType];
     });
 
-    container.App = app;
-})(window);
+    window.App = app;
+})();

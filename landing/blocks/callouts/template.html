@@ -4,7 +4,7 @@
     <div class="small-12 medium-4 {{ callout.advanced_classes }} callout {% if loop.last %}end{% endif %} columns">
         {% if callout.image %}<img src="{{ callout.image }}" />{% endif %}
         <h3>{{ callout.title }}</h3>
-        <p>{{ callout.description }}</p>
+        <p>{{ callout.description | safe }}</p>
     </div>
     {% endfor %}
 </div>

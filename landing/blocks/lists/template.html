@@ -3,7 +3,7 @@
     {% for list_item in block.lists %}
     <div class="small-12 medium-3 {{ list_item.advanced_classes }} {% if loop.last %}end{% endif %} columns">
         <h3>{{ loop.index }}. {{ list_item.title }}</h3>
-        <p>{{ list_item.description }}</p>
+        <p>{{ list_item.description | safe }}</p>
     </div>
     {% endfor %}
 </div>

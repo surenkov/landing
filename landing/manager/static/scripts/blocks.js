@@ -62,6 +62,7 @@
             this._extendElemWithCid('id');
             this._extendElemWithCid('for');
             this.fillView();
+            this.renderEditors();
         },
         fillView: function() {
             var model = this.model;
@@ -78,6 +79,11 @@
                 }
             }, this);
         },
+        prepareFormBeforeSave: function () {
+            if (this.mceEditors) {
+                _.each(this.mceEditors, function (ed) { ed.save(); });
+            }
+        },
         save: function (values, options) {
             var options = options || {};
             _.extend(options, { wait: true });
@@ -89,6 +95,28 @@
         invalidateFields: function (model, response) {
             var errors = this._parseErrorResponse(response.responseJSON);
             _.each(errors, this._invalidateElement, this);
+        },
+        renderEditors: function () {
+            _.defer(_.bind(this._renderEditorsInternal, this));
+        },
+        _renderEditorsInternal: function() {
+            var editors = this.$('textarea')
+                .filter(function () { return !!$(this).attr('id'); })
+                .map(function () {
+                    var editorId = '#' + this.id;
+                    return tinymce.EditorManager.get(editorId) 
+                        || new tinymce.Editor(this.id, {
+                        selector: editorId,
+                        menubar: false,
+                        plugins: 'image',
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | image numlist'
+                    }, tinymce.EditorManager);
+                })
+                .get();
+            _.each(editors, function (ed) {
+                ed.render();
+            });
+            this.mceEditors = editors;
         },
         _parseErrorResponse: function (errors) {
             var res = {};
@@ -169,11 +197,12 @@
                 this.getRegion('head').show(new HeadNameView({ model: this.model }));
             }
             var internalView = Views.getView(this.model.get('_cls'));
-            this.internalView = new internalView({ model: this.model });
+            this.internalView = new internalView({ model: this.model, parent: this });
             this.showChildView('container', this.internalView);
         },
         save: function (e) {
             e.preventDefault();
+            this.internalView.prepareFormBeforeSave();
             var values = {};
             _.each(this.$('form').serializeArray(), function (input) {
                 values[input.name] = input.value;

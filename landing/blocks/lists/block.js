@@ -68,6 +68,7 @@ var Views = Views || {};
         },
         initialize: function () {
             this.lists = new Backbone.Collection(this.model.get('lists'));
+            this.listenTo(this.lists, 'update', this.renderEditors);
         },
         render: function () {
             Views.BlockItem.prototype.render.call(this);
