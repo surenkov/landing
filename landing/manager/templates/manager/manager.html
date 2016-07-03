@@ -85,9 +85,16 @@
     <td><button class="tiny alert delete button" title="Удалить"><i class="fi-x"></i></button></td>
 </script>
 
+<script id="notification-template" type="text/template">
+    <p><%= message %></p>
+    <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+    </button>
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/media.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/blocks.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>
 {{ assets.js(blocks, context='manager') }}
 {% endblock scripts %}

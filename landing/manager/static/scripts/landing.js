@@ -1,8 +1,29 @@
 ﻿/// <reference path="_references.js" />
 (function (container) {
+    container.Models = {};
+    container.Views = {};
+
     var app = new Mn.Application({
         initialize: function () {
-            this.blocks = new Models.BlockCollection();
+            this.$notificationsSection = $('<section />')
+                .attr('id', 'global-notifictations')
+                .appendTo(document.body);
+            this.notificationTemplate = _.template($('#notification-template').html());
+        },
+        notify: function (status, message, delay) {
+            var delay = delay || 4000;
+            var nBlock = $('<div />')
+                .addClass([status, 'notification', 'callout'].join(' '))
+                .attr('data-closable', '')
+                .html(this.notificationTemplate({ message: message }))
+                .appendTo(this.$notificationsSection)
+                .fadeIn();
+            var hTimer = setTimeout(function () {
+                nBlock.fadeOut(function () { nBlock.remove(); });
+            }, delay);
+            nBlock.one('closed.zf.callout', function () {
+                clearInterval(hTimer);
+            });
         }
     });
 

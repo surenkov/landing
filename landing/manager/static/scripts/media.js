@@ -104,7 +104,7 @@
         }
     });
 
-    window.MediaManager = function () {
+    window.App.MediaManager = function () {
         var view = new MediaView({
             collection: new MediaCollection()
         })
@@ -115,12 +115,12 @@
 
 (function () {
     $(document.body).on('click', '.media-manager', function (e) {
-        var manager = new MediaManager();
+        var manager = new App.MediaManager();
     }).on('click', '.media-open', function (e) {
         var $input = $(e.target).parents('.input-group')
                                 .first()
                                 .children(':text');
-        var manager = new MediaManager();
+        var manager = new App.MediaManager();
         manager.on('select', function (model) {
             $input.val(model.get('url'));
             manager.close();

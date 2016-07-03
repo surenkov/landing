@@ -44,6 +44,23 @@ body.login {
     }
 }
 
+#global-notifictations {
+    position: fixed;
+    top: rem-calc(60);
+    right: 10px;
+    width: 360px;
+    z-index: 1010;
+
+    .notification {
+        width: 310px;
+        position: relative;
+        margin: 0 auto rem-calc(16) auto;
+        display: none;
+
+        p { margin-bottom: 0; }
+    }
+}
+
 .files {
     .thumbnail {
         margin-bottom: 0;

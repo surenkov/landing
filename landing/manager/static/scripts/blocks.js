@@ -1,9 +1,6 @@
 ﻿/// <reference path="_references.js" />
 /// <reference path="loader.js" />
 /// <reference path="landing.js" />
-var Models = {};
-var Views = {};
-
 (function () {
     Models.Block = Backbone.Model.extend({});
 
@@ -11,8 +8,6 @@ var Views = {};
         model: Models.Block,
         url: '/manager/api/blocks/'
     });
-
-    window.Models = Models;
 })();
 
 (function () {
@@ -153,7 +148,8 @@ var Views = {};
             'submit @ui.form': '_preventFormSubmission'
         },
         modelEvents: {
-            'sync': 'render',
+            'sync': 'onSuccessSync',
+            'error': 'onErrorSync',
             'change:_cls': 'render'
         },
         regions: {
@@ -189,6 +185,17 @@ var Views = {};
             this.internalView.delete();
             this.destroy();
         },
+        onSuccessSync: function () {
+            App.notify('success', 'Блок успешно сохранен.');
+            this.render();
+        },
+        onErrorSync: function (model, response) {
+            var message = {
+                400: ': введены некорректные данные',
+                404: ': блок не существует или был удалён'
+            }[response.status] || '';
+            App.notify('alert', 'Произошла ошибка при сохранении' + message + '.')
+        },
         _typeChanged: function (newCls) {
             this.model.set({ '_cls': newCls });
         },
@@ -212,6 +219,4 @@ var Views = {};
             this.collection.add(_(App.blockTypes).first());
         }
     });
-
-    window.Views = Views;
 })();

@@ -3,7 +3,7 @@
 
 (function() {
     App.on('start', function (allBlocks) {
-        var blocks = this.blocks;
+        var blocks = this.blocks = new Models.BlockCollection();
         var keys = _.keys(allBlocks);
         blocks.fetch().then(function () {
             var view = new Views.BlockCollectionView({
