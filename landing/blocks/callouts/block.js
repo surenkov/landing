@@ -23,7 +23,14 @@ var Views = Views || {};
                 '<tr>' +
                     '<td>Изображение</td>' +
                     '<td>' +
-                        '<input type="text" name="callouts-<%= idx %>-image" />' +
+                        '<div class="input-group">' +
+                            '<input class="input-group-field" placeholder="/media/image.png" name="callouts-<%= idx %>-image" type="text">' +
+                            '<div class="input-group-button">' +
+                                '<button type="button" class="media-open secondary button" title="Выбрать файл">' +
+                                    '<i class="fi-photo"></i>' +
+                                '</button>' +
+                            '</div>' +
+                        '</div>' +
                     '</td>' +
                 '</tr>' +
             '</table>' +
@@ -50,6 +57,7 @@ var Views = Views || {};
             this.$('[name=callouts-' + modelIdx + '-title]').val(this.model.get('title'));
             this.$('[name=callouts-' + modelIdx + '-description]').val(this.model.get('description'));
             this.$('[name=callouts-' + modelIdx + '-advanced_classes]').val(this.model.get('advanced_classes'));
+            this.$('[name=callouts-' + modelIdx + '-image]').val(this.model.get('image'));
         },
         delete: function (e) {
             e.preventDefault();

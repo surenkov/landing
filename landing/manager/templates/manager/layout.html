@@ -7,17 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/foundation-icon-fonts/foundation-icons.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/motion-ui/dist/motion-ui.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='manager/static/styles/app.css') }}" />
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/foundation-sites/dist/foundation.js') }}"></script>
     {% block styles %}{% endblock %}
 </head>
 <body class="{{ body_class }}">
     {% block menu %}{% endblock %}
     {% block body %}{% endblock %}
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='dist/foundation-sites/dist/foundation.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/motion-ui/dist/motion-ui.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/underscore/underscore.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone/backbone.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone.marionette/lib/backbone.marionette.js') }}"></script>
     <script type="text/javascript">
         $(document).foundation();
     </script>
