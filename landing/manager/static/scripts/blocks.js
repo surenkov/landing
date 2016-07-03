@@ -79,7 +79,15 @@
                 }
             }, this);
         },
-        prepareFormBeforeSave: function () {
+        onBeforeSave: function () {
+            var fArray = App.request('fields', this.model.get('_cls'));
+            var fields = _.object(fArray, _.times(fArray.length, _.noop));
+            var keys = this.model.keys();
+            for (var i = 0; i < keys.length; i++) {
+                if (!(keys[i] in fields))
+                    this.model.unset(keys[i], { silent: true });
+            }
+
             if (this.mceEditors) {
                 _.each(this.mceEditors, function (ed) { ed.save(); });
             }
@@ -202,7 +210,7 @@
         },
         save: function (e) {
             e.preventDefault();
-            this.internalView.prepareFormBeforeSave();
+            this.internalView.onBeforeSave();
             var values = {};
             _.each(this.$('form').serializeArray(), function (input) {
                 values[input.name] = input.value;

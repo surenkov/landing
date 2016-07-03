@@ -134,15 +134,22 @@ def all_available_blocks():
             } for b in instances }
     return jsonify(blocks)
 
+
 def _collect_fields_from_form(form):
-    fields = []
-    for field in form:
-        if isinstance(field, HiddenField):
-            continue
-        elif isinstance(field, FormField):
-            fields.extend(_collect_fields_from_form(field.form))
-        else:
-            fields.append(field.name)
+
+    def _collect_fields_from_form_internal(form):
+        fields = []
+        for field in form:
+            if isinstance(field, HiddenField):
+                continue
+            elif isinstance(field, FormField):
+                fields.extend(_collect_fields_from_form(field.form))
+            else:
+                fields.append(field.name)
+        return fields
+
+    fields = _collect_fields_from_form_internal(form)
+    fields.extend(['_cls', 'id'])
     return fields
 
             
