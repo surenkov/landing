@@ -13,7 +13,7 @@ var Views = Views || {};
                 '</tr>' +
                 '<tr>' +
                     '<td>Описание</td>' +
-                    '<td><textarea name="lists-<%= idx %>-description"></textarea></td>' +
+                    '<td><textarea id="<%= id %>-lists-<%= idx %>-description" name="lists-<%= idx %>-description"></textarea></td>' +
                 '</tr>' +
                 '<tr>' +
                     '<td>Доп. классы:</td>' +

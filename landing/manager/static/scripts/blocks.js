@@ -108,23 +108,18 @@
             _.defer(_.bind(this._renderEditorsInternal, this));
         },
         _renderEditorsInternal: function() {
-            var editors = this.$('textarea')
+            this.mceEditors = this.$('textarea')
                 .filter(function () { return !!$(this).attr('id'); })
                 .map(function () {
-                    var editorId = '#' + this.id;
-                    return tinymce.EditorManager.get(editorId) 
-                        || new tinymce.Editor(this.id, {
-                        selector: editorId,
+                    return tinymce.EditorManager.createEditor(this.id, {
+                        selector: '#' + this.id,
                         menubar: false,
                         plugins: 'image',
                         toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | image numlist'
-                    }, tinymce.EditorManager);
+                    });
                 })
+                .each(function () { this.render(); })
                 .get();
-            _.each(editors, function (ed) {
-                ed.render();
-            });
-            this.mceEditors = editors;
         },
         _parseErrorResponse: function (errors) {
             var res = {};

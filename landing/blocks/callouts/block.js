@@ -14,7 +14,7 @@ var Views = Views || {};
                 '</tr>' +
                 '<tr>' +
                     '<td>Описание</td>' +
-                    '<td><textarea id="callouts-<%= idx %>-description" name="callouts-<%= idx %>-description"></textarea></td>' +
+                    '<td><textarea id="<%= id %>-callouts-<%= idx %>-description" name="callouts-<%= idx %>-description"></textarea></td>' +
                 '</tr>' +
                 '<tr>' +
                     '<td>Доп. классы:</td>' +
@@ -42,14 +42,13 @@ var Views = Views || {};
             'click .delete': 'delete'
         },
         initialize: function () {
-            var modelIdx = this.model.collection.indexOf(this.model);
-            var modelId = this.model.id;
+            var self = this;
             this.template = function () {
                 return calloutTemplate({
-                    idx: modelIdx,
-                    id: modelId
+                    idx: self.model.collection.indexOf(self.model),
+                    id: self.cid
                 });
-            }
+            };
         },
         render: function () {
             Mn.ItemView.prototype.render.call(this);
