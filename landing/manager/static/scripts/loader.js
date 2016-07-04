@@ -1,5 +1,7 @@
 ﻿/// <reference path="_references.js" />
 /// <reference path="media.js" />
+var Models = Models || {};
+var Views = Views || {};
 
 (function() {
     App.on('start', function (allBlocks) {

@@ -1,8 +1,8 @@
 ﻿/// <reference path="_references.js" />
-(function () {
-    window.Models = {};
-    window.Views = {};
+var Models = Models || {};
+var Views = Views || {};
 
+(function () {
     var app = new Mn.Application({
         initialize: function () {
             this.$notificationsSection = $('<section />')

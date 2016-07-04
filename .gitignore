@@ -2,7 +2,7 @@
 node_modules/
 bower_components/
 /env
-/dist
+/static
 __pycache__
 /ptvs_virtualenv_proxy.py
 /bin

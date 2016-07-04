@@ -6,7 +6,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic&subset=latin,cyrillic">
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/foundation-icon-fonts/foundation-icons.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='static/styles/landing.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/static/styles/landing.css') }}" />
     {{ assets.css(all_blocks) }}
 </head>
 <body>
@@ -18,11 +18,10 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/foundation-sites/dist/foundation.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/landing/bundle.min.js') }}"
     <script type="text/javascript">
         $(document).foundation();
     </script>
-
-    {{ assets.js(all_blocks) }}
 </body>
 </html>
 

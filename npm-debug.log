@@ -1,0 +1,345 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Web\\External\\node.exe',
+1 verbose cli   'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Web\\External\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'bower' ]
+2 info using npm@3.3.4
+3 info using node@v5.4.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData bower
+8 silly fetchNamedPackageData bower
+9 silly mapToRegistry name bower
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry uri https://registry.npmjs.org/bower
+13 verbose request uri https://registry.npmjs.org/bower
+14 verbose request no auth needed
+15 info attempt registry request try #1 at 9:01:59 PM
+16 verbose request id 510229adb3e5398c
+17 verbose etag "CBZCJPKHNDKGNSOUM88FFCUWN"
+18 http request GET https://registry.npmjs.org/bower
+19 http 200 https://registry.npmjs.org/bower
+20 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+20 verbose headers   etag: '"DAFA6DH1DFZ44HGODT1YZ4KIH"',
+20 verbose headers   'content-type': 'application/json',
+20 verbose headers   'content-encoding': 'gzip',
+20 verbose headers   'cache-control': 'max-age=300',
+20 verbose headers   'content-length': '20490',
+20 verbose headers   'accept-ranges': 'bytes',
+20 verbose headers   date: 'Mon, 04 Jul 2016 11:02:00 GMT',
+20 verbose headers   via: '1.1 varnish',
+20 verbose headers   age: '256',
+20 verbose headers   connection: 'keep-alive',
+20 verbose headers   'x-served-by': 'cache-fra1234-FRA',
+20 verbose headers   'x-cache': 'HIT',
+20 verbose headers   'x-cache-hits': '8',
+20 verbose headers   'x-timer': 'S1467630120.159641,VS0,VE0',
+20 verbose headers   vary: 'Accept-Encoding' }
+21 silly get cb [ 200,
+21 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+21 silly get     etag: '"DAFA6DH1DFZ44HGODT1YZ4KIH"',
+21 silly get     'content-type': 'application/json',
+21 silly get     'content-encoding': 'gzip',
+21 silly get     'cache-control': 'max-age=300',
+21 silly get     'content-length': '20490',
+21 silly get     'accept-ranges': 'bytes',
+21 silly get     date: 'Mon, 04 Jul 2016 11:02:00 GMT',
+21 silly get     via: '1.1 varnish',
+21 silly get     age: '256',
+21 silly get     connection: 'keep-alive',
+21 silly get     'x-served-by': 'cache-fra1234-FRA',
+21 silly get     'x-cache': 'HIT',
+21 silly get     'x-cache-hits': '8',
+21 silly get     'x-timer': 'S1467630120.159641,VS0,VE0',
+21 silly get     vary: 'Accept-Encoding' } ]
+22 verbose get saving bower to C:\Users\savva\AppData\Roaming\npm-cache\registry.npmjs.org\bower\.cache.json
+23 silly install normalizeTree
+24 silly loadCurrentTree Finishing
+25 silly loadIdealTree Starting
+26 silly install loadIdealTree
+27 silly cloneCurrentTree Starting
+28 silly install cloneCurrentTreeToIdealTree
+29 silly cloneCurrentTree Finishing
+30 silly loadShrinkwrap Starting
+31 silly install loadShrinkwrap
+32 silly loadShrinkwrap Finishing
+33 silly loadAllDepsIntoIdealTree Starting
+34 silly install loadAllDepsIntoIdealTree
+35 silly resolveWithNewModule bower@1.7.9 checking installable status
+36 silly cache add args [ 'bower', null ]
+37 verbose cache add spec bower
+38 silly cache add parsed spec Result {
+38 silly cache add   raw: 'bower',
+38 silly cache add   scope: null,
+38 silly cache add   name: 'bower',
+38 silly cache add   rawSpec: '',
+38 silly cache add   spec: '*',
+38 silly cache add   type: 'range' }
+39 silly addNamed bower@*
+40 verbose addNamed "*" is a valid semver range for bower
+41 silly addNameRange { name: 'bower', range: '*', hasData: false }
+42 silly mapToRegistry name bower
+43 silly mapToRegistry using default registry
+44 silly mapToRegistry registry https://registry.npmjs.org/
+45 silly mapToRegistry uri https://registry.npmjs.org/bower
+46 verbose addNameRange registry:https://registry.npmjs.org/bower not in flight; fetching
+47 verbose get https://registry.npmjs.org/bower not expired, no request
+48 silly addNameRange number 2 { name: 'bower', range: '*', hasData: true }
+49 silly addNameRange versions [ 'bower',
+49 silly addNameRange   [ '0.1.0',
+49 silly addNameRange     '0.1.2',
+49 silly addNameRange     '0.1.3',
+49 silly addNameRange     '0.2.0',
+49 silly addNameRange     '0.3.0',
+49 silly addNameRange     '0.3.1',
+49 silly addNameRange     '0.3.2',
+49 silly addNameRange     '0.4.0',
+49 silly addNameRange     '0.5.0',
+49 silly addNameRange     '0.5.1',
+49 silly addNameRange     '0.6.0',
+49 silly addNameRange     '0.6.1',
+49 silly addNameRange     '0.6.2',
+49 silly addNameRange     '0.6.3',
+49 silly addNameRange     '0.6.4',
+49 silly addNameRange     '0.6.5',
+49 silly addNameRange     '0.6.6',
+49 silly addNameRange     '0.6.7',
+49 silly addNameRange     '0.6.8',
+49 silly addNameRange     '0.7.0',
+49 silly addNameRange     '0.7.1',
+49 silly addNameRange     '0.8.0',
+49 silly addNameRange     '0.8.1',
+49 silly addNameRange     '0.8.2',
+49 silly addNameRange     '0.8.3',
+49 silly addNameRange     '0.8.4',
+49 silly addNameRange     '0.8.5',
+49 silly addNameRange     '0.8.6',
+49 silly addNameRange     '0.9.0',
+49 silly addNameRange     '0.9.1',
+49 silly addNameRange     '0.9.2',
+49 silly addNameRange     '0.10.0',
+49 silly addNameRange     '1.0.0',
+49 silly addNameRange     '1.0.1',
+49 silly addNameRange     '1.0.2',
+49 silly addNameRange     '1.0.3',
+49 silly addNameRange     '1.1.0',
+49 silly addNameRange     '1.1.1',
+49 silly addNameRange     '1.1.2',
+49 silly addNameRange     '1.2.0',
+49 silly addNameRange     '1.2.1',
+49 silly addNameRange     '1.2.2',
+49 silly addNameRange     '1.2.3',
+49 silly addNameRange     '1.2.4',
+49 silly addNameRange     '1.2.5',
+49 silly addNameRange     '1.2.6',
+49 silly addNameRange     '1.2.7',
+49 silly addNameRange     '1.2.8',
+49 silly addNameRange     '1.3.0',
+49 silly addNameRange     '1.3.1',
+49 silly addNameRange     '1.3.2',
+49 silly addNameRange     '1.3.3',
+49 silly addNameRange     '1.3.4',
+49 silly addNameRange     '1.3.5',
+49 silly addNameRange     '1.3.6',
+49 silly addNameRange     '1.3.7',
+49 silly addNameRange     '1.3.8',
+49 silly addNameRange     '1.3.9',
+49 silly addNameRange     '1.3.10',
+49 silly addNameRange     '1.3.11',
+49 silly addNameRange     '1.3.12',
+49 silly addNameRange     '1.4.0',
+49 silly addNameRange     '1.4.1',
+49 silly addNameRange     '1.5.0',
+49 silly addNameRange     '1.5.1',
+49 silly addNameRange     '1.5.2',
+49 silly addNameRange     '1.5.3',
+49 silly addNameRange     '1.6.2',
+49 silly addNameRange     '1.6.3',
+49 silly addNameRange     '1.6.4',
+49 silly addNameRange     '1.6.5',
+49 silly addNameRange     '1.5.4',
+49 silly addNameRange     '1.4.2',
+49 silly addNameRange     '1.6.6',
+49 silly addNameRange     '1.6.7',
+49 silly addNameRange     '1.6.8',
+49 silly addNameRange     '1.6.9',
+49 silly addNameRange     '1.7.0',
+49 silly addNameRange     '1.7.1',
+49 silly addNameRange     '1.7.2',
+49 silly addNameRange     '1.7.5',
+49 silly addNameRange     '1.7.6',
+49 silly addNameRange     '1.7.7',
+49 silly addNameRange     '1.7.8',
+49 silly addNameRange     '1.7.9' ] ]
+50 silly addNamed bower@1.7.9
+51 verbose addNamed "1.7.9" is a plain semver version for bower
+52 silly cache afterAdd bower@1.7.9
+53 verbose afterAdd C:\Users\savva\AppData\Roaming\npm-cache\bower\1.7.9\package\package.json not in flight; writing
+54 verbose afterAdd C:\Users\savva\AppData\Roaming\npm-cache\bower\1.7.9\package\package.json written
+55 silly loadAllDepsIntoIdealTree Finishing
+56 silly idealTree:prePrune C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External
+56 silly idealTree:prePrune └── bower@1.7.9
+57 silly loadIdealTree Finishing
+58 silly currentTree C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External
+58 silly currentTree └─┬ bower@1.7.2
+58 silly currentTree   ├── ansi-escapes@1.1.0
+58 silly currentTree   ├── ansi-regex@2.0.0
+58 silly currentTree   ├── ansi-styles@2.1.0
+58 silly currentTree   ├── balanced-match@0.3.0
+58 silly currentTree   ├── brace-expansion@1.1.2
+58 silly currentTree   ├── chalk@1.1.1
+58 silly currentTree   ├── cli-cursor@1.0.2
+58 silly currentTree   ├── cli-width@1.1.0
+58 silly currentTree   ├── code-point-at@1.0.0
+58 silly currentTree   ├── concat-map@0.0.1
+58 silly currentTree   ├── escape-string-regexp@1.0.4
+58 silly currentTree   ├── exit-hook@1.1.1
+58 silly currentTree   ├── figures@1.4.0
+58 silly currentTree   ├── glob@4.5.3
+58 silly currentTree   ├── graceful-fs@3.0.8
+58 silly currentTree   ├── has-ansi@2.0.0
+58 silly currentTree   ├── inflight@1.0.4
+58 silly currentTree   ├── inherits@2.0.1
+58 silly currentTree   ├── inquirer@0.10.0
+58 silly currentTree   ├── is-fullwidth-code-point@1.0.0
+58 silly currentTree   ├── lodash@3.10.1
+58 silly currentTree   ├── minimatch@2.0.10
+58 silly currentTree   ├── minimist@0.0.8
+58 silly currentTree   ├── mkdirp@0.5.0
+58 silly currentTree   ├── mute-stream@0.0.5
+58 silly currentTree   ├── nopt@3.0.6
+58 silly currentTree   ├── number-is-nan@1.0.0
+58 silly currentTree   ├── once@1.3.3
+58 silly currentTree   ├── onetime@1.1.0
+58 silly currentTree   ├── readline2@1.0.1
+58 silly currentTree   ├── restore-cursor@1.0.1
+58 silly currentTree   ├── run-async@0.1.0
+58 silly currentTree   ├── rx-lite@3.1.2
+58 silly currentTree   ├── strip-ansi@3.0.0
+58 silly currentTree   ├── supports-color@2.0.0
+58 silly currentTree   ├── through@2.3.8
+58 silly currentTree   └── wrappy@1.0.1
+59 silly idealTree C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External
+59 silly idealTree └── bower@1.7.9
+60 silly generateActionsToTake Starting
+61 silly install generateActionsToTake
+62 silly generateActionsToTake Finishing
+63 silly diffTrees action count 38
+64 silly diffTrees remove ansi-escapes@1.1.0
+65 silly diffTrees remove ansi-regex@2.0.0
+66 silly diffTrees remove ansi-styles@2.1.0
+67 silly diffTrees remove balanced-match@0.3.0
+68 silly diffTrees remove cli-width@1.1.0
+69 silly diffTrees remove concat-map@0.0.1
+70 silly diffTrees remove brace-expansion@1.1.2
+71 silly diffTrees remove escape-string-regexp@1.0.4
+72 silly diffTrees remove exit-hook@1.1.1
+73 silly diffTrees remove figures@1.4.0
+74 silly diffTrees remove graceful-fs@3.0.8
+75 silly diffTrees remove has-ansi@2.0.0
+76 silly diffTrees remove inherits@2.0.1
+77 silly diffTrees remove lodash@3.10.1
+78 silly diffTrees remove minimatch@2.0.10
+79 silly diffTrees remove minimist@0.0.8
+80 silly diffTrees remove mkdirp@0.5.0
+81 silly diffTrees remove mute-stream@0.0.5
+82 silly diffTrees remove nopt@3.0.6
+83 silly diffTrees remove number-is-nan@1.0.0
+84 silly diffTrees remove is-fullwidth-code-point@1.0.0
+85 silly diffTrees remove code-point-at@1.0.0
+86 silly diffTrees remove onetime@1.1.0
+87 silly diffTrees remove readline2@1.0.1
+88 silly diffTrees remove restore-cursor@1.0.1
+89 silly diffTrees remove cli-cursor@1.0.2
+90 silly diffTrees remove rx-lite@3.1.2
+91 silly diffTrees remove strip-ansi@3.0.0
+92 silly diffTrees remove supports-color@2.0.0
+93 silly diffTrees remove chalk@1.1.1
+94 silly diffTrees remove through@2.3.8
+95 silly diffTrees remove wrappy@1.0.1
+96 silly diffTrees remove once@1.3.3
+97 silly diffTrees remove run-async@0.1.0
+98 silly diffTrees remove inquirer@0.10.0
+99 silly diffTrees remove inflight@1.0.4
+100 silly diffTrees remove glob@4.5.3
+101 silly diffTrees update bower@1.7.9
+102 silly decomposeActions action count 45
+103 silly decomposeActions remove ansi-escapes@1.1.0
+104 silly decomposeActions remove ansi-regex@2.0.0
+105 silly decomposeActions remove ansi-styles@2.1.0
+106 silly decomposeActions remove balanced-match@0.3.0
+107 silly decomposeActions remove cli-width@1.1.0
+108 silly decomposeActions remove concat-map@0.0.1
+109 silly decomposeActions remove brace-expansion@1.1.2
+110 silly decomposeActions remove escape-string-regexp@1.0.4
+111 silly decomposeActions remove exit-hook@1.1.1
+112 silly decomposeActions remove figures@1.4.0
+113 silly decomposeActions remove graceful-fs@3.0.8
+114 silly decomposeActions remove has-ansi@2.0.0
+115 silly decomposeActions remove inherits@2.0.1
+116 silly decomposeActions remove lodash@3.10.1
+117 silly decomposeActions remove minimatch@2.0.10
+118 silly decomposeActions remove minimist@0.0.8
+119 silly decomposeActions remove mkdirp@0.5.0
+120 silly decomposeActions remove mute-stream@0.0.5
+121 silly decomposeActions remove nopt@3.0.6
+122 silly decomposeActions remove number-is-nan@1.0.0
+123 silly decomposeActions remove is-fullwidth-code-point@1.0.0
+124 silly decomposeActions remove code-point-at@1.0.0
+125 silly decomposeActions remove onetime@1.1.0
+126 silly decomposeActions remove readline2@1.0.1
+127 silly decomposeActions remove restore-cursor@1.0.1
+128 silly decomposeActions remove cli-cursor@1.0.2
+129 silly decomposeActions remove rx-lite@3.1.2
+130 silly decomposeActions remove strip-ansi@3.0.0
+131 silly decomposeActions remove supports-color@2.0.0
+132 silly decomposeActions remove chalk@1.1.1
+133 silly decomposeActions remove through@2.3.8
+134 silly decomposeActions remove wrappy@1.0.1
+135 silly decomposeActions remove once@1.3.3
+136 silly decomposeActions remove run-async@0.1.0
+137 silly decomposeActions remove inquirer@0.10.0
+138 silly decomposeActions remove inflight@1.0.4
+139 silly decomposeActions remove glob@4.5.3
+140 silly decomposeActions fetch bower@1.7.9
+141 silly decomposeActions extract bower@1.7.9
+142 silly decomposeActions preinstall bower@1.7.9
+143 silly decomposeActions build bower@1.7.9
+144 silly decomposeActions install bower@1.7.9
+145 silly decomposeActions postinstall bower@1.7.9
+146 silly decomposeActions test bower@1.7.9
+147 silly decomposeActions finalize bower@1.7.9
+148 silly executeActions Starting
+149 silly install executeActions
+150 silly doSerial global-install 0
+151 silly doParallel fetch 1
+152 verbose lock using C:\Users\savva\AppData\Roaming\npm-cache\_locks\staging-0bc0cc0cf6e45fe4.lock for C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging
+153 verbose unlock done using C:\Users\savva\AppData\Roaming\npm-cache\_locks\staging-0bc0cc0cf6e45fe4.lock for C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging
+154 silly rollbackFailedOptional Starting
+155 silly rollbackFailedOptional Finishing
+156 silly runTopLevelLifecycles Starting
+157 silly runTopLevelLifecycles Finishing
+158 silly install printInstalled
+159 verbose stack Error: EPERM: operation not permitted, mkdir 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging'
+159 verbose stack     at Error (native)
+160 verbose cwd C:\Users\savva\Desktop\landing
+161 error Windows_NT 10.0.14372
+162 error argv "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Web\\External\\node.exe" "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Web\\External\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "bower"
+163 error node v5.4.1
+164 error npm  v3.3.4
+165 error path C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging
+166 error code EPERM
+167 error errno -4048
+168 error syscall mkdir
+169 error Error: EPERM: operation not permitted, mkdir 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging'
+169 error     at Error (native)
+169 error  { [Error: EPERM: operation not permitted, mkdir 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Web\External\node_modules\.staging']
+169 error   errno: -4048,
+169 error   code: 'EPERM',
+169 error   syscall: 'mkdir',
+169 error   path: 'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Web\\External\\node_modules\\.staging' }
+170 error Please try running this command again as root/Administrator.
+171 verbose exit [ -4048, true ]

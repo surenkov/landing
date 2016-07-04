@@ -1,6 +1,9 @@
 ﻿/// <reference path="_references.js" />
 /// <reference path="loader.js" />
 /// <reference path="landing.js" />
+var Models = Models || {};
+var Views = Views || {};
+
 (function () {
     Models.Block = Backbone.Model.extend({});
 
@@ -62,7 +65,7 @@
             this._extendElemWithCid('id');
             this._extendElemWithCid('for');
             this.fillView();
-            this.renderEditors();
+            _.defer(_.bind(this.renderEditors, this));
         },
         fillView: function() {
             var model = this.model;
@@ -87,10 +90,6 @@
                 if (!(keys[i] in fields))
                     this.model.unset(keys[i], { silent: true });
             }
-
-            if (this.mceEditors) {
-                _.each(this.mceEditors, function (ed) { ed.save(); });
-            }
         },
         save: function (values, options) {
             var options = options || {};
@@ -105,21 +104,21 @@
             _.each(errors, this._invalidateElement, this);
         },
         renderEditors: function () {
-            _.defer(_.bind(this._renderEditorsInternal, this));
-        },
-        _renderEditorsInternal: function() {
-            this.mceEditors = this.$('textarea')
-                .filter(function () { return !!$(this).attr('id'); })
-                .map(function () {
-                    return tinymce.EditorManager.createEditor(this.id, {
-                        selector: '#' + this.id,
-                        menubar: false,
-                        plugins: 'image',
-                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | image numlist'
-                    });
-                })
-                .each(function () { this.render(); })
-                .get();
+            this.$('textarea[id]').trumbowyg({
+                btns: [
+                    ['formatting'],
+                    ['bold', 'italic'],
+                    ['link'],
+                    ['insertImage'],
+                    'btnGrp-justify',
+                    'btnGrp-lists',
+                    ['fullscreen']
+                ],
+                mobile: true,
+                fixedFullWidth: true,
+                semantic: true,
+                autogrow: true
+            });
         },
         _parseErrorResponse: function (errors) {
             var res = {};
@@ -156,10 +155,10 @@
             });
         },
         _extendElemWithCid: function (attr) {
-            var model = this.model;
+            var cid = this.cid;
             this.$('[' + attr + ']').each(function () {
-                var self = $(this);
-                self.attr(attr, model.cid + '-' + self.attr(attr));
+                var $el = $(this);
+                $el.attr(attr, cid + '-' + $el.attr(attr));
             });
         }
     });

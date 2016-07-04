@@ -12,7 +12,7 @@
     "foundation-icon-fonts": "*",
     "backbone.marionette": "marionette#^2.4.7",
     "jquery.iframe-transport": "^1.0.0",
-    "tinymce": "tinymce-dist#4.4.0"
+    "trumbowyg": "~2.1.0"
   },
   "ignore": [
     "**/.*",

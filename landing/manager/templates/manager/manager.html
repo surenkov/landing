@@ -92,17 +92,12 @@
     </button>
 </script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='dist/tinymce/tinymce.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='dist/tinymce/jquery.tinymce.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.iframe-transport/jquery.iframe-transport.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/underscore/underscore.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone/backbone.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone.marionette/lib/backbone.marionette.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/landing.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/media.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/blocks.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='manager/static/scripts/loader.js') }}"></script>
-{{ assets.js(blocks, context='manager') }}
+<script type="text/javascript" src="{{ url_for('static', filename='dist/trumbowyg/dist/trumbowyg.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/manager/bundle.min.js') }}"></script>
 {% endblock scripts %}
 
 
