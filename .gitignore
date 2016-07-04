@@ -16,4 +16,5 @@ __pycache__
 *.pyperf
 /WebEssentials2015-Settings.json
 _references.js
+npm-debug.log
 /landing.sln.DotSettings.user
