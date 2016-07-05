@@ -1,9 +1,11 @@
 {% block formdata %}
 {{ form.hidden_tag() }}
+<table>
 {% for field in form if field.widget.input_type != 'hidden' %}
-<div class="row">
-    <div class="small-4 columns">{{ field.label }}</div>
-    <div class="small-8 end columns">{{ field(placeholder=field.description) }}</div>
-</div>
+    <tr>
+        <td>{{ field.label }}</td>
+        <td>{{ field(placeholder=field.description) }}</td>
+    </tr>
 {% endfor %}
+</table>
 {% endblock %}

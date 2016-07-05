@@ -44,11 +44,14 @@
 
 <script id="block-wrapper" type="text/template">
     <form>
-        <div class="block-head"></div>
+        <h3 class="block-head">
+            <small class="head-count"></small>
+            <span class="head-control"></span>
+        </h3>
         <div class="block-container"></div>
         <div class="clearfix">
             <div class="button-group float-right">
-                <button class="save button" title="Сохранить блок"><i class="fi-save">&nbsp;Сохранить</i></button>
+                <button class="save button" title="Сохранить блок"><i class="fi-save">&nbsp;</i>Сохранить</button>
                 <button class="delete alert button" title="Удалить блок"><i class="fi-x"></i></button>
             </div>
         </div>
@@ -97,6 +100,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone/backbone.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/backbone.marionette/lib/backbone.marionette.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='dist/trumbowyg/dist/trumbowyg.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dist/trumbowyg/dist/langs/ru.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/manager/bundle.min.js') }}"></script>
 {% endblock scripts %}
 

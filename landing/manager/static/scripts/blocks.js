@@ -104,16 +104,16 @@ var Views = Views || {};
             _.each(errors, this._invalidateElement, this);
         },
         renderEditors: function () {
-            this.$('textarea[id]').trumbowyg({
+            this.$('textarea').trumbowyg({
                 btns: [
                     ['formatting'],
                     ['bold', 'italic'],
-                    ['link'],
-                    ['insertImage'],
+                    ['link', 'insertImage'],
                     'btnGrp-justify',
                     'btnGrp-lists',
                     ['fullscreen']
                 ],
+                lang: 'ru',
                 mobile: true,
                 fixedFullWidth: true,
                 semantic: true,
@@ -170,7 +170,8 @@ var Views = Views || {};
             deleteButton: '.button.delete',
             form: 'form',
             container: '.block-container',
-            head: '.block-head'
+            headCount: '.block-head .head-count',
+            headControl: '.block-head .head-control'
         },
         events: {
             'click @ui.deleteButton': 'delete',
@@ -184,7 +185,7 @@ var Views = Views || {};
         },
         regions: {
             container: '@ui.container',
-            head: '@ui.head'
+            headControl: '@ui.headControl'
         },
         template: '#block-wrapper',
         onRender: function () {
@@ -193,11 +194,13 @@ var Views = Views || {};
                     collection: new Backbone.Collection(App.blockTypes)
                 });
                 this.listenToOnce(select, 'change', this._typeChanged);
-                this.showChildView('head', select);
+                this.showChildView('headControl', select);
                 select.$el.val(this.model.get('_cls'));
             } else {
-                this.getRegion('head').show(new HeadNameView({ model: this.model }));
+                this.getRegion('headControl').show(new HeadNameView({ model: this.model }));
             }
+
+            this.ui.headCount.text('#' + (this.model.collection.indexOf(this.model) + 1));
             var internalView = Views.getView(this.model.get('_cls'));
             this.internalView = new internalView({ model: this.model, parent: this });
             this.showChildView('container', this.internalView);
@@ -206,7 +209,7 @@ var Views = Views || {};
             e.preventDefault();
             this.internalView.onBeforeSave();
             var values = {};
-            _.each(this.$('form').serializeArray(), function (input) {
+            _.each(this.ui.form.serializeArray(), function (input) {
                 values[input.name] = input.value;
             });
             this.internalView.save(values);

@@ -76,6 +76,22 @@ body.login {
 }
 
 .blocks {
+    .block-head {
+        * {
+            display: inline-block;
+        }
+
+        .head-count {
+            width: 10%;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .head-control {
+            width: 88%;
+        }
+    }
+
     .button-group {
         margin-bottom: 0;
     }
