@@ -1,4 +1,4 @@
-/// <binding Clean='clean' ProjectOpened='run' />
+/// <binding Clean='clean' />
 var gulp = require('gulp');
 var del = require('del');
 var $ = require('gulp-load-plugins')();
@@ -35,11 +35,15 @@ gulp.task('js:manager', bundleJs(path.managerJs, path.dest + '/js/manager'));
 
 gulp.task('sass', function () {
     return gulp.src(path.sass)
-        .pipe($.sourcemaps.init())
-        .pipe($.sass({ includePaths: sassIncludes })
+        // Sass
+        .pipe($.sass({ includePaths: sassIncludes, sourcemap: true })
             .on('error', $.sass.logError))
-        .pipe($.autoprefixer({ browsers: ['last 2 versions', 'ie >= 9'] }))
         .pipe($.sourcemaps.write())
+        .pipe(gulp.dest(path.dest + '/css'))
+        // Autoprefix
+        .pipe($.sourcemaps.init({ loadMaps: true }))
+        .pipe($.autoprefixer('last 2 version', 'ie >= 9'))
+        .pipe($.sourcemaps.write('maps'))
         .pipe(gulp.dest(path.dest + '/css'));
 });
 
