@@ -44,13 +44,3 @@ class DescriptionBlockMixin:
     """Mixin for blocks with description.
     """
     description = db.StringField()
-
-
-class MenuFormMixin:
-    menu_title = StringField('Заголовок меню', validators=[DataRequired()],
-                             description='Заголовок меню')
-
-class MenuItemMixin:
-    """Mixin for blocks, shown in menu.
-    """
-    menu_title = db.StringField()

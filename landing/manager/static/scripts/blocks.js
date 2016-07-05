@@ -188,6 +188,9 @@ var Views = Views || {};
             headControl: '@ui.headControl'
         },
         template: '#block-wrapper',
+        initialize: function () {
+            this.listenTo(App.blocks, 'update', this.renderCount);
+        },
         onRender: function () {
             if (this.model.isNew()) {
                 var select = new BlockTypeSelect({
@@ -200,10 +203,13 @@ var Views = Views || {};
                 this.getRegion('headControl').show(new HeadNameView({ model: this.model }));
             }
 
-            this.ui.headCount.text('#' + (this.model.collection.indexOf(this.model) + 1));
+            this.renderCount();
             var internalView = Views.getView(this.model.get('_cls'));
             this.internalView = new internalView({ model: this.model, parent: this });
             this.showChildView('container', this.internalView);
+        },
+        renderCount: function () {
+            this.ui.headCount.text('#' + (this.model.collection.indexOf(this.model) + 1));
         },
         save: function (e) {
             e.preventDefault();

@@ -1,0 +1,20 @@
+{% extends 'manager/partial/block.html' %}
+
+{% block formdata %}
+<div>
+    <table>
+        {% for field in form if (field.widget.input_type != 'hidden') and (field.name != 'menu_items') %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field(placeholder=field.description) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <table class="menu-items"></table>
+    <div class="clearfix">
+        <div class="button-group float-left">
+            <button class="add-item button"><i class="fi-plus"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

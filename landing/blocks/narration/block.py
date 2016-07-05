@@ -5,14 +5,12 @@ from landing.fields import StringField
 from landing.mixins import *
 
 
-class NarrationForm(Form, TitleFormMixin,
-                    DescriptionFormMixin, MenuFormMixin):
+class NarrationForm(Form, TitleFormMixin, DescriptionFormMixin):
     font_family = StringField('Шрифт', 
                               description='Helvetica, Arial, sans-serif')
 
 
-class NarrationBlock(Block, TitleBlockMixin,
-                     DescriptionBlockMixin, MenuItemMixin):
+class NarrationBlock(Block, TitleBlockMixin, DescriptionBlockMixin):
     font_family = db.StringField()
 
     class Meta:

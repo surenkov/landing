@@ -14,18 +14,15 @@ class ListItem(Block, TitleBlockMixin, DescriptionBlockMixin):
     pass
 
 
-class ListsForm(Form, TitleFormMixin, MenuFormMixin):
+class ListsForm(Form, TitleFormMixin):
     lists = TypedFieldList(ListItem, FormField(ListsForm))
 
 
-class ListsBlock(Block, TitleBlockMixin, MenuItemMixin):
+class ListsBlock(Block, TitleBlockMixin):
     lists = db.EmbeddedDocumentListField(ListItem)
     
     class Meta:
         verbose_name = 'Нумерованый список'
         manager_form = ListsForm
         manager_template = 'lists/manager_template.html'
-        manager_assets = {
-            'js': ['lists/block.js']
-        }
         template = 'lists/template.html'

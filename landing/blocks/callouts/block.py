@@ -11,23 +11,20 @@ class CalloutForm(Form, TitleFormMixin, DescriptionFormMixin):
 
 
 @unregister_block
-class Callout(Block, TitleBlockMixin, DescriptionBlockMixin):
+class Callout(db.EmbeddedDocument, TitleBlockMixin, DescriptionBlockMixin):
     advanced_classes = db.StringField()
     image = db.StringField()
 
 
-class CalloutsForm(Form, TitleFormMixin, MenuFormMixin):
+class CalloutsForm(Form, TitleFormMixin):
     callouts = TypedFieldList(Callout, FormField(CalloutForm))
 
 
-class CalloutsBlock(Block, TitleBlockMixin, MenuItemMixin):
+class CalloutsBlock(Block, TitleBlockMixin):
     callouts = db.EmbeddedDocumentListField(Callout)
     
     class Meta:
         verbose_name = 'Коллаут-блоки'
         manager_form = CalloutsForm
         manager_template = 'callouts/manager_template.html'
-        manager_assets = {
-            'js': ['callouts/block.js']
-        }
         template = 'callouts/template.html'

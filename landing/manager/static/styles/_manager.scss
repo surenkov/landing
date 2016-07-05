@@ -92,6 +92,24 @@ body.login {
         }
     }
 
+    .menu-items {
+        * {
+            margin-bottom: 10px;
+        }
+
+        input [type=text] {
+            margin-right: 5px;
+        }
+
+        select {
+            margin-left: 5px;
+        }
+
+        button {
+            float: right;
+        }
+    }
+
     .button-group {
         margin-bottom: 0;
     }
