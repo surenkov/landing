@@ -4,7 +4,7 @@ var Views = Views || {};
         '<div class="small-12 callout columns">' +
             '<div class="clearfix">' +
                 '<strong class="float-left">Элемент списка <%= idx + 1 %></strong>' +
-                '<a class="tiny alert delete float-right button" href="#"><i class="fi-x"></i></a>' +
+                '<a class="tiny alert delete float-right button"><i class="fi-x"></i></a>' +
             '</div>' +
             '<table>' +
                 '<tr>' +
@@ -57,7 +57,7 @@ var Views = Views || {};
 
     var ListWrapperView = Views.BlockItem.extend({
         ui: {
-            addButton: '.add-callout',
+            addButton: '.add-list-item',
             listsContainer: '.lists-container'
         },
         regions: {

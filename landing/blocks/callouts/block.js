@@ -5,7 +5,7 @@ var Views = Views || {};
         '<div class="small-12 callout columns">' +
             '<div class="clearfix">' +
                 '<strong class="float-left">Колонка <%= idx + 1 %></strong>' +
-                '<a class="tiny alert delete float-right button" href="#"><i class="fi-x"></i></a>' +
+                '<a class="tiny alert delete float-right button"><i class="fi-x"></i></a>' +
             '</div>' +
             '<table>' +
                 '<tr>' +
