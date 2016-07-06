@@ -1,4 +1,4 @@
-/// <binding Clean='clean' ProjectOpened='run' />
+/// <binding Clean='clean' ProjectOpened='default, run' />
 var gulp = require('gulp');
 var del = require('del');
 var $ = require('gulp-load-plugins')();
