@@ -25,6 +25,7 @@ class MenuForm(Form):
 
 class MenuBlock(Block):
     title = db.StringField()
+    image = db.StringField()
     button_caption = db.StringField()
     menu_items = db.EmbeddedDocumentListField(MenuItem)
 

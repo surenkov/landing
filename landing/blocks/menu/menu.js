@@ -8,7 +8,7 @@ var Views = Views || {};
         '</td>' +
         '<td class="item-select"></td>' +
         '<td>' +
-            '<button class="tiny alert delete button"><i class="fi-x"></i></button>' +
+            '<a class="tiny alert delete button"><i class="fi-x"></i></a>' +
         '</td>'
         
     );
