@@ -4,6 +4,7 @@ bower_components/
 /env
 /static
 __pycache__
+*.pyc
 /ptvs_virtualenv_proxy.py
 /bin
 /obj
