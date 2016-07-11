@@ -15,10 +15,11 @@ class BlockType(DocumentMetaclass):
         for mro_class in new_class.mro():
             if 'Meta' in mro_class.__dict__:
                 bases_meta.append(mro_class.Meta)
-        meta_object = { 'verbose_name': str(new_class) }
+        meta_object = {'verbose_name': str(new_class)}
         for meta in reversed(bases_meta):
             for param, val in meta.__dict__.items():
-                if param.startswith('_'): continue
+                if param.startswith('_'):
+                    continue
                 meta_object[param] = val
         new_class._block_meta = meta_object
         return new_class
@@ -49,12 +50,15 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
     def render_template(self, **kwargs):
         template = self._block_meta.get('template')
         landing = landing_factory()
-        try: return render_template(template, block=self, landing=landing)
-        except: return ''
+        try:
+            return render_template(template, block=self,
+                                   landing=landing, **kwargs)
+        except:
+            return ''
 
     def render_form(self):
         form = self._form()
-        template = self._block_meta.get('manager_template', 
+        template = self._block_meta.get('manager_template',
                                         'manager/partial/block.html')
         return render_template(template, form=form, block=self)
 
@@ -63,11 +67,15 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
         is_valid = form.validate()
         if is_valid:
             form.populate_obj(self)
-            if commit: self.save()
+            if commit:
+                self.save()
         return is_valid, form.errors
 
 
 class LandingModel(db.Document):
+    title = db.StringField()
+    favicon = db.StringField()
+    enabled_blocks = db.ListField(db.StringField())
     blocks = db.EmbeddedDocumentListField(Block)
 
 

@@ -168,7 +168,7 @@ var Views = Views || {};
         ui: {
             saveButton: '.button.save',
             deleteButton: '.button.delete',
-            form: 'form',
+        form: 'form',
             container: '.block-container',
             headCount: '.block-head .head-count',
             headControl: '.block-head .head-control'

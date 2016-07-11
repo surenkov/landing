@@ -22,7 +22,7 @@ function bundleJs(jsPath, outPath) {
             .pipe($.sourcemaps.init())
             .pipe($.concat('bundle.js'))
             .pipe(gulp.dest(outPath))
-            .pipe($.uglify({ preserveComments: 'license' }))
+            // .pipe($.uglify({ preserveComments: 'license' }))
             .pipe($.rename({ extname: '.min.js' }))
             .pipe($.sourcemaps.write('maps'))
             .pipe(gulp.dest(outPath));

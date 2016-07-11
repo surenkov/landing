@@ -1,9 +1,8 @@
 from wtforms import Form
-from wtforms.validators import DataRequired, ValidationError
 from landing import db
-from landing.models import Block, landing_factory
+from landing.models import Block
 from landing.fields import (TypedFieldList, MediaFileField, StringField,
-                           FormField)
+                            FormField)
 
 
 class MenuItemForm(Form):
