@@ -15,7 +15,15 @@ app.config.update(dict(
     MEDIA_ROOT=os.path.join(app.static_folder, 'media'),
     MEDIA_URL=app.static_url_path + '/media/',
     MAX_CONTENT_LENGTH=16 * 1024 * 1024,
-    SECRET_KEY='Development key'  # Check if key is overridden in prod environ
+    SECRET_KEY='Development key',  # Check if key is overridden in prod environ
+
+    # Mail settings
+    MAIL_SERVER='smtp.yandex.ru',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_DEFAULT_SENDER='',
+    MAIL_USERNAME='',
+    MAIL_PASSWORD=''
 ))
 
 db = MongoEngine(app)

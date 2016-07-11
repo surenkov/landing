@@ -1,7 +1,8 @@
-from flask import request, abort, jsonify
+from flask import request, abort, jsonify, render_template
 from flask_mail import Message
 from flask_wtf import Form
 from wtforms.validators import Email, DataRequired
+from mongoengine import DoesNotExist
 from landing import mail
 from landing.mixins import *
 from landing.models import Block, landing_factory
@@ -9,9 +10,6 @@ from landing.models import Block, landing_factory
 
 class SendmailManagerForm(Form, TitleFormMixin, DescriptionFormMixin):
     email_subject = StringField('Тема', description='Тема сообщения')
-    email_from = StringField(label='Email отправителя',
-                             description='ivanov.i@example.com',
-                             validators=[Email(), DataRequired()])
     email_to = StringField(label='Email получателя',
                            description='petrov.v@example.com',
                            validators=[Email(), DataRequired()])
@@ -21,16 +19,16 @@ class SendmailManagerForm(Form, TitleFormMixin, DescriptionFormMixin):
 
 
 class SendmailFrontForm(Form):
-    email = StringField(validators=[Email(message='Email введён в ' +
-                                          'неправильном формате.')],
-                        description='ivanov.i@example.com')
-    phone = StringField(description='+7 123 123-45-67')
-    content = TextAreaField(description='Текст сообщения.')
+    name = StringField(
+        validators=[DataRequired(message='Расскажите нам, как вас зовут.')],
+        description='Как вас зовут?')
+    contacts = StringField(description='Телефон или email.')
+    content = TextAreaField(description='Опишите суть проекта.')
 
 
 class MessageModel(db.Document):
-    email = db.StringField()
-    phone = db.StringField()
+    name = db.StringField()
+    contacts = db.StringField()
     content = db.StringField()
 
     def send(self):
@@ -40,17 +38,19 @@ class MessageModel(db.Document):
                 else default
 
         message = Message(subject=get('email_subject'),
-                          sender=get('email_from'),
                           recipients=[get('email_to')],
-                          html='')
-        # mail.send(message)
+                          html=render_template('sendmail/mail_template.html',
+                                               name=self.name,
+                                               contacts=self.contacts,
+                                               content=self.content))
+        mail.send(message)
 
 
 @app.route('/send/<block_id>', methods=['POST'])
 def send_mail(block_id):
     try:
         block = landing_factory().blocks.get(id=block_id)
-    except Block.DoesNotExist:
+    except DoesNotExist:
         block = None
         abort(404)
 
@@ -69,7 +69,6 @@ def send_mail(block_id):
 
 
 class SendmailBlock(Block, TitleBlockMixin, DescriptionBlockMixin):
-    email_from = db.StringField()
     email_to = db.StringField()
     email_subject = db.StringField()
     success_message = db.StringField()

@@ -14,7 +14,7 @@ class MediaFile(db.Document):
     def delete(self, *args, **kwargs):
         if os.path.exists(self.path):
             os.remove(self.path)
-        super().delete(*args, **kwargs);
+        super().delete(*args, **kwargs)
             
 
 class ImageFile(MediaFile):
