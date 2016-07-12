@@ -1,5 +1,3 @@
-
-/// <reference path="~/landing/manager/static/scripts/blocks.js" />
 var Views = Views || {};
 (function () {
     var itemTemplate = _.template(
@@ -12,6 +10,21 @@ var Views = Views || {};
         '</td>'
         
     );
+
+    function getExistingBlocks() {
+        return new Backbone.Collection(
+            App.blocks
+                .filter(function (block) {
+                    return !block.isNew();
+                })
+                .map(function (block) {
+                    return {
+                        blockId: block.id,
+                        index: block.collection.indexOf(block),
+                        name: App.request('name', block.get('_cls'))
+                    };
+                }));
+    }
 
     var MenuItemOption = Mn.ItemView.extend({
         tagName: 'option',
@@ -27,7 +40,7 @@ var Views = Views || {};
         childView: MenuItemOption,
         childViewContainer: 'select'
     });
-    
+
     var MenuItemView = Mn.ItemView.extend({
         tagName: 'tr',
         events: {
@@ -48,20 +61,9 @@ var Views = Views || {};
         renderSelect: function () {
             if (this._itemSelect !== undefined)
                 this._itemSelect.destroy();
-            var options = new Backbone.Collection(
-                App.blocks
-                    .filter(function (block) { return !block.isNew(); })
-                    .map(function (block) {
-                        return {
-                            blockId: block.id,
-                            index: block.collection.indexOf(block),
-                            name: App.request('name', block.get('_cls'))
-                        };
-                    }));
-
             var model = this.model;
             var itemSelect = new MenuItemSelect({
-                collection: options,
+                collection: getExistingBlocks(),
                 attributes: {
                     name: 'menu_items-' + model.collection.indexOf(model) + '-block_id'
                 }
@@ -85,23 +87,36 @@ var Views = Views || {};
     var MenuView = Views.BlockItem.extend({
         ui: {
             addButton: '.add-item',
-            itemsContainer: '.menu-items'
+            itemsContainer: '.menu-items',
+            buttonBlockSelectWrapper: '.button-block_id'
         },
         regions: {
-            items: '@ui.itemsContainer'
+            items: '@ui.itemsContainer',
+            buttonSelect: '@ui.buttonBlockSelectWrapper'
         },
         events: {
             'click @ui.addButton': 'addItem'
         },
         initialize: function () {
             this.items = new Backbone.Collection(this.model.get('menu_items'));
+            this.listenTo(App.blocks, 'update sync', this.renderButtonSettings);
         },
         onRender: function () {
             Views.BlockItem.prototype.onRender.call(this);
             this.showChildView('items', new MenuItemsCollectionView({
                 collection: this.items
             }));
+            this.renderButtonSettings();
             return this;
+        },
+        renderButtonSettings: function () {
+            var select = new MenuItemSelect({ 
+                collection: getExistingBlocks(),
+                attributes: { 'name': 'button-block_id' }
+            });
+            this.showChildView('buttonSelect', select);
+            var value = this.model.get('button') || {'block_id': ''};
+            select.$el.val(value['block_id']);
         },
         addItem: function (e) {
             e.preventDefault();

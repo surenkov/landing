@@ -15,7 +15,9 @@
             </ul>
         </div>
         <div class="top-bar-right">
-            <button class="button">{{ block.button_caption }}</button>
+            {% if block.button %}
+            <a href="#{{ block.button.block_id }}" class="button">{{ block.button.caption }}</a>
+            {% endif %}
         </div>
     </div>
 </nav>

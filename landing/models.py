@@ -8,8 +8,8 @@ from landing.blocks import register_block, unregister_block
 
 class BlockType(DocumentMetaclass):
 
-    def __new__(cls, name, bases, attrs):
-        new_class = super().__new__(cls, name, bases, attrs)
+    def __new__(mcs, name, bases, attrs):
+        new_class = super().__new__(mcs, name, bases, attrs)
         register_block(new_class)
         bases_meta = []
         for mro_class in new_class.mro():

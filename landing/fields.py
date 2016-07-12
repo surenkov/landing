@@ -1,6 +1,19 @@
 from wtforms.fields import *
-from wtforms.widgets import TextInput, HTMLString
-from landing import app
+from wtforms.widgets import TextInput, HTMLString, html_params
+
+
+class PlaceholderWidget:
+    default_element = 'div'
+
+    def __init__(self, default_element=None):
+        if default_element is not None:
+            self.default_element = default_element
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        params = html_params(class_=field.name, **kwargs)
+        return HTMLString('<{0} {1}></{0}>'.format(self.default_element,
+                                                   params))
 
 
 class MediaFileInput(TextInput):
@@ -12,13 +25,13 @@ class MediaFileInput(TextInput):
         kwargs['name'] = field.name
         return HTMLString(
             '<div class="input-group">' +
-                (('<input class="input-group-field" %s>') % self.html_params(**kwargs)) +
+            ('<input class="input-group-field" %s>' % self.html_params(**kwargs)) +
                 '<div class="input-group-button">' +
                     '<button type="button" class="media-open secondary button" title="Выбрать файл">' +
                         '<i class="fi-photo"></i>' +
                     '</button>' +
                 '</div>' +
-            '</div>') 
+            '</div>')
 
 
 class MediaFileField(StringField):
@@ -29,7 +42,7 @@ class TypedFieldList(FieldList):
 
     def __init__(self, _type, *args, **kwargs):
         self._type = _type
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def populate_obj(self, obj, name):
         _fake = type(str('_fake'), (), {})

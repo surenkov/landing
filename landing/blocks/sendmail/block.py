@@ -3,7 +3,7 @@ from flask_mail import Message
 from flask_wtf import Form
 from wtforms.validators import Email, DataRequired
 from mongoengine import DoesNotExist
-from landing import mail
+from landing import app, mail
 from landing.mixins import *
 from landing.models import Block, landing_factory
 
