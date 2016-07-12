@@ -1,7 +1,4 @@
-﻿/// <reference path="_references.js" />
-/// <reference path="loader.js" />
-/// <reference path="landing.js" />
-var Models = Models || {};
+﻿var Models = Models || {};
 var Views = Views || {};
 
 (function () {

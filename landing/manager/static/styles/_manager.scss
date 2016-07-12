@@ -76,6 +76,13 @@ body.login {
 }
 
 .blocks {
+    .callout.secondary {
+        background-color: #efefef;
+        border-radius: 3px;
+        box-shadow: 0 3px 0 #ccc;
+        border-color: #ccc;
+    }
+
     .block-head {
         * {
             display: inline-block;
@@ -136,3 +143,4 @@ body.login {
         }
     }
 }
+

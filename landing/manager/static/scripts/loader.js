@@ -1,6 +1,4 @@
-﻿/// <reference path="_references.js" />
-/// <reference path="media.js" />
-var Models = Models || {};
+﻿var Models = Models || {};
 var Views = Views || {};
 
 (function() {

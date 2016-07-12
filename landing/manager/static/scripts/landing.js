@@ -1,5 +1,4 @@
-﻿/// <reference path="_references.js" />
-var Models = Models || {};
+﻿var Models = Models || {};
 var Views = Views || {};
 
 (function () {
