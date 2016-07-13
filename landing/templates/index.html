@@ -17,6 +17,15 @@
     {% endfor %}
     {% endblock %}
 
+    <div class="row">
+        <div class="small-12 small-centered text-center columns">
+            2015 &copy; {{ landing.owner }}
+        </div>
+        <div class="small-12 small-centered text-center columns">
+            Разработано студией <a href="http://rudoit.com">RuDoIT</a>.
+        </div>
+    </div>
+
     <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery/dist/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/underscore/underscore-min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='dist/foundation-sites/dist/foundation.min.js') }}"></script>
