@@ -3,13 +3,11 @@ var Views = Views || {};
 
 (function() {
     App.on('start', function (allBlocks) {
-        var blocks = this.blocks = new Models.BlockCollection();
         var keys = _.keys(allBlocks);
-        blocks.fetch().then(function () {
-            var view = new Views.BlockCollectionView({
-                collection: blocks
+        this.blocks.fetch().then(function () {
+            App.landingSettings.fetch().then(function () {
+                App.rootView.show();
             });
-            $('#landing-blocks').prepend(view.render().el);
         });
 
         this.blockTypes = _.map(allBlocks, function (b, name) {

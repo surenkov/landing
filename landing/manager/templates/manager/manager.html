@@ -19,19 +19,47 @@
 
 
 {% block body %}
-<div id="landing-settings" class="settings row">
-    <div class="small-12 medium-10 large-8 small-centered columns">
-        <h4>Настройки лэндинга</h4>
+<div class="body-container">
+    <div id="page-preloader">
+        <div class="cssload-thecube">
+            <div class="cssload-cube cssload-c1"></div>
+            <div class="cssload-cube cssload-c2"></div>
+            <div class="cssload-cube cssload-c4"></div>
+            <div class="cssload-cube cssload-c3"></div>
+        </div>
     </div>
+    <div id="landing-settings"></div>
+    <div id="landing-blocks"></div>
 </div>
-<div id="landing-blocks"></div>
 {% endblock %}
 
 
 {% block scripts %}
+<script type="text/template" id="landing-settings-template">
+    <div class="settings row">
+        <div class="small-12 medium-10 large-8 small-centered columns">
+            <h3>Настройки лэндинга</h3>
+            <form id="landing-settings" class="callout settings-form row">
+                {{ settings_form.hidden_tag() }}
+                <table>
+                    {% for field in settings_form if field.widget.input_type != 'hidden' %}
+                    <tr>
+                        <td>{{ field.label }}</td>
+                        <td>{{ field(placeholder=field.description) }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="clearfix">
+                    <input type="submit" class="float-right button" value="Сохранить" />
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
 <script type="text/template" id="blocks-container">
     <div class="small-12 medium-10 large-8 small-centered columns">
-        <h4>Управление блоками</h4>
+        <h3>Управление блоками</h3>
         <section class="blocks row"></section>
         <div class="clearfix">
             <div class="button-group float-right">
@@ -82,7 +110,13 @@
 </script>
 
 <script id="media-file-view" type="text/template">
-    <td colspan="3" class="progress-bar"><div class="upload-preloader"></div></td>
+    <td colspan="3" class="progress-bar-wrapper">
+        <div class="progress-container">
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </td>
     <td><img src="<%- url %>" class="thumbnail" title="Выбрать файл" /></td>
     <td><input type="text" value="<%- url %>" onClick="this.select();" /></td>
     <td><button class="tiny alert delete button" title="Удалить"><i class="fi-x"></i></button></td>

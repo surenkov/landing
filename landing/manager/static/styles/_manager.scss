@@ -1,7 +1,18 @@
 @import 'embedded';
 
 body {
-    height: auto;
+    position: relative;
+}
+
+#page-preloader {
+    position: absolute;
+    height: 47px;
+    width: 47px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 body.login {
@@ -18,11 +29,28 @@ body.login {
     }
 }
 
+.settings-form {
+    table {
+        border: hidden;
+
+        tbody {
+            border: 0;
+        }
+    }
+    input {
+        margin: rem-calc(0);
+    }
+}
+
 .table-form {
     margin-top: rem-calc(40);
 
     table {
         border: hidden;
+
+        tbody {
+            border: 0;
+        }
     }
 
     input {
@@ -44,7 +72,7 @@ body.login {
     }
 }
 
-#global-notifictations {
+#global-notifications {
     position: fixed;
     top: rem-calc(60);
     right: 10px;
@@ -67,20 +95,23 @@ body.login {
         width: 100px;
         cursor: pointer;
     }
+}
 
-    .upload-preloader {
-        background: $preloader-data repeat-x 0 0;
-        height: rem-calc(20);
-        width: 100%;
+.body-container {
+    .callout {
+        border-radius: 3px;
+        box-shadow: 0 3px 0 #ccc;
+        border-color: #ccc;
+
+        .button {
+            margin-bottom: 0;
+        }
     }
 }
 
 .blocks {
     .callout.secondary {
         background-color: #efefef;
-        border-radius: 3px;
-        box-shadow: 0 3px 0 #ccc;
-        border-color: #ccc;
     }
 
     .block-head {

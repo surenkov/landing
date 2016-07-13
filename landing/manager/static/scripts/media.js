@@ -1,11 +1,11 @@
 var Models = Models || {};
 var Views = Views || {};
 
-(function (root) {
+(function () {
     var MediaCollection = Backbone.Collection.extend({
         url: '/manager/api/media/'
     });
-
+    
     var MediaFileView = Mn.ItemView.extend({
         tagName: 'tr',
         defaults: {
@@ -23,7 +23,7 @@ var Views = Views || {};
             'error': 'render'
         },
         onRender: function () {
-            var $progressRow = this.$('.progress-bar');
+            var $progressRow = this.$('.progress-bar-wrapper');
             if (this.model.isNew())
                 $progressRow.siblings().remove();
             else
@@ -108,15 +108,15 @@ var Views = Views || {};
     window.App.MediaManager = function () {
         var view = new MediaView({
             collection: new MediaCollection()
-        })
+        });
         view.collection.fetch();
         return view;
     };
 })();
 
 (function () {
-    $(document.body).on('click', '.media-manager', function (e) {
-        var manager = new App.MediaManager();
+    $(document.body).on('click', '.media-manager', function () {
+        new App.MediaManager();
     }).on('click', '.media-open', function (e) {
         var $input = $(e.target).parents('.input-group')
                                 .first()

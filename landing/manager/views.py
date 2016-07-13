@@ -1,13 +1,12 @@
-from flask import request, redirect, render_template, url_for, g, \
-    session, jsonify
+from flask import request, redirect, render_template, url_for, g, session
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, ValidationError
 from wtforms.validators import Email, DataRequired
-from landing.models import landing_factory
 from landing.blocks import registered_blocks
 from landing.manager import manager
-from landing.manager.auth import User, login_required, \
-    is_authenticated, secure_api
+from landing.manager.auth import User, login_required, is_authenticated
+from landing.models import landing_factory
+from landing.manager.api import LandingForm
 
 
 @manager.route('/')
@@ -15,12 +14,12 @@ from landing.manager.auth import User, login_required, \
 def manager_index():
     landing = landing_factory()
     blocks = registered_blocks()
-    return render_template('manager/manager.html', landing=landing, 
-                           blocks=blocks.values())
+    return render_template('manager/manager.html', landing=landing,
+                           blocks=blocks.values(), settings_form=LandingForm())
+
 
 @manager.route('/authorize', methods=['GET', 'POST'])
 def authorize():
-
     class LoginForm(Form):
         email = StringField(validators=[DataRequired(), Email()])
         password = PasswordField(validators=[DataRequired()])
@@ -43,7 +42,7 @@ def authorize():
             if action == 'logout':
                 g.user.logout()
             else:
-                return redirect(manager_url) 
+                return redirect(manager_url)
 
     form = LoginForm()
     if request.method == 'POST':
@@ -53,12 +52,14 @@ def authorize():
 
     return render_template('manager/login.html', form=form)
 
+
 # Manager configuration views
 
 ADMIN_UNAME = 'rudoit'
 SECURID = ('pbkdf2:sha512:10000$ZnUyK4QN$d2318e062c6f6692a588c0d892fb42fc56bb'
            'f0b3f711bea0f76d402af4057c4bdac562306db1ccdc6d6b9222a41bd09226c1b'
            'f23c99463984bafff633e248f30')
+
 
 @manager.route('/configure', methods=['GET', 'POST'])
 def configure():
@@ -68,10 +69,10 @@ def configure():
     if conf_id != ADMIN_UNAME:
         return redirect(url_for('manager.configure_login'))
 
-
     class UserForm(Form):
-        email = StringField(validators=[DataRequired(), Email()])
-        password = PasswordField()
+        email = StringField(label='E-mail',
+                            validators=[DataRequired(), Email()])
+        password = PasswordField(label='Пароль')
 
     class BlocksForm(Form):
         pass
@@ -79,7 +80,6 @@ def configure():
     class ConfigureForm(Form):
         user_form = FormField(UserForm, default=User.objects.first())
         blocks_form = FormField(BlocksForm)
-
 
     form = ConfigureForm()
     user_form = form.user_form.form
@@ -92,12 +92,12 @@ def configure():
 
     return render_template('manager/configure.html', form=form)
 
+
 @manager.route('/configure/authorize', methods=['GET', 'POST'])
 def configure_login():
-    from wtforms import TextField
-    
+
     class LoginForm(Form):
-        uname = TextField(validators=[DataRequired()])
+        uname = StringField(validators=[DataRequired()])
         password = PasswordField(validators=[DataRequired()])
 
         def validate_uname(form, field):
@@ -120,4 +120,3 @@ def configure_login():
         session['admin_uname'] = ADMIN_UNAME
         return redirect(url_for('manager.configure'))
     return render_template('manager/configure_login.html', form=form)
-    

@@ -74,7 +74,8 @@ class Block(db.EmbeddedDocument, metaclass=BlockType):
 
 class LandingModel(db.Document):
     title = db.StringField()
-    favicon = db.StringField()
+    owner = db.StringField()
+
     enabled_blocks = db.ListField(db.StringField())
     blocks = db.EmbeddedDocumentListField(Block)
 

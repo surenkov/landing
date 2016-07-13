@@ -1,33 +1,82 @@
 from flask import request, jsonify, abort
 from flask.views import MethodView
-from wtforms import FormField, HiddenField
+from flask_wtf import Form
+from wtforms import FormField, HiddenField, StringField
 from werkzeug.datastructures import CombinedMultiDict, ImmutableMultiDict
 from landing.models import landing_factory
-from landing.mediastorage import MediaStorage
+from landing.mediastorage import MediaStorage, MediaFile
 from landing.blocks import registered_blocks
 from landing.manager import manager
 from landing.manager.auth import secure_api
 
 
-def register_api(view, endpoint, url, pk='id', pk_type='string'):
-    view_func = secure_api(view.as_view(endpoint))
-    url = '/api/%s/' % url.strip('/')
-    manager.add_url_rule(url, defaults={pk: None},
-                         view_func=view_func,
-                         methods=['GET', 'POST'])
-    manager.add_url_rule('%s<%s:%s>' % (url, pk_type, pk), 
-                         view_func=view_func,
-                         methods=['GET', 'POST', 'PUT', 'DELETE'])
+def register_crud_api(endpoint, url, pk='id', pk_type='string'):
+    """ Registers MethodView subclass as full CRUD implementation. """
+
+    def register_decorator(view):
+        view_func = secure_api(view.as_view(endpoint))
+        url_ = '/api/%s/' % url.strip('/')
+        manager.add_url_rule(url_, defaults={pk: None},
+                             view_func=view_func,
+                             methods=['GET', 'POST'])
+        manager.add_url_rule('%s<%s:%s>' % (url_, pk_type, pk),
+                             view_func=view_func,
+                             methods=['GET', 'POST', 'PUT', 'DELETE'])
+        return view
+
+    return register_decorator
+
+
+def register_get_post_api(endpoint, url):
+    """ Registers MethodView subclass as get/post processor. """
+
+    def register_decorator(view):
+        url_ = '/api/%s/' % url.strip('/')
+        manager.add_url_rule(url_,
+                             view_func=secure_api(view.as_view(endpoint)),
+                             methods=['GET', 'POST'])
+        return view
+
+    return register_decorator
+
 
 def document_to_dict(block):
     bdict = dict(block._data)
     bdict['id'] = str(block.id)
     return bdict
 
+
 def combined_request_data():
     return CombinedMultiDict([request.form, ImmutableMultiDict(request.json)])
 
 
+class LandingForm(Form):
+    title = StringField('Заголовок', description='Заголовок окна браузера')
+    owner = StringField('Владелец', description='Показывается в футере')
+
+
+@register_get_post_api('landing_api', '/landing/')
+class LandingAPIView(MethodView):
+
+    def __init__(self):
+        self.landing = landing_factory()
+
+    def get(self):
+        return jsonify({
+            'title': self.landing.title,
+            'owner': self.landing.owner
+        } if self.landing is not None else {})
+
+    def post(self):
+        form = LandingForm()
+        if form.validate_on_submit():
+            form.populate_obj(self.landing)
+            self.landing.save()
+            return self.get()
+        return jsonify({}), 400
+
+
+@register_crud_api('blocks_api', '/blocks/')
 class BlockAPIView(MethodView):
 
     def __init__(self):
@@ -75,8 +124,6 @@ class BlockAPIView(MethodView):
             return jsonify({})
         return jsonify({}), 404
 
-register_api(BlockAPIView, 'blocks_api', '/blocks/')
-
 
 def prepare_file_model(model):
     serialized_model = document_to_dict(model)
@@ -84,6 +131,7 @@ def prepare_file_model(model):
     return serialized_model
 
 
+@register_crud_api('media', '/media/')
 class MediaAPIView(MethodView):
 
     def __init__(self):
@@ -120,36 +168,32 @@ class MediaAPIView(MethodView):
         except MediaFile.DoesNotExist:
             abort(404)
 
-register_api(MediaAPIView, 'media', '/media/')
-
 
 @manager.route('/api/blocks/all')
 @secure_api
 def all_available_blocks():
-    instances =[cls() for cls in registered_blocks().values()] 
+    instances =[cls() for cls in registered_blocks().values()]
     blocks = {b._cls: {
-                'fields': _collect_fields_from_form(b._form()),
-                'form': b.render_form(),
-                'name': b._block_meta['verbose_name']
-            } for b in instances }
+        'fields': _collect_fields_from_form(b._form()),
+        'form': b.render_form(),
+        'name': b._block_meta['verbose_name']
+    } for b in instances}
     return jsonify(blocks)
 
 
 def _collect_fields_from_form(form):
 
-    def _collect_fields_from_form_internal(form):
-        fields = []
-        for field in form:
+    def _collect_fields_from_form_internal(form_):
+        fields_ = []
+        for field in form_:
             if isinstance(field, HiddenField):
                 continue
             elif isinstance(field, FormField):
-                fields.extend(_collect_fields_from_form(field.form))
+                fields_.extend(_collect_fields_from_form(field.form))
             else:
-                fields.append(field.name)
-        return fields
+                fields_.append(field.name)
+        return fields_
 
     fields = _collect_fields_from_form_internal(form)
     fields.extend(['_cls', 'id'])
     return fields
-
-            

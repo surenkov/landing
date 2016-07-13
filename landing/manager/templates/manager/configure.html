@@ -1,5 +1,5 @@
-{% set title='Редактирование лэндинга' %}
 {% extends "manager/layout.html" %}
+{% set title='Редактирование лэндинга' %}
 
 {% block menu %}
 <div class="top-bar">
@@ -16,17 +16,27 @@
 
 {% block body %}
 <form class="table-form row" method="POST" action="{{ url_for('manager.configure') }}">
-    <section class="large-6 medium-12 small-12 columns">
+    <section class="large-6 medium-12 columns">
         <div class="callout">
+            <h5>Настройки пользователя</h5>
             {{ form.user_form }}
         </div>
     </section>
 
-    <section class="large-6 medium-12 small-12 end columns">
+    <section class="large-6 medium-12 columns">
         <div class="callout">
+            <h5>Включение/отключение блоков</h5>
             {{ form.blocks_form }}
         </div>
     </section>
+
+    <section class="large-6 medium-12 columns">
+        <div class="callout">
+            <h5>Прочее</h5>
+            {{ form.misc_form }}
+        </div>
+    </section>
+
     <section class="small-12 text-right columns">
         <button type="submit" class="button">Сохранить</button>
     </section>
