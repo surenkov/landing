@@ -1,24 +1,24 @@
 from mongoengine.base import TopLevelDocumentMetaclass
-
 __all__ = [
     'register_block',
     'unregister_block',
-    'registered_blocks',
-    'BlockMetaclass'
+    'registered_blocks'
 ]
-_block_registry = dict()
+_cls_registry = set()
 
 
 def register_block(cls):
-    _block_registry[cls.__name__] = cls
+    _cls_registry.add(cls)
+    return cls
 
 
 def unregister_block(cls):
-    del _block_registry[cls.__name__]
+    _cls_registry.discard(cls)
+    return cls
 
 
 def registered_blocks():
-    return dict(_block_registry)
+    return set(_cls_registry)
 
 
 class BlockMetaclass(TopLevelDocumentMetaclass):

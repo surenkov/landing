@@ -2,5 +2,7 @@
 node_modules/
 env/
 .idea/
+/static/
+/templates/
 __pycache__
 npm-debug.log

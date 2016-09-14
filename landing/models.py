@@ -1,24 +1,25 @@
-import os
 import hashlib
+import os
 
 from mongoengine import *
-from wtforms.validators import email
 from werkzeug.security import (
     check_password_hash,
     generate_password_hash,
     safe_join
 )
-
-from .block_registry import BlockMetaclass, unregister_block
+from wtforms.validators import email
+from landing.blocks import BlockMetaclass, unregister_block
 
 
 @unregister_block
 class Block(Document, metaclass=BlockMetaclass):
     enabled = BooleanField(default=True)
+    template = StringField(required=True)
+    meta = {'allow_inheritance': True}
 
 
 class Landing(Document):
-    name = StringField(required=True)
+    name = StringField()
     meta_info = DictField(default={})
     blocks = ListField(ReferenceField(Block, reverse_delete_rule=PULL))
 
@@ -99,7 +100,7 @@ USER_ROLES = (
 
 class User(Document):
     name = StringField(required=True)
-    email = StringField(required=True, unique=True, regex=email())
+    email = StringField(required=True, unique=True, validation=email())
     role = StringField(required=True, choices=USER_ROLES)
     pw_hash = StringField()
 

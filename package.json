@@ -4,11 +4,8 @@
   "description": "Awesome landing CMS",
   "main": "webpack.config.js",
   "scripts": {
-    "manager_dev": "NODE_ENV=development BUILD_TARGET=manager webpack-dev-server --progress --display-error-details",
-    "landing_dev": "NODE_ENV=development BUILD_TARGET=landing webpack-dev-server --progress --display-error-details",
-    "manager": "NODE_ENV=production BUILD_TARGET=manager webpack --progress --display-error-details",
-    "landing": "NODE_ENV=production BUILD_TARGET=landing webpack --progress --display-error-details",
-    "build": "npm run manager; npm run landing"
+    "start": "NODE_ENV=development webpack --progress --display-error-details",
+    "build": "NODE_ENV=production webpack --progress --display-error-details"
   },
   "repository": {
     "type": "git",
@@ -36,13 +33,11 @@
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
-    "less": "^2.7.1",
-    "less-loader": "^2.2.3",
-    "less-plugin-rewrite-import": "^0.1.1",
-    "manifest-revision-webpack-plugin": "^0.3.0",
+    "node-sass": "^3.10.0",
     "postcss-loader": "^0.11.1",
     "react-hot-loader": "^3.0.0-beta.3",
     "redux-devtools": "^3.3.1",
+    "sass-loader": "^4.0.2",
     "script-loader": "^0.7.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
