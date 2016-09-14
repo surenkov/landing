@@ -34,6 +34,14 @@ def register_template(block, name, path):
 
 
 def set_templates(block, templates):
+    if block not in _template_registry:
+        logging.warning('There is no templates for block "%s"' % block)
+    else:
+        not_found_templates = [t for t in templates
+                               if t not in _template_registry[block]]
+        if not_found_templates:
+            logging.warning('Template(s) [%s] ain\'t exist in block "%s"'
+                            % (', '.join(not_found_templates), block))
 
     def wrapper(cls):
         _cls_registry[cls] = (block, set(templates))

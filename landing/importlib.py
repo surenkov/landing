@@ -32,19 +32,19 @@ def _compile_pyfile(file_path):
 def _load_block(manifest, directory):
     block_name = manifest['name']
     try:
-        compiled_asts = map(
-            lambda f: _compile_pyfile(os.path.join(directory, f)),
-            manifest.get('python_files', [])
-        )
-        for ast in compiled_asts:
-            exec(ast)
-
         for template_name, path in manifest.get('templates', {}).items():
             register_template(
                 block_name,
                 template_name,
                 os.path.join(directory, path)
             )
+
+        compiled_asts = map(
+            lambda f: _compile_pyfile(os.path.join(directory, f)),
+            manifest.get('python_files', [])
+        )
+        for ast in compiled_asts:
+            exec(ast)
 
     except CompilationError:
         logging.exception('Cannot compile block\'s "%s" .py files.')
