@@ -21,7 +21,7 @@ module.exports = (_path, env) => {
         entry: {
             manager: _.concat([
                     './manager/front/scripts/index.js',
-                    './manager/front/styles/index.scss',
+                    './manager/front/styles/index.scss'
                 ],
                 utility.blockAssets('manager', blocks)
             ),
@@ -66,7 +66,7 @@ module.exports = (_path, env) => {
         postcss: () => [autoprefixer],
         plugins: [
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': env
+                'process.env.NODE_ENV': JSON.stringify(env)
             }),
 
             new webpack.ProvidePlugin({

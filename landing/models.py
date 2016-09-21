@@ -8,7 +8,8 @@ from werkzeug.security import (
     safe_join
 )
 from wtforms.validators import email
-from landing.blocks import BlockMetaclass, unregister_block
+
+from landing.utility.blocks import BlockMetaclass, unregister_block
 
 
 @unregister_block

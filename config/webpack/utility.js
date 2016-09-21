@@ -45,7 +45,7 @@ const blockAssets = (type, manifestsObject) => {
         manifestsObject,
         (manifest, _path) => _.map(
             manifest[assetType] || [],
-            (asset) => path.join(_path, asset)
+            (asset) => `./${path.join(_path, asset)}`
         )
     );
 };
