@@ -8,7 +8,6 @@ const webpack = require('webpack');
 
 const autoprefixer = require('autoprefixer');
 const utility = require('./utility');
-const HtmlPlugin = require('html-webpack-plugin');
 const TextPlugin = require('extract-text-webpack-plugin');
 
 
@@ -20,23 +19,22 @@ module.exports = (_path, env) => {
         context: _path,
         entry: {
             manager: _.concat([
-                    './manager/front/scripts/index.js',
-                    './manager/front/styles/index.scss'
+                    './manager/static/scripts/index.js',
+                    './manager/static/styles/index.scss'
                 ],
                 utility.blockAssets('manager', blocks)
             ),
             landing: _.concat([
-                    './landing/front/scripts/index.js',
-                    './landing/front/styles/index.scss'
+                    './landing/static/scripts/index.js',
+                    './landing/static/styles/index.scss'
                 ],
                 utility.blockAssets('landing', blocks)
             ),
         },
         output: {
             path: path.join(_path, 'static'),
-            publicPath: '/static/',
-            filename: 'scripts/[name].[hash].js',
-            chunkFilename: 'scripts/[id].[hash].js'
+            filename: 'scripts/[name].js',
+            chunkFilename: 'scripts/[id].js'
         },
         externals: {
             jquery: "jQuery",
@@ -49,17 +47,13 @@ module.exports = (_path, env) => {
         module: {
             loaders: [
                 {
-                    test: /\.html$/,
-                    loaders: ['html']
-                },
-                {
-                    test: /\.jsx?$/,
-                    exclude: /(node_modules|static)/,
+                    test: /\.jsx?$/i,
+                    exclude: /(node_modules|blocks)/i,
                     loaders: ['babel']
                 },
                 {
                     test:    /\.(ttf|eot|woff|woff2|png|ico|jpg|jpeg|gif|svg)$/i,
-                    loaders: ['url?limit=30000&name=assets/[name].[hash].[ext]']
+                    loaders: ['url?limit=30000&name=assets/[name].[ext]']
                 },
             ]
         },
@@ -76,20 +70,6 @@ module.exports = (_path, env) => {
                 jQuery: 'jquery',
                 'window.jQuery': 'jquery'
             }),
-
-            new HtmlPlugin({
-                chunks: ['manager'],
-                filename: '../templates/manager.html',
-                inject: false,
-                template: '!!ejs!./manager/front/index.html'
-            }),
-
-            new HtmlPlugin({
-                chunks: ['landing'],
-                filename: '../templates/landing.html',
-                inject: false,
-                template: '!!ejs!./landing/front/index.html'
-            }),
         ]
     };
 
@@ -97,6 +77,12 @@ module.exports = (_path, env) => {
         'development': {
             debug: true,
             devtool: 'eval-source-map',
+            output: {
+                publicPath: 'http://localhost:8080/static/'
+            },
+            devServer: {
+                contentBase: './'
+            },
             module: {
                 loaders: [
                     { test: /\.css$/, loaders: ['style', 'css', 'postcss'] },
@@ -107,6 +93,9 @@ module.exports = (_path, env) => {
         'production': {
             debug: false,
             devtool: 'source-map',
+            output: {
+                publicPath: '/static/'
+            },
             module: {
                 loaders: [
                     { test: /\.css$/, loader: TextPlugin.extract('style', ['css', 'postcss']) },
@@ -121,7 +110,7 @@ module.exports = (_path, env) => {
                     }
                 }),
 
-                new TextPlugin('styles/[name].[hash].css'),
+                new TextPlugin('styles/[name].css'),
                 new webpack.optimize.DedupePlugin(),
                 new webpack.optimize.OccurenceOrderPlugin()
             ]
