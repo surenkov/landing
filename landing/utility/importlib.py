@@ -1,12 +1,11 @@
 import os
 import json
 import logging
+import threading
 
-from importlib import import_module
-from .templates import register_template
-
-__all__ = ['load_all_blocks']
+__all__ = ['load_all_blocks', 'block_local']
 MANIFEST_FILE_NAME = 'manifest.json'
+block_local = threading.local()
 
 
 class CompilationError(Exception):
@@ -19,16 +18,9 @@ def _blocks_filter(dir_entry):
         and os.path.isfile(block_manifest)
 
 
-def _load_block(manifest, directory):
-    block_name = manifest['name']
-    for template_name, path in manifest.get('templates', {}).items():
-        register_template(
-            block_name,
-            template_name,
-            os.path.join(directory, path)
-        )
+def _load_block(directory):
     block_path = os.path.relpath(directory).split(os.sep)
-    import_module('.'.join(block_path))
+    __import__('.'.join(block_path))
 
 
 def _load_manifest(block_path):
@@ -53,4 +45,6 @@ def load_all_blocks(blocks_module):
         map(_load_manifest, blocks_paths)
     )
     for manifest, path in manifests:
-        _load_block(manifest, path)
+        block_local.manifest = manifest
+        block_local.path = path
+        _load_block(path)

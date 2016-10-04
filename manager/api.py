@@ -88,7 +88,7 @@ class BlockList(AuthResource):
 class BlockTypes(AuthResource):
 
     def get(self):
-        return [{'type': cls()._cls,
+        return [{'type': cls._class_name,
                  'templates': get_template_list(cls)
                  } for cls in registered_blocks()]
 

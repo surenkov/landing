@@ -1,6 +1,5 @@
 from landing.models import *
-from landing.utility.templates import set_templates
-from landing.utility.blocks import parse_with, marshal_with
+from landing.utility.templates import template
 
 from manager.utility.fields import block_fields, Reference, String
 from manager.utility.parsers import block_parser, reference_argument
@@ -17,9 +16,15 @@ header_serializer.update({
 })
 
 
-@set_templates('header', ['default'])
-@parse_with(header_parser)
-@marshal_with(header_serializer)
 class HeaderBlock(Block):
     title = StringField(default='')
     button = ReferenceField(Block)
+
+    meta = {
+        'templates': {
+            'default': template('templates/template.html'),
+            'partial': template('templates/template.html')
+        },
+        'parser': header_parser,
+        'serializer': header_serializer
+    }

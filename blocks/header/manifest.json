@@ -1,9 +1,6 @@
 {
   "name": "header",
   "enabled": true,
-  "templates": {
-    "default": "templates/template.html"
-  },
   "manager_assets": [
     "manager/header.js"
   ],
