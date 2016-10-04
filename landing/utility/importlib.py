@@ -1,6 +1,8 @@
 import os
 import json
 import logging
+
+from importlib import import_module
 from .templates import register_template
 
 __all__ = ['load_all_blocks']
@@ -17,37 +19,16 @@ def _blocks_filter(dir_entry):
         and os.path.isfile(block_manifest)
 
 
-def _compile_pyfile(file_path):
-    try:
-        return compile(open(file_path, 'r').read(), file_path, 'exec')
-    except OSError:
-        logging.exception('Cannot open "%s" for compilation.' % file_path)
-    except SyntaxError:
-        logging.exception('Cannot compile "%s" because of syntax error.'
-                          % file_path)
-    except ValueError: logging.exception('Cannot compile "%s".' % file_path)
-    raise CompilationError()
-
-
 def _load_block(manifest, directory):
     block_name = manifest['name']
-    try:
-        for template_name, path in manifest.get('templates', {}).items():
-            register_template(
-                block_name,
-                template_name,
-                os.path.join(directory, path)
-            )
-
-        compiled_asts = map(
-            lambda f: _compile_pyfile(os.path.join(directory, f)),
-            manifest.get('python_files', [])
+    for template_name, path in manifest.get('templates', {}).items():
+        register_template(
+            block_name,
+            template_name,
+            os.path.join(directory, path)
         )
-        for ast in compiled_asts:
-            exec(ast)
-
-    except CompilationError:
-        logging.exception('Cannot compile block\'s "%s" .py files.')
+    block_path = os.path.relpath(directory).split(os.sep)
+    import_module('.'.join(block_path))
 
 
 def _load_manifest(block_path):
@@ -64,8 +45,8 @@ def _load_manifest(block_path):
     return None, block_path
 
 
-def load_all_blocks(blocks_dir):
-    blocks = filter(_blocks_filter, os.scandir(blocks_dir))
+def load_all_blocks(blocks_module):
+    blocks = filter(_blocks_filter, os.scandir(blocks_module))
     blocks_paths = map(lambda b: b.path, blocks)
     manifests = filter(
         lambda m: m[0] is not None and m[0].get('enabled', False),

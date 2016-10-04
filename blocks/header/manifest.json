@@ -1,9 +1,6 @@
 {
   "name": "header",
   "enabled": true,
-  "python_files": [
-    "header.py"
-  ],
   "templates": {
     "default": "templates/template.html"
   },
