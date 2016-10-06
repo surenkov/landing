@@ -21,8 +21,10 @@ import { Dropdown, Checkbox } from './partial/inputs'
 class BlocksComponent extends Prefetch {
     constructor(params) {
         super(params);
-        this.state = { loaded: false, newBlock: null };
+        this.state = { loaded: false, newBlock: undefined };
         this.createBlock = this.createBlock.bind(this);
+        this.saveNewBlock = this.saveNewBlock.bind(this);
+        this.hideBlock = this.hideBlock.bind(this);
     }
     prefetchData() {
         Promise.all([
@@ -33,11 +35,15 @@ class BlocksComponent extends Prefetch {
     createBlock(params) {
         this.setState({ newBlock: params });
     }
+    saveNewBlock(data) {
+        return this.props.onCreate(data)
+            .then((rejected) => !rejected && this.hideBlock());
+    }
     hideBlock() {
         this.setState({ newBlock: undefined });
     }
     render() {
-        const { blocks, types, onCreate, onUpdate, onRemove } = this.props;
+        const { blocks, types, onUpdate, onRemove } = this.props;
         const { newBlock, loaded } = this.state;
         return (
             loaded ? (
@@ -59,8 +65,8 @@ class BlocksComponent extends Prefetch {
                                 <Block
                                     type={types[newBlock]}
                                     data={{}}
-                                    onSave={(data) => onCreate(data).then((rejected) => !rejected && this.hideBlock())}
-                                    onRemove={() => this.hideBlock()}
+                                    onSave={this.saveNewBlock}
+                                    onRemove={this.hideBlock}
                                 />
                             }
                         </div>

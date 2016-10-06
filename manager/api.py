@@ -74,8 +74,9 @@ class BlockList(AuthResource):
         serializer = get_serializer(doc_type, block_fields)
 
         data = parser.parse_args()
-        add_to_landing = data.pop('add_to_landing')
+        add_to_landing = data.pop('add_to_landing', True)
         block = doc_type.objects.create(**data)
+
         if add_to_landing:
             landing_inst = landing()
             landing_inst.blocks.append(block)
@@ -114,8 +115,9 @@ class BlockView(AuthResource):
             serializer = get_serializer(block_type, block_fields)
 
             data = parser.parse_args()
-            add_to_landing = data.pop('add_to_landing')
+            add_to_landing = data.pop('add_to_landing', True)
             block.modify(**data)
+
             if add_to_landing:
                 landing_inst = landing()
                 landing_inst.blocks.append(block)
@@ -175,10 +177,10 @@ class UserView(AdminResource):
 
 
 @manager_api.resource('/media')
-class MediaView(AuthResource):
+class MediaList(AuthResource):
 
     def get(self):
-        return [marshal(media, media_parser)
+        return [marshal(media, media_fields)
                 for media in models.Media.objects()]
 
     @marshal_with(media_fields)
@@ -187,3 +189,15 @@ class MediaView(AuthResource):
         media_obj = models.Media()
         media_obj.save(data['file'], current_app.config['MEDIA_ROOT'])
         return media_obj
+
+
+@manager_api.resource('/media/<media_id>')
+class MediaView(AuthResource):
+
+    @marshal_with(media_fields)
+    def get(self, media_id):
+        return models.Media.objects.get(id=media_id)
+
+    def delete(self, media_id):
+        models.Media.objects.filter(id=media_id).delete()
+        return {'success': True}

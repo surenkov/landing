@@ -130,5 +130,8 @@ export const upload = (url, formData) => (
             'Accept': 'application/json'
         },
         body: formData
-    })
+    }).then(
+        checkStatus,
+        connectionError
+    ).then((response) => response.json())
 );

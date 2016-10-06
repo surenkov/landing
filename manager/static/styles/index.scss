@@ -26,6 +26,10 @@ html, body {
   padding-top: 60px;
 }
 
+.trumbowyg-box {
+  z-index: 1;
+}
+
 .trumbowyg-box,
 .trumbowyg-editor {
   $border-radius: .28571429rem;
@@ -52,5 +56,21 @@ html, body {
   li {
     list-style: none;
     color: #B03060;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.media {
+  margin: 10px;
+
+  .action {
+    cursor: pointer;
+  }
+
+  .icon.header {
+    display: block;
   }
 }

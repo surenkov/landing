@@ -10,7 +10,9 @@ import { Notifications } from './notifications'
 import { Menu } from './menu'
 import { Auth } from './auth'
 import { Blocks } from './blocks'
+import { MediaPage } from './media'
 import { EnsureAuthenticated } from './auth'
+
 
 const App = ({ children }) => (
     <div>
@@ -33,6 +35,7 @@ export default ({ store }) => {
                     <IndexRoute component={Blocks} />
                     <Route path="auth" component={Auth} />
                     <Route path="blocks" component={Blocks} />
+                    <Route path="media" component={MediaPage} />
                 </Route>
             </Router>
         </Provider>

@@ -1,11 +1,12 @@
 import os
-from flask import current_app
-from mongoengine import *
+from werkzeug.utils import secure_filename
 from werkzeug.security import (
     check_password_hash,
-    generate_password_hash,
-    safe_join
+    generate_password_hash
 )
+
+from flask import current_app
+from mongoengine import *
 from landing.utility.blocks import BlockMetaclass, unregister_block
 
 
@@ -32,15 +33,19 @@ class Media(Document):
     @property
     def file_url(self):
         media_root = current_app.config['MEDIA_ROOT']
-        media_url = current_app.config.get('MEDIA_URL', '/static/media')
+        media_url = current_app.config.get('MEDIA_URL', '/static/media/')
         return self.file_path.replace(media_root, media_url, 1)
 
     # noinspection PyMethodOverriding
     def save(self, file_storage, media_path, *args, **kwargs):
         abs_path = os.path.abspath(
-            safe_join(media_path, file_storage.filename)
+            os.path.join(media_path, secure_filename(file_storage.filename))
         )
-        file_storage.save(abs_path, 65536)
+
+        try: os.stat(media_path)
+        except: os.mkdir(media_path)
+        finally: file_storage.save(abs_path, 65536)
+
         self.file_path = abs_path
         self.mime_type = file_storage.mimetype_params
         return super().save(*args, **kwargs)

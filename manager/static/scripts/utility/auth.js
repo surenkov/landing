@@ -1,7 +1,7 @@
 /**
  * Created by surenkov on 10/3/16.
  */
-import { push, replace } from 'react-router-redux'
+import { replace } from 'react-router-redux'
 import { USER_LOG_IN, USER_LOG_OUT } from '../actions/auth'
 
 export const authMiddleware = ({ dispatch, getState }) => next => action => {
@@ -9,7 +9,7 @@ export const authMiddleware = ({ dispatch, getState }) => next => action => {
         setTimeout(() => dispatch(replace('/')));
 
     if (action.type === USER_LOG_OUT)
-        setTimeout(() => dispatch(push('/auth')));
+        setTimeout(() => dispatch(replace('/auth')));
 
     return next(action);
 };
@@ -25,6 +25,6 @@ const tokenExpired = ({ auth: { expires }}) =>
 export const handleUserRedirect = (store) => {
     const state = store.getState();
     if (!isUserLoggedIn(state) || tokenExpired(state)) {
-        store.dispatch(push('/auth'));
+        store.dispatch(replace('/auth'));
     }
 };

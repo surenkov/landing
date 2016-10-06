@@ -15,16 +15,19 @@ const MenuComponent = ({ user, onLogout }) => (
         </div>
 
         <Link className="item" to='/blocks'>Блоки</Link>
+        <Link className="item" to='/media'>Медиа</Link>
+
         <RolesAllowed roles={['admin']}>
             <Link className="item" to="/config">Параметры</Link>
         </RolesAllowed>
+
         <RolesAllowed roles={['admin']}>
             <Link className="item" to="/users">Пользователи</Link>
         </RolesAllowed>
         <a className="item" href="/" target="_blank">Перейти к сайту</a>
 
         <div className="ui right simple dropdown item">
-            {user.name}
+            <strong>{user.name}</strong>
             <i className="dropdown icon" />
             <div className="menu">
                 <a className="item">Настройки</a>

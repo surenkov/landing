@@ -4,20 +4,27 @@
 import React from 'react'
 import { TextInput, ToggleInput, Dropdown, HiddenInput } from './inputs'
 
-export const BlockButtons = ({ onRemove }) => (
+export const BlockButtons = ({ onRemove, onSave = () => true }) => (
     <div className="ui right aligned grid">
         <div className="sixteen wide column">
-            <div className="ui buttons">
-                <a onClick={onRemove} className="ui negative icon button">
+            <div className="ui labeled icon buttons">
+                <a onClick={onRemove} className="ui negative button">
                     <i className="trash icon" />
+                    Удалить
                 </a>
-                <button type="submit" className="ui positive icon button">
+                <button type="submit" onClick={onSave} className="ui positive button">
                     <i className="save icon" />
+                    Сохранить
                 </button>
             </div>
         </div>
     </div>
 );
+
+BlockButtons.propTypes = {
+    onSave: React.PropTypes.func,
+    onRemove: React.PropTypes.func.isRequired
+};
 
 export const BlockDefaults = ({ data = {}, type }) => {
     const defaultData = {
@@ -33,7 +40,6 @@ export const BlockDefaults = ({ data = {}, type }) => {
             <div className="three fields">
                 {data.id && <HiddenInput name="id" value={data.id} />}
                 <HiddenInput name="type" value={type.type} />
-
                 <Dropdown name="template" value={defaultData.template} caption="Шаблон" placeholder="Выберите шаблон" required>
                     {type.templates.map((template) => (
                         <option key={template} value={template}>{template}</option>
