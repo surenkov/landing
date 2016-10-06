@@ -1,14 +1,16 @@
 /**
  * Created by surenkov on 10/4/16.
  */
+import { combineReducers } from 'redux'
 import {
     BLOCKS_FETCHED,
     BLOCK_CREATED,
     BLOCK_UPDATED,
-    BLOCK_REMOVED
+    BLOCK_REMOVED,
+    BLOCK_TYPES_FETCHED
 } from '../actions/blocks'
 
-export default (state = {}, action) => {
+const objects = (state = {}, action) => {
     switch (action.type) {
         case BLOCKS_FETCHED:
             return { ...state, ...action.blocks };
@@ -33,4 +35,19 @@ export default (state = {}, action) => {
         default:
             return state;
     }
-}
+};
+
+const types = (state = {}, action) => {
+    switch (action.type) {
+        case BLOCK_TYPES_FETCHED:
+            return { ...state, ...action.data };
+
+        default:
+            return state;
+    }
+};
+
+export default combineReducers({
+    objects,
+    types
+});

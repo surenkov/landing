@@ -45,16 +45,25 @@ module.exports = (_path, env) => {
         }],
         resolve: {
             extensions: ['', '.js', '.jsx'],
+            root: [
+                path.resolve('./blocks'),
+                path.resolve('./manager/static/scripts'),
+                path.resolve('./landing/static/scripts')
+            ]
         },
         module: {
             loaders: [
                 {
-                    test:    /\.(png|jpe?g|gif|svg)$/i,
-                    loaders: ['url?limit=30000&name=assets/[name].[ext]', 'image-webpack']
+                    test:    /\.(png|jpe?g|gif)$/i,
+                    loaders: ['url?limit=10000&name=assets/images/[name].[ext]', 'imagemin-webpack']
+                },
+                {
+                    test: /\.svg$/i,
+                    loaders: ['file?name=assets/images/[name].[ext]']
                 },
                 {
                     test: /\.(ttf|eot|woff|woff2)$/i,
-                    loaders: ['url?limit=30000&name=assets/fonts/[name].[ext]']
+                    loaders: ['file?name=assets/fonts/[name].[ext]']
                 },
                 {
                     test:    /\.ico$/i,

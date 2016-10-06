@@ -24,24 +24,29 @@ export const checkStatus = (response) => {
 };
 
 export const guardResponse = (promise, title = 'Ошибка запроса') => (
-    promise.catch((ex) => {
-        const status = ex.response.status;
-        let message = ex.message;
+    promise
+        .then(() => false)
+        .catch((ex) => {
+            const status = ex.response.status;
+            let message = ex.message;
+            let type = 'warning';
 
-        if (status >= 400 && status < 500) {
-            message = 'Ошибка запроса. Убедитесь в корректности данных.';
-        } else if (status >= 500) {
-            message = 'Внутренняя ошибка сервера. Обратитесь к администратору.';
-        }
+            if (status >= 400 && status < 500) {
+                message = 'Ошибка запроса. Убедитесь в корректности данных.';
+            } else if (status >= 500) {
+                message = 'Внутренняя ошибка сервера. Обратитесь к администратору.';
+                type = 'error';
+            }
 
-        store.dispatch(
-            addNotification({
-                type: 'warning',
-                title,
-                message
-            })
-        );
-    })
+            store.dispatch(
+                addNotification({
+                    type,
+                    title,
+                    message
+                })
+            );
+            return true;
+        })
 );
 
 export const normalize = (objects, key = 'id') =>
@@ -62,7 +67,7 @@ export const create = (url, data) => (
     ) .then((response) => response.json())
 );
 
-export const list = (url) => (
+export const list = (url, key = 'id') => (
     fetch(url, {
         method: 'GET',
         headers: {
@@ -73,7 +78,7 @@ export const list = (url) => (
         checkStatus,
         connectionError
     ).then((response) => response.json()
-    ).then((data) => normalize(data))
+    ).then((data) => normalize(data, key))
 );
 
 export const get = (url) => (

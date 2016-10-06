@@ -12,7 +12,7 @@ export const addNotification = ({
     type = 'info',
     title = '',
     message = ''
-}, timeout = 3500) => (
+}, timeout = 4500) => (
     (dispatch) => {
         const { id } = dispatch({
             type: ADD_NOTIFICATION,

@@ -47,17 +47,17 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
+    "formsy-react": "^0.18.1",
     "jquery": "^3.1.1",
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-formal": "^0.21.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
-    "whatwg-fetch": "^1.0.0",
-    "yup": "^0.21.2"
+    "trumbowyg": "^2.3.0",
+    "whatwg-fetch": "^1.0.0"
   }
 }

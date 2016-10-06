@@ -1,4 +1,5 @@
 @import 'transitions';
+@import '~trumbowyg/dist/ui/sass/trumbowyg';
 
 html, body {
   background: #f9f9f9;
@@ -21,8 +22,27 @@ html, body {
   justify-content: center;
 }
 
-.main.container {
-  margin-top: 50px;
+.padded.container {
+  padding-top: 60px;
+}
+
+.trumbowyg-box,
+.trumbowyg-editor {
+  $border-radius: .28571429rem;
+
+  border-radius: $border-radius;
+  min-height: 80px;
+  margin: 0;
+
+  .trumbowyg-textarea {
+    border: none !important;
+    resize: none !important;
+  }
+
+  .trumbowyg-button-pane {
+    background: #f8f8f8;
+    border-radius: $border-radius $border-radius 0 0;
+  }
 }
 
 .login .validation-error {

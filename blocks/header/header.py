@@ -26,5 +26,6 @@ class HeaderBlock(Block):
             'partial': template('templates/template.html')
         },
         'parser': header_parser,
-        'serializer': header_serializer
+        'serializer': header_serializer,
+        'verbose_name': 'Шапка сайта'
     }
