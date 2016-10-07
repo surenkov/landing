@@ -21,7 +21,7 @@ const appReducer = combineReducers({
 
 export default (state, action) => appReducer(
     action.type == USER_LOG_OUT
-        ? undefined
+        ? { routing: state.routing }
         : state,
     action
 );

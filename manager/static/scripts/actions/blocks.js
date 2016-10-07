@@ -9,7 +9,7 @@ export const BLOCK_CREATED = 'BLOCK_CREATED';
 export const BLOCK_UPDATED = 'BLOCK_UPDATED';
 export const BLOCK_REMOVED = 'BLOCK_REMOVED';
 
-export const BLOCK_TYPES_FETCHED = 'BLOCKS_FETCHED';
+export const BLOCK_TYPES_FETCHED = 'BLOCK_TYPES_FETCHED';
 
 
 const blocksFetched = (blocks) => ({

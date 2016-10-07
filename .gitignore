@@ -4,3 +4,5 @@ env/
 .idea/
 /static/
 npm-debug.log
+__pycache__/
+*.pyc

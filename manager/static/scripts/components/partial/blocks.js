@@ -40,7 +40,7 @@ export const BlockDefaults = ({ data = {}, type }) => {
             <div className="three fields">
                 {data.id && <HiddenInput name="id" value={data.id} />}
                 <HiddenInput name="type" value={type.type} />
-                <Dropdown name="template" value={defaultData.template} caption="Шаблон" placeholder="Выберите шаблон" required>
+                <Dropdown name="template" value={defaultData.template} caption="Шаблон" required>
                     {type.templates.map((template) => (
                         <option key={template} value={template}>{template}</option>
                     ))}

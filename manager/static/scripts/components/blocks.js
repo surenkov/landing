@@ -64,7 +64,6 @@ class BlocksComponent extends Prefetch {
                             {newBlock &&
                                 <Block
                                     type={types[newBlock]}
-                                    data={{}}
                                     onSave={this.saveNewBlock}
                                     onRemove={this.hideBlock}
                                 />

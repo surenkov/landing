@@ -4,6 +4,7 @@
 import _ from 'lodash'
 import React from 'react'
 import Formsy from 'formsy-react'
+import { connect } from 'react-redux'
 
 import 'trumbowyg'
 import 'trumbowyg/dist/langs/ru.min.js'
@@ -177,9 +178,9 @@ export const TextInput = React.createClass({
         this.setValue(value);
     },
     render() {
-        const { name, type, caption, placeholder } = this.props;
+        const { name, type, caption, placeholder, className } = this.props;
         return (
-            <div className={'field' + this.getValidClassName('', ' error')}>
+            <div className={(className ? className + ' ': '') + 'field' + this.getValidClassName('', ' error')}>
                 {caption && <label>{caption}</label>}
                 <input
                     type={type}
@@ -284,3 +285,28 @@ export const HiddenInput = React.createClass({
         return <input type="hidden" name={this.props.name} value={this.getValue()} />
     }
 });
+
+
+const BlockDropdownComponent = React.createClass({
+    render() {
+        const { blocks, types, name, value } = this.props;
+        return (
+            <Dropdown {...{name, value}} placeholder="Выберите блок">
+                {_.orderBy(blocks, ['ordering', 'id']).map(
+                    (block) => (
+                        <option key={block.id} value={block.id}>
+                            {types[block.type].name}
+                        </option>
+                    )
+                )}
+            </Dropdown>
+        );
+    }
+});
+
+export const BlockDropdown = connect(
+    ({ blocks: { objects, types }}) => ({
+        blocks: objects,
+        types
+    })
+)(BlockDropdownComponent);
