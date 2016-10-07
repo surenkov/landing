@@ -22,7 +22,10 @@ class Landing(Document):
     name = StringField()
     meta_info = DictField(default={})
     config = DictField(default={})
-    blocks = ListField(ReferenceField(Block))
+
+    @property
+    def blocks(self):
+        return Block.objects.order_by('ordering', 'id')
 
 
 class Media(Document):

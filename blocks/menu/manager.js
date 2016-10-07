@@ -1,11 +1,10 @@
 /**
  * Created by surenkov on 9/9/16.
  */
-import _ from 'lodash'
 import React from 'react'
 
 import { registerBlock } from 'utility/blocks'
-import { BlockButtons, BlockDefaults } from 'components/partial/blocks'
+import { BlockButtons, BlockDefaults, ListBlock } from 'components/partial/blocks'
 import { BlockDropdown, TextInput } from 'components/partial/inputs'
 import Formsy from 'formsy-react'
 
@@ -39,23 +38,15 @@ const LinkField = React.createClass({
 });
 
 
-class MenuForm extends React.Component {
+class MenuForm extends ListBlock {
     static defaultProps = {
-        data: { links: [] }
+        data: { items: [] }
     };
     constructor(props) {
         super(props);
-        this.addLink = this.addLink.bind(this);
-        this.state = {
-            links: this.props.data.links
-        };
-    }
-    addLink() {
-        this.setState({ links: [ ...this.state.links, {} ]});
-    }
-    removeLink(link) {
-        const links = _.reject(this.state.links, (lnk) => lnk === link);
-        this.setState({ links });
+        this.addItem = this.addItem.bind(this, {});
+        this.removeItem = this.removeItem.bind(this);
+        this.state = { items: this.props.data.links };
     }
     render() {
         const { data, type, onSave, onRemove } = this.props;
@@ -68,17 +59,17 @@ class MenuForm extends React.Component {
                     <div className="ui top attached segment">
                         <div className="field">
                             <label>Ссылки на блоки</label>
-                            {this.state.links.map((link, i) => (
+                            {this.state.items.map((link, i) => (
                                 <LinkField
                                     key={i}
                                     name={`links[${i}]`}
-                                    onRemove={() => this.removeLink(link)}
+                                    onRemove={() => this.removeItem(i)}
                                     value={link}
                                 />
                             ))}
                         </div>
                     </div>
-                    <a onClick={this.addLink} className="ui bottom attached icon button">
+                    <a onClick={this.addItem} className="ui bottom attached icon button">
                         <i className="plus icon" />
                         Добавить ссылку
                     </a>

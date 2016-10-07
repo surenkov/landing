@@ -48,12 +48,6 @@ block_parser.add_argument('type', type=str, dest='_cls', store_missing=False)
 block_parser.add_argument('enabled', type=bool, store_missing=False)
 block_parser.add_argument('template', type=str, store_missing=False)
 block_parser.add_argument('ordering', type=int, store_missing=False)
-block_parser.add_argument(
-    'add_to_landing',
-    type=inputs.boolean,
-    default=False,
-    location='args'
-)
 
 
 media_parser = reqparse.RequestParser(bundle_errors=True)

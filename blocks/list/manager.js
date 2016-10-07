@@ -1,11 +1,10 @@
 /**
  * Created by surenkov on 9/9/16.
  */
-import _ from 'lodash'
 import React from 'react'
 
 import { registerBlock } from 'utility/blocks'
-import { BlockButtons, BlockDefaults } from 'components/partial/blocks'
+import { BlockButtons, BlockDefaults, ListBlock } from 'components/partial/blocks'
 import { BlockDropdown, TextInput } from 'components/partial/inputs'
 import Formsy from 'formsy-react'
 
@@ -19,23 +18,15 @@ const ItemField = ({ name, value, onRemove }) => (
     </div>
 );
 
-class ListForm extends React.Component {
+class ListForm extends ListBlock {
     static defaultProps = {
         data: { items: [] }
     };
     constructor(props) {
         super(props);
-        this.addItem = this.addItem.bind(this);
-        this.state = {
-            items: this.props.data.items
-        };
-    }
-    addItem() {
-        this.setState({ items: [...this.state.items, '']});
-    }
-    removeItem(item) {
-        const items = _.reject(this.state.items, (i) => i === item);
-        this.setState({ items });
+        this.addItem = this.addItem.bind(this, '');
+        this.removeItem = this.removeItem.bind(this);
+        this.state = { items: this.props.data.items };
     }
     render() {
         const { data, type, onSave, onRemove } = this.props;
@@ -52,13 +43,14 @@ class ListForm extends React.Component {
                                 <ItemField
                                     key={i}
                                     name={`items[${i}]`}
-                                    onRemove={() => this.removeItem(item)}
+                                    onRemove={() => this.removeItem(i)}
                                     value={item}
                                 />
                             ))}
                         </div>
                     </div>
-                    <a onClick={this.addItem} className="ui bottom attached icon button">
+                    <a onClick={this.addItem}
+                       className="ui bottom attached icon button">
                         <i className="plus icon" />
                         Добавить элемент списка
                     </a>

@@ -310,3 +310,54 @@ export const BlockDropdown = connect(
         types
     })
 )(BlockDropdownComponent);
+
+
+export const MediaInput = React.createClass({
+    mixins: [Formsy.Mixin],
+    propTypes: {
+        icon: React.PropTypes.string,
+        caption: React.PropTypes.string,
+        onClick: React.PropTypes.func.isRequired,
+
+        value: React.PropTypes.shape({
+            id: React.PropTypes.string,
+            mime_type: React.PropTypes.any,
+            file_url: React.PropTypes.string
+        })
+    },
+    getDefaultProps() {
+        return {
+            icon: 'remove',
+            caption: 'Удалить',
+            value: {}
+        }
+    },
+    componentDidMount() {
+        $(this.refs.dimmer).dimmer({ closable: false });
+    },
+    render() {
+        const { caption, icon, onClick } = this.props;
+        const { file_url } = this.getValue();
+        return (
+            <div className="image"
+                 onMouseEnter={() => $(this.refs.dimmer).dimmer('show')}
+                 onMouseLeave={() => $(this.refs.dimmer).dimmer('hide')}
+            >
+                <img src={file_url} />
+                <div ref="dimmer" className="ui dimmer">
+                    <div className="content">
+                        <div className="center">
+                            <a onClick={onClick}
+                               className="ui inverted action icon header">
+                                <i className={`${icon} icon`} />
+                                {caption}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
+

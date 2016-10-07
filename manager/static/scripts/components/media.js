@@ -60,15 +60,13 @@ class MediaPageView extends Prefetch {
                         <MediaUploadButton onClick={onUpload} />
                         <div className="ui bottom attached segment">
                             <div className="ui four cards">
-                                {_.orderBy(media, 'id', 'desc').map(
-                                    (data) => (
-                                        <Media
-                                            key={data.id}
-                                            data={data}
-                                            onRemove={() => onRemove(data.id)}
-                                        />
-                                    )
-                                )}
+                                {_.orderBy(media, 'id', 'desc').map((data) => (
+                                    <Media
+                                        key={data.id}
+                                        data={data}
+                                        onRemove={() => onRemove(data.id)}
+                                    />
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -128,3 +126,74 @@ const Media = ({ data, onRemove }) => {
     );
 };
 
+
+const SimpleMedia = ({ file, onClick }) => (
+    <a className="card" onClick={onClick}>
+        <div className="image">
+            <img src={file} />
+        </div>
+    </a>
+);
+
+class MediaAddButtonComponent extends Prefetch {
+    static propTypes = {
+        onSelect: React.PropTypes.func,
+    };
+    static defaultProps = {
+        onSelect: () => {},
+    };
+    constructor(props) {
+        super(props);
+        this.showModal = this.showModal.bind(this);
+        this.state = { loaded: false };
+    }
+    prefetchData() {
+        this.props.loadMedia().then(() => this.setState({ loaded: true }));
+    }
+    selectImage(media) {
+        this.props.onSelect(media);
+        $(this.refs.modal).modal('hide');
+    }
+    showModal() {
+        $(this.refs.modal).modal('show');
+    }
+    render() {
+        const { media } = this.props;
+        return this.state.loaded ? (
+            <div>
+                <a onClick={this.showModal} className="ui action icon button">
+                    <i className={"plus icon"} />
+                </a>
+                <div className="hidden">
+                    <div ref="modal" className="ui modal">
+                        <div className="header">
+                            Выберите изображение
+                        </div>
+                        <div className="content">
+                            <div className="ui four cards">
+                                {_.orderBy(media, 'id', 'desc').map((m) => (
+                                    <SimpleMedia
+                                        key={m.id}
+                                        file={m.file_url}
+                                        onClick={() => this.selectImage(m)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ) : (
+            <div className="ui disabled loading button">Loading</div>
+        );
+    }
+}
+
+export const MediaAddButton = connect(
+    ({ media }) => ({ media }),
+    (dispatch) => ({
+        loadMedia: () => dispatch(fetchMedia())
+    })
+)(MediaAddButtonComponent);
+
+MediaAddButton.propTypes = MediaAddButtonComponent.propTypes;

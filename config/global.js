@@ -118,7 +118,7 @@ module.exports = (_path, env) => {
         },
         'production': {
             debug: false,
-            devtool: 'source-map',
+            devtool: 'cheap-source-map',
             output: {
                 publicPath: '/static/'
             },

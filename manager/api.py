@@ -74,13 +74,7 @@ class BlockList(AuthResource):
         serializer = get_serializer(doc_type, block_fields)
 
         data = parser.parse_args()
-        add_to_landing = data.pop('add_to_landing', True)
         block = doc_type.objects.create(**data)
-
-        if add_to_landing:
-            landing_inst = landing()
-            landing_inst.blocks.append(block)
-            landing_inst.save()
 
         return marshal(block, serializer)
 
@@ -115,13 +109,7 @@ class BlockView(AuthResource):
             serializer = get_serializer(block_type, block_fields)
 
             data = parser.parse_args()
-            add_to_landing = data.pop('add_to_landing', True)
             block.modify(**data)
-
-            if add_to_landing:
-                landing_inst = landing()
-                landing_inst.blocks.append(block)
-                landing_inst.save()
 
             return marshal(block, serializer)
         except models.Block.DoesNotExist:
