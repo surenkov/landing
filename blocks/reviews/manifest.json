@@ -1,5 +1,5 @@
 {
-  "name": "media_list",
+  "name": "reviews",
   "enabled": true,
   "manager_assets": [
     "manager.js"

@@ -9,6 +9,7 @@ import notifications from './notifications'
 import auth from './auth'
 import blocks from './blocks'
 import media from './media'
+import users from './users'
 
 const appReducer = combineReducers({
     routing: routerReducer,
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
     notifications,
 
     blocks,
+    users,
     media
 });
 

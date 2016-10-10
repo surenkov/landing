@@ -71,4 +71,4 @@ def render_block(block, landing):
 
 
 def render_blocks(blocks, landing):
-    return ''.join(map(partial(render_block, landing=landing), blocks))
+    return '\n'.join(map(partial(render_block, landing=landing), blocks))

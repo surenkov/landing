@@ -2,7 +2,7 @@
   "name": "header",
   "enabled": true,
   "manager_assets": [
-    "manager/header.js"
+    "header.js"
   ],
   "landing_assets": []
 }

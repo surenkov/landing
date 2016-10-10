@@ -59,6 +59,14 @@ html, body {
   }
 }
 
+.item .image .dimmer {
+  z-index: 100;
+}
+
+.field .ui.selection.dropdown.visible {
+  z-index: 102;
+}
+
 .hidden {
   display: none;
 }

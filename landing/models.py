@@ -25,7 +25,7 @@ class Landing(Document):
 
     @property
     def blocks(self):
-        return Block.objects.order_by('ordering', 'id')
+        return Block.objects.filter(enabled=True).order_by('ordering', 'id')
 
 
 class Media(Document):

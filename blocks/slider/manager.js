@@ -16,7 +16,7 @@ import { TextInput, MediaInput } from 'components/partial/inputs'
 import { MediaAddButton } from 'components/media'
 
 
-class MediaForm extends ListBlock {
+class SliderForm extends ListBlock {
     static defaultProps = {
         data: { items: [] }
     };
@@ -30,13 +30,13 @@ class MediaForm extends ListBlock {
             <Formsy.Form className="ui form" onValidSubmit={onSave}>
                 <BlockDefaults data={data} type={type} />
                 <div>
-                    <h4 className="ui dividing header">Параметры списка</h4>
-                    <TextInput name="title" value={data.title} caption="Текст" placeholder="Текст заголовка" />
+                    <h4 className="ui dividing header">Параметры слайдера</h4>
+                    <TextInput name="title" value={data.title} caption="Заголовок" placeholder="Текст заголовка" />
                     <div className="ui top attached segment">
                         <div className="field">
-                            <label>Элементы списка</label>
+                            <label>Слайды</label>
                         </div>
-                        <div className="ui four cards">
+                        <div className="ui three cards">
                             {items.map((item, i) => (
                                 <div key={i} className="card">
                                     <MediaInput
@@ -46,9 +46,9 @@ class MediaForm extends ListBlock {
                                     />
                                     <div className="extra content">
                                         <TextInput
-                                            name={`items[${i}].caption`}
-                                            value={item.caption}
-                                            placeholder="Текст элемента"
+                                            name={`items[${i}].description`}
+                                            value={item.description}
+                                            placeholder="Описание слайда"
                                         />
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@ class MediaForm extends ListBlock {
                         onSelect={(media) => this.addItem({ media, caption: '' })}
                     >
                         <i className="add icon" />
-                        Добавить элемент списка
+                        Добавить слайд
                     </MediaAddButton>
                 </div>
                 <br />
@@ -70,4 +70,4 @@ class MediaForm extends ListBlock {
     }
 }
 
-registerBlock('Block.MediaListBlock', MediaForm);
+registerBlock('Block.SliderBlock', SliderForm);

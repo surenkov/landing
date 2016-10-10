@@ -1,8 +1,10 @@
 {
-  "name": "media_list",
+  "name": "order",
   "enabled": true,
   "manager_assets": [
     "manager.js"
   ],
-  "landing_assets": []
+  "landing_assets": [
+    "landing.js"
+  ]
 }

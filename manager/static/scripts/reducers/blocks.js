@@ -28,9 +28,8 @@ const objects = (state = {}, action) => {
             };
 
         case BLOCK_REMOVED:
-            const newState = { ...state };
-            delete newState[action.id];
-            return newState;
+            const {[action.id]: _, ...rest} = state;
+            return rest;
 
         default:
             return state;

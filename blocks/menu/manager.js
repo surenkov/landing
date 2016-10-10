@@ -5,12 +5,12 @@ import React from 'react'
 
 import { registerBlock } from 'utility/blocks'
 import { BlockButtons, BlockDefaults, ListBlock } from 'components/partial/blocks'
-import { BlockDropdown, TextInput } from 'components/partial/inputs'
+import { BlockDropdown, TextInput, ValidInputMixin } from 'components/partial/inputs'
 import Formsy from 'formsy-react'
 
 
 const LinkField = React.createClass({
-    mixins: [Formsy.Mixin],
+    mixins: [Formsy.Mixin, ValidInputMixin],
     propTypes: {
         onRemove: React.PropTypes.func.isRequired
     },
@@ -21,11 +21,15 @@ const LinkField = React.createClass({
             }
         };
     },
+    validate() {
+        const { caption, block_id} = this.getValue();
+        return !!caption && !!block_id;
+    },
     render() {
         const { onRemove } = this.props;
         return (
             <Formsy.Form className="field" onChange={this.setValue}>
-                <div className="two fields">
+                <div className={`two${this.getValidClassName(' ', ' error ')}fields`}>
                     <TextInput name="caption" value={this.getValue().caption} />
                     <BlockDropdown name="block_id" value={this.getValue().block_id} required />
                     <a onClick={onRemove} className="ui icon button">
@@ -40,16 +44,18 @@ const LinkField = React.createClass({
 
 class MenuForm extends ListBlock {
     static defaultProps = {
-        data: { items: [] }
+        data: { links: [] }
     };
+    getItemsFromProps(props) {
+        return props.data.links;
+    }
     constructor(props) {
         super(props);
         this.addItem = this.addItem.bind(this, {});
-        this.removeItem = this.removeItem.bind(this);
-        this.state = { items: this.props.data.links };
     }
     render() {
         const { data, type, onSave, onRemove } = this.props;
+        const items = this.getItems();
         return (
             <Formsy.Form className="ui form" onValidSubmit={onSave}>
                 <BlockDefaults data={data} type={type} />
@@ -59,7 +65,7 @@ class MenuForm extends ListBlock {
                     <div className="ui top attached segment">
                         <div className="field">
                             <label>Ссылки на блоки</label>
-                            {this.state.items.map((link, i) => (
+                            {items.map((link, i) => (
                                 <LinkField
                                     key={i}
                                     name={`links[${i}]`}

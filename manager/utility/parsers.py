@@ -1,5 +1,6 @@
+import re
 from bson import ObjectId
-from flask_restful import reqparse, inputs
+from flask_restful import reqparse
 from werkzeug.datastructures import FileStorage
 from landing.models import Block, USER_ROLES
 
@@ -33,6 +34,20 @@ def finite_string(min_length=0, max_length=float('inf')):
         return value
     return parser
 
+
+def email():
+    email_pattern = (r'^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|'
+                     r'(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+'
+                     r'[^<>()[\]\.,;:\s@\"]{2,})$')
+    regex = re.compile(email_pattern)
+
+    def input(value, name):
+        if not regex.search(value):
+            raise ValueError('Field "%s" is not a valid email' % name)
+        return value
+
+    return input
+
 landing_parser = reqparse.RequestParser(bundle_errors=True)
 landing_parser.add_argument('name', type=str, store_missing=False)
 landing_parser.add_argument(
@@ -53,6 +68,7 @@ block_parser.add_argument('ordering', type=int, store_missing=False)
 media_parser = reqparse.RequestParser(bundle_errors=True)
 media_parser.add_argument('file', type=FileStorage, location='files')
 
+
 user_parser = reqparse.RequestParser(bundle_errors=True)
 user_parser.add_argument('id', type=ObjectId, store_missing=False)
 user_parser.add_argument('name', type=str, required=True)
@@ -64,11 +80,4 @@ user_parser.add_argument(
     type=choices_input(*list(map(lambda r: r[0], USER_ROLES))),
     required=True
 )
-user_parser.add_argument(
-    'email',
-    type=inputs.regex(r'^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|'
-                      r'(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+'
-                      r'[^<>()[\]\.,;:\s@\"]{2,})$'),
-    required=True
-)
-
+user_parser.add_argument('email', type=email(), required=True)

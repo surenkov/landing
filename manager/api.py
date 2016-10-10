@@ -59,7 +59,7 @@ class Config(AdminResource):
 class BlockList(AuthResource):
 
     def get(self):
-        blocks = models.Block.objects.order_by('ordering')
+        blocks = models.Block.objects.order_by('ordering', 'id')
         items = [marshal(block, get_serializer(type(block), block_fields))
                  for block in blocks]
         return items

@@ -19,8 +19,7 @@ class HeaderBlock(Block):
 
     meta = {
         'templates': {
-            'default': template('templates/template.html'),
-            'partial': template('templates/template.html')
+            'default': template('template.html'),
         },
         'parser': header_parser,
         'serializer': header_serializer,

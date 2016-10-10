@@ -66,11 +66,23 @@ BlockDefaults.propTypes = {
 
 
 export class ListBlock extends React.Component {
+    getItems() {
+        return this.state._items;
+    }
+    constructor(props) {
+        super(props);
+        this.state = { _items: this.getItemsFromProps(props) };
+    }
+    componentWillReceiveProps(nextProps) {
+        const nextItems = this.getItemsFromProps(nextProps);
+        if (nextItems !== this.state._items)
+            this.setState({ _items: nextItems });
+    }
     addItem(item) {
-        this.setState({ items: [...this.state.items, item] });
+        this.setState({ _items: [...this.state._items, item] });
     }
     removeItem(idx) {
-        const { items } = this.state;
-        this.setState({ items: [...items.slice(0, idx), ...items.slice(idx + 1)] });
+        const { _items } = this.state;
+        this.setState({ _items: [..._items.slice(0, idx), ..._items.slice(idx + 1)] });
     }
 }

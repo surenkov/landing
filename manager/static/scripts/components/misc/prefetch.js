@@ -7,13 +7,12 @@ import React from 'react'
 export default class extends React.Component {
     constructor(props) {
         super(props);
-        this.prefetchData = _.debounce(this.prefetchData.bind(this), 40, {
-            leading: true,
-            trailing: false
-        });
+        this.state = { _loaded: false };
+    }
+    isLoaded() {
+        return this.state._loaded;
     }
     componentDidMount() {
-        this.prefetchData();
+        this.preload().then(() => this.setState({ _loaded: true }));
     }
-    prefetchData() {}
 }

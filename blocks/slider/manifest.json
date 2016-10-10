@@ -1,5 +1,5 @@
 {
-  "name": "media_list",
+  "name": "slider",
   "enabled": true,
   "manager_assets": [
     "manager.js"

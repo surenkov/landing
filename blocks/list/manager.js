@@ -22,14 +22,16 @@ class ListForm extends ListBlock {
     static defaultProps = {
         data: { items: [] }
     };
+    getItemsFromProps(props) {
+        return props.data.items;
+    }
     constructor(props) {
         super(props);
         this.addItem = this.addItem.bind(this, '');
-        this.removeItem = this.removeItem.bind(this);
-        this.state = { items: this.props.data.items };
     }
     render() {
         const { data, type, onSave, onRemove } = this.props;
+        const items = this.getItems();
         return (
             <Formsy.Form className="ui form" onValidSubmit={onSave}>
                 <BlockDefaults data={data} type={type} />
@@ -39,7 +41,7 @@ class ListForm extends ListBlock {
                     <div className="ui top attached segment">
                         <div className="field">
                             <label>Элементы списка</label>
-                            {this.state.items.map((item, i) => (
+                            {items.map((item, i) => (
                                 <ItemField
                                     key={i}
                                     name={`items[${i}]`}

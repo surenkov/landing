@@ -22,9 +22,8 @@ export default (state = {}, action) => {
             };
 
         case MEDIA_DELETED:
-            const newState = { ...state };
-            delete newState[action.id];
-            return newState;
+            const {[action.id]: _, ...rest} = state;
+            return rest;
 
         default:
             return state;

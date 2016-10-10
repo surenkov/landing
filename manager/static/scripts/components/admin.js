@@ -11,6 +11,7 @@ import { Menu } from './menu'
 import { Auth } from './auth'
 import { Blocks } from './blocks'
 import { MediaPage } from './media'
+import { UsersPage } from './users'
 import { EnsureAuthenticated } from './auth'
 
 
@@ -36,6 +37,7 @@ export default ({ store }) => {
                     <Route path="auth" component={Auth} />
                     <Route path="blocks" component={Blocks} />
                     <Route path="media" component={MediaPage} />
+                    <Route path="users" component={UsersPage} />
                 </Route>
             </Router>
         </Provider>

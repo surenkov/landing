@@ -16,21 +16,21 @@ import {
 import { createBlockForm } from '../utility/blocks'
 
 import Prefetch from './misc/prefetch'
-import { Dropdown, Checkbox } from './partial/inputs'
+import { Dropdown } from './partial/inputs'
 
 class BlocksComponent extends Prefetch {
     constructor(params) {
         super(params);
-        this.state = { loaded: false, newBlock: undefined };
         this.createBlock = this.createBlock.bind(this);
         this.saveNewBlock = this.saveNewBlock.bind(this);
         this.hideBlock = this.hideBlock.bind(this);
+        this.state = { ...super.state, newBlock: undefined };
     }
-    prefetchData() {
-        Promise.all([
+    preload() {
+        return Promise.all([
             this.props.loadBlocks(),
             this.props.loadTypes()
-        ]).then(() => this.setState({ loaded: true }));
+        ])
     }
     createBlock(params) {
         this.setState({ newBlock: params });
@@ -44,7 +44,8 @@ class BlocksComponent extends Prefetch {
     }
     render() {
         const { blocks, types, onUpdate, onRemove } = this.props;
-        const { newBlock, loaded } = this.state;
+        const { newBlock } = this.state;
+        const loaded = this.isLoaded();
         return (
             loaded ? (
                 <div className="ui padded container">
