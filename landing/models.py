@@ -1,93 +1,83 @@
-from flask import render_template
-from flask_mongoengine.wtf import model_form
-from mongoengine.base import DocumentMetaclass
-from bson import ObjectId
-from landing import db
-from landing.blocks import register_block, unregister_block
+import os
+from werkzeug.utils import secure_filename
+from werkzeug.security import (
+    check_password_hash,
+    generate_password_hash
+)
 
-
-class BlockType(DocumentMetaclass):
-
-    def __new__(mcs, name, bases, attrs):
-        new_class = super().__new__(mcs, name, bases, attrs)
-        register_block(new_class)
-        bases_meta = []
-        for mro_class in new_class.mro():
-            if 'Meta' in mro_class.__dict__:
-                bases_meta.append(mro_class.Meta)
-        meta_object = {'verbose_name': str(new_class)}
-        for meta in reversed(bases_meta):
-            for param, val in meta.__dict__.items():
-                if param.startswith('_'):
-                    continue
-                meta_object[param] = val
-        new_class._block_meta = meta_object
-        return new_class
+from flask import current_app
+from mongoengine import *
+from landing.utility.blocks import BlockMetaclass, unregister_block
 
 
 @unregister_block
-class Block(db.EmbeddedDocument, metaclass=BlockType):
-    """ Base class for all landing blocks. """
+class Block(Document, metaclass=BlockMetaclass):
+    enabled = BooleanField(default=True)
+    template = StringField(required=True)
+    ordering = IntField()
+    meta = {'allow_inheritance': True}
 
-    id = db.ObjectIdField(primary_key=True, default=ObjectId)
 
-    meta = {
-        'abstract': True,
-        'allow_inheritance': True,
-        'indexes': ['id']
-    }
+class Landing(Document):
+    name = StringField()
+    meta_info = DictField(default={})
+    config = DictField(default={})
 
-    def __new__(cls, **kwargs):
-        block = super().__new__(cls)
-        block._block_meta = dict(cls._block_meta)
-        return block
+    @property
+    def blocks(self):
+        return Block.objects.filter(enabled=True).order_by('ordering', 'id')
 
-    def _form(self, data=None):
-        form_cls = self._block_meta.get('manager_form', None) \
-            or model_form(type(self))
-        return form_cls(data, self)
 
-    def render_template(self, **kwargs):
-        template = self._block_meta.get('template')
-        landing = landing_factory()
+class Media(Document):
+    file_path = StringField(required=True)
+    mime_type = DictField()
+    meta = {'indexes': ['file_path']}
+
+    @property
+    def file_url(self):
+        media_root = current_app.config['MEDIA_ROOT']
+        media_url = current_app.config['MEDIA_URL']
+        return self.file_path.replace(media_root, media_url, 1)
+
+    # noinspection PyMethodOverriding
+    def save(self, file_storage, media_path, *args, **kwargs):
+        abs_path = os.path.abspath(
+            os.path.join(media_path, secure_filename(file_storage.filename))
+        )
+
+        try: os.stat(media_path)
+        except: os.mkdir(media_path)
+        finally: file_storage.save(abs_path, 65536)
+
+        self.file_path = abs_path
+        self.mime_type = file_storage.mimetype_params
+        return super().save(*args, **kwargs)
+
+    def delete(self, **write_concern):
         try:
-            return render_template(template, block=self,
-                                   landing=landing, **kwargs)
-        except:
-            return ''
-
-    def render_form(self):
-        form = self._form()
-        template = self._block_meta.get('manager_template',
-                                        'manager/partial/block.html')
-        return render_template(template, form=form, block=self)
-
-    def submit_form(self, data=None, commit=True):
-        form = self._form(data)
-        is_valid = form.validate()
-        if is_valid:
-            form.populate_obj(self)
-            if commit:
-                self.save()
-        return is_valid, form.errors
+            os.remove(self.file_path)
+        except OSError:
+            pass
+        super().delete(**write_concern)
 
 
-class LandingModel(db.Document):
-    title = db.StringField()
-    owner = db.StringField()
-
-    enabled_blocks = db.ListField(db.StringField())
-    blocks = db.EmbeddedDocumentListField(Block)
+USER_ROLES = (
+    ('manager', 'Manager'),
+    ('admin', 'Administrator')
+)
 
 
-class SingletonLandingFactory:
+class User(Document):
+    name = StringField(required=True)
+    email = EmailField(required=True, unique=True)
+    role = StringField(required=True, choices=USER_ROLES)
+    pw_hash = StringField()
 
-    def __call__(self):
-        singleton = LandingModel.objects.first()
-        if singleton is None:
-            singleton = LandingModel()
-            singleton.save()
-        return singleton
+    _hash_params = 'pbkdf2:sha224:10000'
+    meta = {'indexes': ['email']}
 
+    def set_password(self, password):
+        self.pw_hash = generate_password_hash(password, self._hash_params)
 
-landing_factory = SingletonLandingFactory()
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)

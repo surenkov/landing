@@ -1,0 +1,14 @@
+<section class="light map" id="contacts">
+    <div class="dgis-map">
+        <script charset="utf-8" src="http://widgets.2gis.com/js/DGWidgetLoader.js"></script>
+        <script charset="utf-8">
+            new DGWidgetLoader({
+                "width": 640,
+                "height": 600,
+                "pos": {"lat": {{  block.position.lat }}, "lon": {{ block.position.lon }}, "zoom": {{ block.position.zoom }} },
+                "opt": {"city": "{{ block.options.city }}" },
+                "org": [{"id": "{{ block.organization.id }}" }]
+            });
+        </script>
+    </div>
+</section>

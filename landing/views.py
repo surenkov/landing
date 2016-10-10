@@ -1,10 +1,14 @@
+from functools import partial
 from flask import render_template
-from landing import app
-from landing.models import landing_factory
-from landing.blocks import registered_blocks
+from landing import landing_app, landing
+from .utility.templates import render_blocks
 
 
-@app.route('/')
-def home():
-    return render_template('index.html', landing=landing_factory(),           
-                           all_blocks=registered_blocks().values())
+@landing_app.route('/')
+def landing_view():
+    landing_inst = landing()
+    render = partial(render_blocks, landing=landing_inst)
+    return render_template('landing.html',
+                           landing=landing_inst,
+                           blocks=landing_inst.blocks,
+                           render=render)

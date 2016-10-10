@@ -1,0 +1,84 @@
+@import 'transitions';
+@import '~trumbowyg/dist/ui/sass/trumbowyg';
+
+html, body {
+  background: #f9f9f9;
+}
+
+#notifications {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  z-index: 9999;
+}
+
+.full.page.container {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.padded.container {
+  padding-top: 60px;
+}
+
+.trumbowyg-box {
+  z-index: 1;
+}
+
+.trumbowyg-box,
+.trumbowyg-editor {
+  $border-radius: .28571429rem;
+
+  border-radius: $border-radius;
+  min-height: 80px;
+  margin: 0;
+
+  .trumbowyg-textarea {
+    border: none !important;
+    resize: none !important;
+  }
+
+  .trumbowyg-button-pane {
+    background: #f8f8f8;
+    border-radius: $border-radius $border-radius 0 0;
+  }
+}
+
+.login .validation-error {
+  margin-top: 0;
+  padding-left: 10px;
+
+  li {
+    list-style: none;
+    color: #B03060;
+  }
+}
+
+.item .image .dimmer {
+  z-index: 100;
+}
+
+.field .ui.selection.dropdown.visible {
+  z-index: 102;
+}
+
+.hidden {
+  display: none;
+}
+
+.media {
+  margin: 10px;
+
+  .action {
+    cursor: pointer;
+  }
+
+  .icon.header {
+    display: block;
+  }
+}

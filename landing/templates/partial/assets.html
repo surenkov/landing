@@ -1,8 +1,0 @@
-{% macro css(blocks, context='template', prefix='blocks/') -%}
-    {%- set assets_index = context+'_assets' %}
-    {% for data in blocks if assets_index in data._block_meta -%}
-        {% for asset in data._block_meta[assets_index].get('css', []) -%}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/'+prefix+asset) }}" />
-        {%- endfor %}
-    {%- endfor %}
-{%- endmacro %}

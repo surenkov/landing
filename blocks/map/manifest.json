@@ -1,0 +1,8 @@
+{
+  "name": "map",
+  "enabled": true,
+  "manager_assets": [
+    "manager.js"
+  ],
+  "landing_assets": []
+}

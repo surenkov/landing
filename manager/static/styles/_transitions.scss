@@ -1,0 +1,36 @@
+.fade-in-out-enter {
+  opacity: .0;
+}
+
+.fade-in-out-enter.fade-in-out-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.fade-in-out-leave {
+  opacity: 1;
+}
+
+.fade-in-out-leave.fade-in-out-leave-active {
+  opacity: .0;
+  transition: opacity 300ms ease-out;
+}
+
+// Fast
+.fade-in-out-fast-enter {
+  opacity: .0;
+}
+
+.fade-in-out-fast-enter.fade-in-out-fast-enter-active {
+  opacity: 1;
+  transition: opacity 150ms ease-in;
+}
+
+.fade-in-out-fast-leave {
+  opacity: 1;
+}
+
+.fade-in-out-fast-leave.fade-in-out-fast-leave-active {
+  opacity: .0;
+  transition: opacity 150ms ease-in;
+}

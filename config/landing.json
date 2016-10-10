@@ -1,0 +1,5 @@
+{
+  "BLOCKS_MODULE": "blocks",
+  "MEDIA_ROOT": "/home/surenkov/Desktop/landing/static/media/",
+  "MEDIA_URL": "/static/media/"
+}

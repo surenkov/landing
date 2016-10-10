@@ -1,37 +1,26 @@
-import os
-from flask import Flask
-from flask_mongoengine import MongoEngine
-from flask_mail import Mail
-from landing.blocks import load_blocks
+from flask import Blueprint
+from landing.models import Landing
+from landing.api import landing_api
+from landing.mail import landing_mail
+from landing.utility.importlib import load_all_blocks
+
+landing_app = Blueprint('landing', __name__)
 
 
-app = Flask(__name__, static_folder='../static', static_url_path='/static')
-app.config.update(dict(
-    MONGODB_SETTINGS=dict(
-        db='test',
-        host='127.0.0.1',
-    ),
-    BLOCKS_DIR=os.path.join(os.path.dirname(__file__), 'blocks'),
-    MEDIA_ROOT=os.path.join(app.static_folder, 'media'),
-    MEDIA_URL=app.static_url_path + '/media/',
-    MAX_CONTENT_LENGTH=16 * 1024 * 1024,
-    SECRET_KEY='Development key',  # Check if key is overridden in prod environ
+def init_landing(app):
+    import landing.views
 
-    # Mail settings
-    MAIL_SERVER='smtp.yandex.ru',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_DEFAULT_SENDER='',
-    MAIL_USERNAME='',
-    MAIL_PASSWORD=''
-))
+    landing_api.init_app(app)
+    landing_mail.init_app(app)
+    app.register_blueprint(landing_app, url_prefix='/')
 
-db = MongoEngine(app)
-mail = Mail(app)
-load_blocks(app.config.get('BLOCKS_DIR'), app.jinja_loader)
 
-import landing.models
-import landing.views
+def init_blocks(app):
+    load_all_blocks(app.config['BLOCKS_MODULE'])
 
-from landing.manager import manager
-app.register_blueprint(manager)
+
+def landing():
+    landing_instance = Landing.objects.first()
+    if landing_instance is None:
+        landing_instance = Landing.objects.create(name='Landing')
+    return landing_instance
