@@ -16,10 +16,7 @@ const MenuComponent = ({ user, onLogout }) => (
 
         <Link className="item" to='/blocks'>Блоки</Link>
         <Link className="item" to='/media'>Медиа</Link>
-
-        <RolesAllowed roles={['admin']}>
-            <Link className="item" to="/config">Параметры</Link>
-        </RolesAllowed>
+        <Link className="item" to="/config">Параметры</Link>
 
         <RolesAllowed roles={['admin']}>
             <Link className="item" to="/users">Пользователи</Link>
@@ -30,7 +27,6 @@ const MenuComponent = ({ user, onLogout }) => (
             <strong>{user.name}</strong>
             <i className="dropdown icon" />
             <div className="menu">
-                <a className="item">Настройки</a>
                 <a className="red item" onClick={onLogout}>Выход</a>
             </div>
         </div>
