@@ -13,7 +13,6 @@ class Reference(Raw):
 
 landing_fields = {
     'name': String,
-    'meta': Raw(attribute='meta_info'),
 }
 
 block_fields = {

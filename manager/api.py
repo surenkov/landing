@@ -43,7 +43,7 @@ class Landing(AuthResource):
 
 
 @manager_api.resource('/landing/config')
-class Config(AdminResource):
+class Config(AuthResource):
 
     def get(self):
         return landing().config
@@ -162,6 +162,10 @@ class UserView(AdminResource):
         if data:
             user.modify(**data)
         return user
+
+    def delete(self, user_id):
+        models.User.objects(id=user_id).delete()
+        return {'success': True}
 
 
 @manager_api.resource('/media')

@@ -12,6 +12,7 @@ import { Auth } from './auth'
 import { Blocks } from './blocks'
 import { MediaPage } from './media'
 import { UsersPage } from './users'
+import { ConfigPage } from './config'
 import { EnsureAuthenticated } from './auth'
 
 
@@ -38,6 +39,7 @@ export default ({ store }) => {
                     <Route path="blocks" component={Blocks} />
                     <Route path="media" component={MediaPage} />
                     <Route path="users" component={UsersPage} />
+                    <Route path="config" components={ConfigPage} />
                 </Route>
             </Router>
         </Provider>

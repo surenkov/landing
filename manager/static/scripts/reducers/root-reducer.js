@@ -10,6 +10,7 @@ import auth from './auth'
 import blocks from './blocks'
 import media from './media'
 import users from './users'
+import config from './config'
 
 const appReducer = combineReducers({
     routing: routerReducer,
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
 
     blocks,
     users,
-    media
+    media,
+    config
 });
 
 export default (state, action) => appReducer(

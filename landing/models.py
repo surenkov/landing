@@ -36,7 +36,7 @@ class Media(Document):
     @property
     def file_url(self):
         media_root = current_app.config['MEDIA_ROOT']
-        media_url = current_app.config.get('MEDIA_URL', '/static/media/')
+        media_url = current_app.config['MEDIA_URL']
         return self.file_path.replace(media_root, media_url, 1)
 
     # noinspection PyMethodOverriding

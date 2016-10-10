@@ -16,7 +16,7 @@ def init_landing(app):
 
 
 def init_blocks(app):
-    load_all_blocks(app.config['blocks_module'])
+    load_all_blocks(app.config['BLOCKS_MODULE'])
 
 
 def landing():

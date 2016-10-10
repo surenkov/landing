@@ -74,7 +74,7 @@ class BlocksComponent extends Prefetch {
                     {!newBlock && <NewBlockSelect onAdd={this.createBlock} />}
                 </div>
             ) : (
-                <div className="ui active loader"></div>
+                <div className="ui active loader" />
             )
         )
     }

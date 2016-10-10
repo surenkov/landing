@@ -45,7 +45,7 @@ class UsersPageComponent extends Prefetch {
                                     <User
                                         user={user}
                                         onSave={updateUser}
-                                        onRemove={removeUser}
+                                        onRemove={() => removeUser(user.id)}
                                     />
                                 )
                             )}

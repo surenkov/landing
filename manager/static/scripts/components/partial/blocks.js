@@ -1,6 +1,7 @@
 /**
  * Created by surenkov on 10/5/16.
  */
+import _ from 'lodash'
 import React from 'react'
 import { TextInput, ToggleInput, Dropdown, HiddenInput } from './inputs'
 
@@ -75,7 +76,11 @@ export class ListBlock extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         const nextItems = this.getItemsFromProps(nextProps);
-        if (nextItems !== this.state._items)
+        const shallowEq = _.chain(this.state._items)
+            .zip(nextItems)
+            .some(([curr, next]) => curr !== next);
+
+        if (!shallowEq)
             this.setState({ _items: nextItems });
     }
     addItem(item) {

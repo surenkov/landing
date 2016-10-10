@@ -17,7 +17,9 @@ CONFIG = {
 def init_manager(app):
     import manager.views
 
-    app.config.update(CONFIG)
+    for key, value in CONFIG.items():
+        app.config.setdefault(key, value)
+
     app.register_blueprint(manager_app, url_prefix='/manager')
     manager_api.init_app(app)
     manager_jwt.init_app(app)
