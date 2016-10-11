@@ -263,19 +263,20 @@ export const RichEditTextarea = React.createClass({
                 ['removeformat'],
             ],
             ...this.props.params
-        }).on('tbwblur', this.changeValue)
-            .on('tbwpaste', this.changeValue)
-            .trumbowyg('html', this.getValue())
+        }).on('tbwchange', this.changeValue)
+            .trumbowyg('html', this.getValue());
     },
-    componentDidUpdate() {
-        $(this.refs.trumbowyg).trumbowyg('html', this.getValue());
+    componentWillReceiveProps(nextProps) {
+        const { value } = nextProps;
+        if (this.props.value !== value)
+            $(this.refs.trumbowyg).trumbowyg('html', value);
     },
     render() {
         const { caption, placeholder } = this.props;
         return (
             <div className={'field' + this.getValidClassName('', ' error')}>
                 {caption && <label>{caption}</label>}
-                <div ref="trumbowyg" placeholder={placeholder} />
+                <div key="trumbowyg" ref="trumbowyg" placeholder={placeholder} />
             </div>
         );
     }
