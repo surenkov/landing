@@ -1,5 +1,9 @@
 {
   "BLOCKS_MODULE": "blocks",
   "MEDIA_ROOT": "/home/surenkov/Desktop/landing/static/media/",
-  "MEDIA_URL": "/static/media/"
+  "MEDIA_URL": "/static/media/",
+  "MONGODB_SETTINGS": {
+    "db": "landing",
+    "host": "127.0.0.1"
+  }
 }
