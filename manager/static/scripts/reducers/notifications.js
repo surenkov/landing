@@ -4,8 +4,9 @@ import {
     REMOVE_NOTIFICATION,
     CLEAR_NOTIFICATIONS
 } from '../actions/notifications'
+import type { Action } from '../flow/redux'
 
-export default (state = [], action) => {
+export default (state: [] = [], action: Action) => {
     switch (action.type) {
         case ADD_NOTIFICATION:
             return [

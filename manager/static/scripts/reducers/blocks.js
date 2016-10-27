@@ -7,8 +7,9 @@ import {
     BLOCK_REMOVED,
     BLOCK_TYPES_FETCHED
 } from '../actions/blocks'
+import type { State, Action } from '../flow/redux'
 
-const objects = (state = {}, action) => {
+const objects = (state: State = {}, action: Action) => {
     switch (action.type) {
         case BLOCKS_FETCHED:
             return { ...state, ...action.blocks };
@@ -34,7 +35,7 @@ const objects = (state = {}, action) => {
     }
 };
 
-const types = (state = {}, action) => {
+const types = (state: State = {}, action) => {
     switch (action.type) {
         case BLOCK_TYPES_FETCHED:
             return { ...state, ...action.data };

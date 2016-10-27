@@ -6,8 +6,9 @@ import {
     USER_UPDATED,
     USER_REMOVED
 } from '../actions/users'
+import type { State, Action } from '../flow/redux'
 
-export default (state = {}, action) => {
+export default (state: State = {}, action: Action) => {
     switch (action.type) {
         case USERS_FETCHED:
             return { ...state, ...action.users };

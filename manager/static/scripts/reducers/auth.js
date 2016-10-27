@@ -1,5 +1,15 @@
 // @flow
 import { USER_LOG_IN, USER_LOG_OUT } from '../actions/auth'
+import type { Action } from '../flow/redux'
+
+
+type State = {
+    credentials: {
+        name: string
+    },
+    token: ?string,
+    expires: number
+};
 
 const initialState = {
     credentials: {
@@ -9,7 +19,7 @@ const initialState = {
     expires: 0
 };
 
-export default (state = initialState, action) => {
+export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case USER_LOG_IN:
             return {

@@ -9,6 +9,7 @@ import blocks from './blocks'
 import media from './media'
 import users from './users'
 import config from './config'
+import type { State, Action } from '../flow/redux'
 
 const appReducer = combineReducers({
     routing: routerReducer,
@@ -21,7 +22,7 @@ const appReducer = combineReducers({
     config
 });
 
-export default (state, action) => appReducer(
+export default (state: State, action: Action) => appReducer(
     action.type == USER_LOG_OUT
         ? { routing: state.routing }
         : state,

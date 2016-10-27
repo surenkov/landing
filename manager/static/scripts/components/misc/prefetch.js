@@ -2,7 +2,10 @@
 import React from 'react'
 
 export default class extends React.Component {
-    constructor(props) {
+    preload: () => Promise<any>;
+    state: { _loaded: boolean };
+
+    constructor(props: {}) {
         super(props);
         this.state = { _loaded: false };
     }
