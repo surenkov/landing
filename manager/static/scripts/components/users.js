@@ -12,71 +12,77 @@ import {
     ValidInputMixin,
     Dropdown
 } from './partial/inputs'
-import Prefetch from './misc/prefetch'
+import { prefetch, Preloader } from './partial/prefetch'
+
+import type { Action } from '../flow/redux'
+import type { User } from '../actions/users'
 
 
-class UsersPageComponent extends Prefetch {
+class UsersViewComponent extends React.Component {
+    props: {
+        createUser: Action,
+        updateUser: Action,
+        removeUser: Action,
+        users: Array<User>
+    };
+    state: { newUser: boolean };
+    createUser: (user: User) => void;
+
     constructor(props) {
         super(props);
-        this.createUser = this.createUser.bind(this);
-        this.state = { ...super.state, newUser: false };
-    }
-    preload() {
-        return this.props.loadUsers();
-    }
-    createUser(user) {
-        const { createUser } = this.props;
-        this.props.createUser(user).then(() => this.setState({ newUser: false }));
+        this.state = { newUser: false };
+
+        this.createUser = (user) => {
+            const { createUser } = this.props;
+            createUser(user).then(() => this.setState({ newUser: false }));
+        };
     }
     render() {
-        const loaded = this.isLoaded();
         const { users, updateUser, removeUser } = this.props;
         const { newUser } = this.state;
 
         return (
-            loaded ? (
-                <div className="ui padded container">
-                    <div className="ui centered grid">
-                        <div className="twelve wide column">
-                            {_.orderBy(users, 'id').map(
-                                (user) => (
-                                    <User
-                                        user={user}
-                                        onSave={updateUser}
-                                        onRemove={() => removeUser(user.id)}
-                                    />
-                                )
-                            )}
-                            {newUser && (
-                                <User
-                                    onSave={this.createUser}
-                                    onRemove={() => this.setState({ newUser: false })}
+            <div className="ui padded container">
+                <div className="ui centered grid">
+                    <div className="twelve wide column">
+                        {_(users).orderBy('id').map(
+                            (user) => (
+                                <UserComponent
+                                    key={user.id}
+                                    user={user}
+                                    onSave={updateUser}
+                                    onRemove={() => removeUser(user.id)}
                                 />
-                            )}
-                        </div>
-                        {!newUser && (
-                            <div className="sixteen wide center aligned column">
-                                <AddUserButton onClick={() => this.setState({ newUser: true })} />
-                            </div>
+                            )
+                        ).value()}
+                        {newUser && (
+                            <UserComponent
+                                onSave={this.createUser}
+                                onRemove={() => this.setState({ newUser: false })}
+                            />
                         )}
                     </div>
+                    {!newUser && (
+                        <div className="sixteen wide center aligned column">
+                            <AddUserButton onClick={() => this.setState({ newUser: true })} />
+                        </div>
+                    )}
                 </div>
-            ) : (
-                <div className="ui active loader" />
-            )
-        )
+            </div>
+        );
     }
 }
 
+//noinspection JSUnusedGlobalSymbols
 export const UsersPage = connect(
     ({ users }) => ({ users }),
     (dispatch) => ({
-        loadUsers: () => dispatch(fetchUsers()),
+        onLoad: () => dispatch(fetchUsers()),
         createUser: (data) => dispatch(createUser(data)),
         updateUser: (data) => dispatch(updateUser(data)),
         removeUser: (id) => dispatch(removeUser(id))
     })
-)(UsersPageComponent);
+)(prefetch(UsersViewComponent, Preloader));
 
 const AddUserButton = ({ onClick }) => (
      <a onClick={onClick} className="ui large primary labeled icon button">
@@ -85,7 +91,7 @@ const AddUserButton = ({ onClick }) => (
      </a>
 );
 
-const User = ({ user = {}, onSave, onRemove }) => (
+const UserComponent = ({ user = {}, onSave, onRemove }: { user?: User, onRemove: Action }) => (
     <div className="ui segment">
         <Formsy.Form className="ui form" onValidSubmit={onSave}>
             {user.id && <HiddenInput name="id" value={user.id} />}

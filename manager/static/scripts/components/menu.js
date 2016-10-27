@@ -6,7 +6,10 @@ import { Link } from 'react-router'
 import { logOutUser } from '../actions/auth'
 import { RolesAllowed } from './auth'
 
-const MenuComponent = ({ user, onLogout }) => (
+import type { Action } from '../flow/redux'
+import type { User } from '../actions/users'
+
+const MenuComponent = ({ user, onLogout }: { user: User, onLogout: Action }) => (
     <div className="ui top fixed stackable menu">
         <div className="header item">
             Панель управления

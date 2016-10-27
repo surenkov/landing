@@ -39,7 +39,7 @@ const blockTypesFetched = (data): Action => ({
 });
 
 
-type Block = {
+export type BlockType = {
     id: string,
     type: string
 };
@@ -51,7 +51,7 @@ export const fetchBlocks = (): Action => (
     )
 );
 
-export const createBlock = (data: Block): Action => (
+export const createBlock = (data: BlockType): Action => (
     (dispatch: Dispatch) => guardResponse(
         create('/manager/api/blocks', data)
             .then((data) => dispatch(blockCreated(data)))
@@ -59,7 +59,7 @@ export const createBlock = (data: Block): Action => (
     )
 );
 
-export const updateBlock = (data: Block): Action => (
+export const updateBlock = (data: BlockType): Action => (
     (dispatch: Dispatch) => guardResponse(
         update(`/manager/api/blocks/${encodeURIComponent(data.id)}`, data)
             .then((data) => dispatch(blockUpdated(data, data.id)))

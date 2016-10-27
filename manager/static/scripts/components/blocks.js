@@ -13,84 +13,95 @@ import {
 } from '../actions/blocks'
 import { createBlockForm } from '../utility/blocks'
 
-import Prefetch from './misc/prefetch'
+import { prefetch, Preloader } from './partial/prefetch'
 import { Dropdown } from './partial/inputs'
 
-class BlocksComponent extends Prefetch {
+import type { Action } from '../flow/redux'
+import type { BlockType } from '../actions/blocks'
+
+
+type BlockTypeSpec = {
+    type: string,
+    name: string,
+    templates: Array<string>
+};
+
+type BlockTypeMap = {
+    [t: string]: BlockTypeSpec
+};
+
+class BlocksComponent extends React.Component {
+    state: { newBlock: ?string };
+    props: {
+        blocks: Array<BlockType>,
+        types: BlockTypeMap,
+        onCreate: Action,
+        onUpdate: Action,
+        onRemove: Action
+    };
+    createBlock: (type: string) => void;
+    saveNewBlock: (data: BlockType) => Promise<any>;
+    hideBlock: () => void;
+
     constructor(params) {
         super(params);
-        this.createBlock = this.createBlock.bind(this);
-        this.saveNewBlock = this.saveNewBlock.bind(this);
-        this.hideBlock = this.hideBlock.bind(this);
-        this.state = { ...super.state, newBlock: undefined };
-    }
-    preload() {
-        return Promise.all([
-            this.props.loadBlocks(),
-            this.props.loadTypes()
-        ])
-    }
-    createBlock(params) {
-        this.setState({ newBlock: params });
-    }
-    saveNewBlock(data) {
-        return this.props.onCreate(data)
-            .then((rejected) => !rejected && this.hideBlock());
-    }
-    hideBlock() {
-        this.setState({ newBlock: undefined });
+
+        this.createBlock = (type) => this.setState({ newBlock: type });
+        this.saveNewBlock = (data) =>
+            this.props.onCreate(data)
+                .then((rejected) => !rejected && this.hideBlock());
+        this.hideBlock = () => this.setState({ newBlock: null });
+        this.state = { newBlock: null };
     }
     render() {
         const { blocks, types, onUpdate, onRemove } = this.props;
         const { newBlock } = this.state;
-        const loaded = this.isLoaded();
         return (
-            loaded ? (
-                <div className="ui padded container">
-                    <div className="ui centered grid">
-                        <div className="twelve wide column">
-                            {_.orderBy(blocks, ['ordering', 'id']).map(
-                                (block) => (
-                                    <Block
-                                        key={block.id}
-                                        type={types[block.type]}
-                                        data={block}
-                                        onSave={onUpdate}
-                                        onRemove={() => onRemove(block.id)}
-                                    />
-                                )
-                            )}
-                            {newBlock &&
+            <div className="ui padded container">
+                <div className="ui centered grid">
+                    <div className="twelve wide column">
+                        {_(blocks).orderBy(['ordering', 'id']).map(
+                            (block) => (
                                 <Block
-                                    type={types[newBlock]}
-                                    onSave={this.saveNewBlock}
-                                    onRemove={this.hideBlock}
+                                    key={block.id}
+                                    type={types[block.type]}
+                                    data={block}
+                                    onSave={onUpdate}
+                                    onRemove={() => onRemove(block.id)}
                                 />
-                            }
-                        </div>
+                            )
+                        ).value()}
+                        {newBlock && (
+                            <Block
+                                type={types[newBlock]}
+                                onSave={this.saveNewBlock}
+                                onRemove={this.hideBlock}
+                            />
+                        )}
                     </div>
-                    {!newBlock && <NewBlockSelect onAdd={this.createBlock} />}
                 </div>
-            ) : (
-                <div className="ui active loader" />
-            )
+                {!newBlock && <NewBlockSelect onAdd={this.createBlock} />}
+            </div>
         )
     }
 }
 
+//noinspection JSUnusedGlobalSymbols
 export const Blocks = connect(
     ({ blocks: { objects, types }}) => ({
         blocks: objects,
         types
     }),
     (dispatch) => ({
-        loadBlocks: () => dispatch(fetchBlocks()),
-        loadTypes: () => dispatch(fetchBlockTypes()),
+        onLoad: () => Promise.all([
+            dispatch(fetchBlocks()),
+            dispatch(fetchBlockTypes())
+        ]),
         onCreate: (data) => dispatch(createBlock(data)),
         onUpdate: (data) => dispatch(updateBlock(data)),
         onRemove: (id) => dispatch(removeBlock(id))
     })
-)(BlocksComponent);
+)(prefetch(BlocksComponent, Preloader));
 
 const Block = ({ data, type, onSave, onRemove }) => (
     <div className="ui segment">
@@ -105,9 +116,9 @@ const NewBlockSelectComponent = ({ types, onAdd }) => (
             <div className="eight wide column">
                 <div className="ui segment">
                     <Dropdown name="type" caption="Добавить блок" placeholder="Выберите тип блока из списка">
-                        {_.orderBy(types, 'type').map((type, i) =>(
+                        {_(types).orderBy('type').map((type, i) =>(
                             <option key={i} value={type.type}>{type.name}</option>
-                        ))}
+                        )).value()}
                     </Dropdown>
                 </div>
             </div>

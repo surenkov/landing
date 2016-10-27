@@ -8,12 +8,12 @@ import {
     uploadMedia,
     deleteMedia
 } from '../actions/media'
-import Prefetch from './misc/prefetch'
+import { Preloader, prefetch } from './partial/prefetch'
 
 
 const mapMediaToProps = ({ media }) => ({ media });
 const mapActionsToProps = (dispatch) => ({
-    loadMedia: () => dispatch(fetchMedia()),
+    onLoad: () => dispatch(fetchMedia()),
     onUpload: (file) => dispatch(uploadMedia(file)),
     onRemove: (id) => dispatch(deleteMedia(id))
 });
@@ -22,20 +22,20 @@ class MediaUploadButton extends React.Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired
     };
+    uploadClick: () => void;
     constructor(props) {
         super(props);
-        this.uploadClick = this.uploadClick.bind(this);
-    }
-    uploadClick() {
-        const { onClick } = this.props;
-        $('<input />', {
-            type: 'file',
-            on: {
-                change: function(e) {
-                    onClick(e.target.files[0])
+        this.uploadClick = () => {
+            const { onClick } = this.props;
+            $('<input />', {
+                type: 'file',
+                on: {
+                    change: function(e) {
+                        onClick(e.target.files[0])
+                    }
                 }
-            }
-        }).click();
+            }).click();
+        };
     }
     render() {
         return (
@@ -47,41 +47,31 @@ class MediaUploadButton extends React.Component {
     }
 }
 
-class MediaPageView extends Prefetch {
-    preload() {
-        return this.props.loadMedia()
-    }
-    render() {
-        const { media, onUpload, onRemove } = this.props;
-        return this.isLoaded() ? (
-            <div className="ui padded container">
-                <div className="ui centered grid">
-                    <div className="twelve wide column">
-                        <MediaUploadButton onClick={onUpload} />
-                        <div className="ui bottom attached segment">
-                            <div className="ui four cards">
-                                {_.orderBy(media, 'id', 'desc').map((data) => (
-                                    <PageMedia
-                                        key={data.id}
-                                        data={data}
-                                        onRemove={() => onRemove(data.id)}
-                                    />
-                                ))}
-                            </div>
-                        </div>
+const MediaPageView = ({ media, onUpload, onRemove }) => (
+    <div className="ui padded container">
+        <div className="ui centered grid">
+            <div className="twelve wide column">
+                <MediaUploadButton onClick={onUpload} />
+                <div className="ui bottom attached segment">
+                    <div className="ui four cards">
+                        {_(media).orderBy('id', 'desc').map((data) => (
+                            <PageMedia
+                                key={data.id}
+                                data={data}
+                                onRemove={() => onRemove(data.id)}
+                            />
+                        )).value()}
                     </div>
                 </div>
             </div>
-        ): (
-            <div className="ui active loader"></div>
-        );
-    }
-}
+        </div>
+    </div>
+);
 
 export const MediaPage = connect(
     mapMediaToProps,
     mapActionsToProps
-)(MediaPageView);
+)(prefetch(MediaPageView, Preloader));
 
 
 const PageMedia = ({ data, onRemove }) => {
@@ -131,6 +121,8 @@ const SimpleMedia = ({ file, onClick }) => (
     </a>
 );
 
+
+// TODO: Rewrite this class in favor to Flowtype
 class MediaSelectDummyModal extends React.Component {
     static propTypes = {
         onSelect: React.PropTypes.func,
@@ -183,7 +175,7 @@ class MediaSelectDummyModal extends React.Component {
             this.loadMedia();
     }
     loadMedia() {
-        this.props.loadMedia().then(
+        this.props.onLoad().then(
             () => this.setState({ loaded: true })
         );
     }
@@ -229,7 +221,8 @@ export class MediaAddButton extends React.Component {
     static propTypes = {
         onSelect: React.PropTypes.func.isRequired
     };
-    constructor(props) {
+    state: { openModal: boolean };
+    constructor(props: {}) {
         super(props);
         this.state = { openModal: false };
     }

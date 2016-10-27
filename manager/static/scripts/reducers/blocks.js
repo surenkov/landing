@@ -35,7 +35,7 @@ const objects = (state: State = {}, action: Action) => {
     }
 };
 
-const types = (state: State = {}, action) => {
+const types = (state: State = {}, action: Action) => {
     switch (action.type) {
         case BLOCK_TYPES_FETCHED:
             return { ...state, ...action.data };

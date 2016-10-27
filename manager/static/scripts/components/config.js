@@ -6,7 +6,8 @@ import Formsy from 'formsy-react'
 import { fetchConfig, updateConfig } from '../actions/config'
 import { ListBlock } from './partial/blocks'
 import { TextInput, RichEditTextarea, ValidInputMixin } from './partial/inputs'
-import Prefetch from './misc/prefetch'
+
+import { prefetch, Preloader } from './partial/prefetch'
 
 
 const MetaTag = React.createClass({
@@ -85,37 +86,25 @@ const ConfigForm = ({ onSave, meta, title, footer_text }) => (
     </Formsy.Form>
 );
 
-class ConfigPageComponent extends Prefetch {
-    preload() {
-        return this.props.loadConfig();
-    }
-    render() {
-        const { config, updateConfig } = this.props;
-        const loaded = this.isLoaded();
-        return (
-            loaded ? (
-                <div className="ui padded container">
-                    <div className="ui centered grid">
-                        <div className="twelve wide column">
-                            <div className="ui segment">
-                                <h3>Параметры лэндинга</h3>
-                                <ConfigForm {...config} onSave={updateConfig} />
-                            </div>
-                        </div>
-                    </div>
+const ConfigPageComponent = ({ config, updateConfig }) => (
+    <div className="ui padded container">
+        <div className="ui centered grid">
+            <div className="twelve wide column">
+                <div className="ui segment">
+                    <h3>Параметры лэндинга</h3>
+                    <ConfigForm {...config} onSave={updateConfig} />
                 </div>
-            ) : (
-                <div className="ui active loader" />
-            )
-        );
-    }
-}
+            </div>
+        </div>
+    </div>
+);
 
+//noinspection JSUnusedGlobalSymbols
 export const ConfigPage = connect(
     ({ config }) => ({ config }),
     (dispatch) => ({
-        loadConfig: () => dispatch(fetchConfig()),
+        onLoad: () => dispatch(fetchConfig()),
         updateConfig: (config) => dispatch(updateConfig(config))
     })
-)(ConfigPageComponent);
+)(prefetch(ConfigPageComponent, Preloader));
 

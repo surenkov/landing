@@ -10,8 +10,7 @@ export const USER_CREATED = 'USER_CREATED';
 export const USER_UPDATED = 'USER_UPDATED';
 export const USER_REMOVED = 'USER_REMOVED';
 
-
-type User = {
+export type User = {
     id: string,
     role: 'admin' | 'manager',
     name: string,

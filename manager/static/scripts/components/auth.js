@@ -28,6 +28,7 @@ const AuthForm = ({ onSubmit }) => (
     </div>
 );
 
+//noinspection JSUnusedGlobalSymbols
 export const Auth = connect(
     null,
     (dispatch) => ({
