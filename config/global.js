@@ -1,6 +1,3 @@
-/**
- * Created by surenkov on 9/7/16.
- */
 'use strict';
 const _ = require('lodash');
 const path = require('path');
@@ -9,6 +6,7 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const utility = require('./utility');
 const TextPlugin = require('extract-text-webpack-plugin');
+const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 
 
 const blocksPath = 'blocks/';
@@ -75,8 +73,8 @@ module.exports = (_path, env) => {
         imageWebpackLoader: {
             optimizationLevel: 4,
             progressive: true,
-            interlaced: true,
             pngquant: {
+            interlaced: true,
                 quality: '90-100',
                 speed: 5
             },
@@ -91,6 +89,9 @@ module.exports = (_path, env) => {
                 React: 'react',
                 _: 'lodash'
             }),
+            new FlowStatusWebpackPlugin({
+                restartFlow: false
+            })
         ]
     };
 
@@ -143,7 +144,8 @@ module.exports = (_path, env) => {
 
                 new TextPlugin('styles/[name].css'),
                 new webpack.optimize.DedupePlugin(),
-                new webpack.optimize.OccurenceOrderPlugin()
+                new webpack.optimize.OccurenceOrderPlugin(),
+                new FlowStatusWebpackPlugin()
             ]
         }
     };
