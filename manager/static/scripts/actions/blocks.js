@@ -1,8 +1,8 @@
-/**
- * Created by surenkov on 10/4/16.
- */
+// @flow
 import { list, create, update, remove, guardResponse } from '../utility/api'
 import { addNotification } from './notifications'
+
+import type { Dispatch, Action } from '../flow/redux'
 
 export const BLOCKS_FETCHED = 'BLOCKS_FETCHED';
 export const BLOCK_CREATED = 'BLOCK_CREATED';
@@ -12,66 +12,71 @@ export const BLOCK_REMOVED = 'BLOCK_REMOVED';
 export const BLOCK_TYPES_FETCHED = 'BLOCK_TYPES_FETCHED';
 
 
-const blocksFetched = (blocks) => ({
+const blocksFetched = (blocks): Action => ({
     type: BLOCKS_FETCHED,
     blocks
 });
 
-const blockCreated = (block) => ({
+const blockCreated = (block): Action => ({
     type: BLOCK_CREATED,
     block
 });
 
-const blockUpdated = (block, id) => ({
+const blockUpdated = (block, id): Action => ({
     type: BLOCK_UPDATED,
     id,
     block
 });
 
-const blockRemoved = (id) => ({
+const blockRemoved = (id): Action => ({
     type: BLOCK_REMOVED,
     id
 });
 
-const blockTypesFetched = (data) => ({
+const blockTypesFetched = (data): Action => ({
     type: BLOCK_TYPES_FETCHED,
     data
 });
 
 
-export const fetchBlocks = () => (
-    (dispatch) => guardResponse(
+type Block = {
+    id: string,
+    type: string
+};
+
+export const fetchBlocks = (): Action => (
+    (dispatch: Dispatch) => guardResponse(
         list('/manager/api/blocks')
             .then((data) => dispatch(blocksFetched(data)))
     )
 );
 
-export const createBlock = (data) => (
-    (dispatch) => guardResponse(
+export const createBlock = (data: Block): Action => (
+    (dispatch: Dispatch) => guardResponse(
         create('/manager/api/blocks', data)
             .then((data) => dispatch(blockCreated(data)))
             .then(() => dispatch(addNotification({type: 'success', title: 'Блок создан'})))
     )
 );
 
-export const updateBlock = (data) => (
-    (dispatch) => guardResponse(
+export const updateBlock = (data: Block): Action => (
+    (dispatch: Dispatch) => guardResponse(
         update(`/manager/api/blocks/${encodeURIComponent(data.id)}`, data)
             .then((data) => dispatch(blockUpdated(data, data.id)))
             .then(() => dispatch(addNotification({type: 'success', title: 'Блок сохранён'})))
     )
 );
 
-export const removeBlock = (id) => (
-    (dispatch) => guardResponse(
+export const removeBlock = (id: string): Action => (
+    (dispatch: Dispatch) => guardResponse(
         remove(`/manager/api/blocks/${encodeURIComponent(id)}`)
             .then(() => dispatch(blockRemoved(id)))
             .then(() => dispatch(addNotification({type: 'success', title: 'Блок удалён'})))
     )
 );
 
-export const fetchBlockTypes = () => (
-    (dispatch) => guardResponse(
+export const fetchBlockTypes = (): Action => (
+    (dispatch: Dispatch) => guardResponse(
         list('/manager/api/blocks/types', 'type')
             .then((data) => dispatch(blockTypesFetched(data)))
     )

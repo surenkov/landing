@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/10/16.
- */
+// @flow
 import React from 'react'
 import { connect } from 'react-redux'
 import Formsy from 'formsy-react'

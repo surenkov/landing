@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/6/16.
- */
+// @flow
 import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'

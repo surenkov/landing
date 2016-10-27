@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/10/16.
- */
+// @flow
 import { CONFIG_FETCHED, CONFIG_UPDATED } from '../actions/config'
 
 export default (state = {}, action) => {

@@ -1,7 +1,4 @@
-/**
- * Created by surenkov on 10/4/16.
- */
-import _ from 'lodash'
+// @flow
 import React from 'react'
 
 export default class extends React.Component {

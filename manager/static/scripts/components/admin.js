@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 9/30/16.
- */
+// @flow
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
@@ -15,6 +13,8 @@ import { UsersPage } from './users'
 import { ConfigPage } from './config'
 import { EnsureAuthenticated } from './auth'
 
+import type { Store } from '../flow/redux'
+
 
 const App = ({ children }) => (
     <div>
@@ -28,7 +28,10 @@ const App = ({ children }) => (
     </div>
 );
 
-export default ({ store }) => {
+
+type AppParams = { store: Store };
+
+export default ({ store }: AppParams) => {
     const history = syncHistoryWithStore(hashHistory, store);
     return (
         <Provider store={store}>

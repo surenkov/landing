@@ -1,15 +1,20 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import { addNotification } from './notifications'
 import { checkStatus } from '../utility/api'
+
+import type { Dispatch, Action } from '../flow/redux'
 
 export const USER_LOG_IN = 'USER_LOG_IN';
 export const USER_LOG_OUT = 'USER_LOG_OUT';
 
 
-export const logInUser = ({ email, password }) => (
-    (dispatch) => fetch('/manager/api/auth', {
+type Credentials = {
+    email: string,
+    password: string
+};
+
+export const logInUser = ({ email, password }: Credentials) => (
+    (dispatch: Dispatch) => fetch('/manager/api/auth', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -42,6 +47,6 @@ export const logInUser = ({ email, password }) => (
     })
 );
 
-export const logOutUser = () => ({
+export const logOutUser = (): Action => ({
     type: USER_LOG_OUT
 });

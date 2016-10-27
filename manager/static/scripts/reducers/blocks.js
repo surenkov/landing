@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/4/16.
- */
+// @flow
 import { combineReducers } from 'redux'
 import {
     BLOCKS_FETCHED,

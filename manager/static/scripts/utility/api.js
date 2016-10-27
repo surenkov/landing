@@ -1,29 +1,37 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import _ from 'lodash'
 import { store } from '../store'
 import { addNotification } from '../actions/notifications'
+
+import type { Response } from '../flow/fetch'
+
+class ResponseError extends Error {
+    response: Response
+}
+
+
 
 function token() {
     return store.getState().auth.token;
 }
 
-function connectionError(message = 'Ошибка соединения') {
+function connectionError(message: string = 'Ошибка соединения') {
    throw new Error(message);
 }
 
-export const checkStatus = (response) => {
+
+
+export const checkStatus = (response: Response) => {
     if (response.status >= 200 && response.status < 300) {
         return response;
-    } else {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
     }
+
+    let error = new ResponseError(response.statusText);
+    error.response = response;
+    throw error;
 };
 
-export const guardResponse = (promise, title = 'Ошибка запроса') => (
+export const guardResponse = (promise: Promise<any>, title: string = 'Ошибка запроса') => (
     promise
         .then(() => false)
         .catch((ex) => {
@@ -49,10 +57,12 @@ export const guardResponse = (promise, title = 'Ошибка запроса') =>
         })
 );
 
-export const normalize = (objects, key = 'id') =>
+export const normalize = (objects: Array<{}>, key: string = 'id') =>
     _.keyBy(objects, key);
 
-export const create = (url, data) => (
+
+
+export const create = (url: string, data: {}) => (
     fetch(url, {
         method: 'POST',
         headers: {
@@ -67,7 +77,7 @@ export const create = (url, data) => (
     ) .then((response) => response.json())
 );
 
-export const list = (url, key = 'id') => (
+export const list = (url: string, key: string = 'id') => (
     fetch(url, {
         method: 'GET',
         headers: {
@@ -81,7 +91,7 @@ export const list = (url, key = 'id') => (
     ).then((data) => normalize(data, key))
 );
 
-export const get = (url) => (
+export const get = (url: string) => (
     fetch(url, {
         method: 'GET',
         headers: {
@@ -94,7 +104,7 @@ export const get = (url) => (
     ).then((response) => response.json())
 );
 
-export const update = (url, data) => (
+export const update = (url: string, data: {}) => (
     fetch(url, {
         method: 'PUT',
         headers: {
@@ -109,7 +119,7 @@ export const update = (url, data) => (
     ).then((response) => response.json())
 );
 
-export const remove = (url) => (
+export const remove = (url: string) => (
     fetch(url, {
         method: 'DELETE',
         headers: {
@@ -122,7 +132,7 @@ export const remove = (url) => (
     ).then((response) => response.json())
 );
 
-export const upload = (url, formData) => (
+export const upload = (url: string, formData: FormData) => (
     fetch(url, {
         method: 'POST',
         headers: {

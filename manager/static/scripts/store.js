@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { hashHistory } from 'react-router'

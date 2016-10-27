@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/10/16.
- */
+// @flow
 import {
     USERS_FETCHED,
     USER_FETCHED,

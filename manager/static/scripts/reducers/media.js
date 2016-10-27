@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/6/16.
- */
+// @flow
 import {
     MEDIA_FETCHED,
     MEDIA_UPLOADED,

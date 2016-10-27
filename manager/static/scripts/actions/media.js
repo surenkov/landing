@@ -1,39 +1,40 @@
-/**
- * Created by surenkov on 10/6/16.
- */
+// @flow
 import { list, upload, remove, guardResponse } from '../utility/api'
+import type { Dispatch, Action } from '../flow/redux'
 
 export const MEDIA_FETCHED = 'MEDIA_FETCHED';
 export const MEDIA_UPLOADED = 'MEDIA_UPLOADED';
 export const MEDIA_DELETED = 'MEDIA_DELETED';
 
 
-const mediaFetched = (data) => ({
+const mediaFetched = (data): Action => ({
     type: MEDIA_FETCHED,
     data
 });
 
-const mediaUploaded = (data) => ({
+const mediaUploaded = (data): Action => ({
     type: MEDIA_UPLOADED,
     data
 });
 
-const mediaDeleted = (id) => ({
+const mediaDeleted = (id: string): Action => ({
     type: MEDIA_DELETED,
     id
 });
 
 
-export const fetchMedia = () => (
-    (dispatch) => guardResponse(
+type Media = { id: string };
+
+export const fetchMedia = (): Action => (
+    (dispatch: Dispatch) => guardResponse(
         list('/manager/api/media')
             .then((data) => dispatch(mediaFetched(data)))
     )
 );
 
-export const uploadMedia = (file) => (
-    (dispatch) => {
-        var formData = new FormData();
+export const uploadMedia = (file: Media): Action => (
+    (dispatch: Dispatch) => {
+        let formData = new FormData();
         formData.append('file', file);
 
         return guardResponse(
@@ -44,8 +45,8 @@ export const uploadMedia = (file) => (
     }
 );
 
-export const deleteMedia = (id) => (
-    (dispatch) => guardResponse(
+export const deleteMedia = (id: string): Action => (
+    (dispatch: Dispatch) => guardResponse(
         remove(`/manager/api/media/${encodeURIComponent(id)}`)
             .then(() => dispatch(mediaDeleted(id)))
     )

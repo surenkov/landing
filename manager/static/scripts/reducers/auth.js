@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import { USER_LOG_IN, USER_LOG_OUT } from '../actions/auth'
 
 const initialState = {

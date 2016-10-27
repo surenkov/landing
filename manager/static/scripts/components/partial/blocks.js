@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/5/16.
- */
+// @flow
 import _ from 'lodash'
 import React from 'react'
 import { TextInput, ToggleInput, Dropdown, HiddenInput } from './inputs'

@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import {
     ADD_NOTIFICATION,
     REMOVE_NOTIFICATION,

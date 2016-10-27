@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 9/30/16.
- */
+// @flow
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { USER_LOG_OUT } from '../actions/auth'

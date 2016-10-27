@@ -1,6 +1,4 @@
-/**
- * Created by surenkov on 10/3/16.
- */
+// @flow
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
