@@ -1,4 +1,12 @@
 {
-  "plugins": ["transform-runtime", "transform-flow-strip-types"],
-  "presets": ["react", "es2015", "stage-0"]
+  "env": {
+    "development": {
+      "plugins": ["transform-runtime", "transform-flow-strip-types", "react-hot-loader/babel"],
+      "presets": ["react", "es2015", "stage-0"]
+    },
+    "production": {
+      "plugins": ["transform-runtime", "transform-flow-strip-types"],
+      "presets": ["react", "es2015", "stage-0"]
+    }
+  }
 }

@@ -52,16 +52,17 @@ module.exports = (_path, env) => {
         module: {
             loaders: [
                 {
-                    test:    /\.(png|jpe?g|gif)$/i,
-                    loaders: ['url?limit=10000&name=assets/images/[name].[ext]', 'imagemin-webpack']
-                },
-                {
-                    test: /\.svg$/i,
-                    loaders: ['file?name=assets/images/[name].[ext]']
+                    test: /\.jsx?$/i,
+                    exclude: /(node_modules)/i,
+                    loaders: ['babel'],
                 },
                 {
                     test: /\.(ttf|eot|woff|woff2)$/i,
                     loaders: ['file?name=assets/fonts/[name].[ext]']
+                },
+                {
+                    test: /\.svg$/i,
+                    loaders: ['file?name=assets/images/[name].[ext]']
                 },
                 {
                     test:    /\.ico$/i,
@@ -107,13 +108,12 @@ module.exports = (_path, env) => {
             },
             module: {
                 loaders: [
-                    {
-                        test: /\.jsx?$/i,
-                        exclude: /(node_modules)/i,
-                        loaders: ['react-hot', 'babel'],
-                    },
                     { test: /\.css$/, loaders: ['style', 'css', 'postcss'] },
                     { test: /\.s[ac]ss$/, loaders: ['style', 'css', 'postcss', 'sass?sourceMap'] },
+                    {
+                        test:    /\.(png|jpe?g|gif)$/i,
+                        loaders: ['url?limit=10000&name=assets/images/[name].[ext]']
+                    }
                 ]
             }
         },
@@ -125,13 +125,12 @@ module.exports = (_path, env) => {
             },
             module: {
                 loaders: [
-                    {
-                        test: /\.jsx?$/i,
-                        exclude: /(node_modules)/i,
-                        loaders: ['babel'],
-                    },
                     { test: /\.css$/, loader: TextPlugin.extract('style', ['css', 'postcss']) },
                     { test: /\.s[ac]ss$/, loader: TextPlugin.extract('style', ['css', 'postcss', 'sass?sourceMap']) },
+                    {
+                        test:    /\.(png|jpe?g|gif)$/i,
+                        loaders: ['url?limit=10000&name=assets/images/[name].[ext]', 'imagemin-webpack']
+                    }
                 ]
             },
             plugins: [
