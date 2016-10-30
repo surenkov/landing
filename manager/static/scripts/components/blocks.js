@@ -17,7 +17,7 @@ import { prefetch, Preloader } from './partial/prefetch'
 import { Dropdown } from './partial/inputs'
 
 import type { Action } from '../flow/redux'
-import type { BlockType } from '../actions/blocks'
+import type { BlockType } from '../flow/types'
 
 
 type BlockTypeSpec = {

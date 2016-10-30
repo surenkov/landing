@@ -3,7 +3,9 @@ import _ from 'lodash'
 import React from 'react'
 import { TextInput, ToggleInput, Dropdown, HiddenInput } from './inputs'
 
-export const BlockButtons = ({ onRemove, onSave = () => true }) => (
+import type { Block, BlockType } from '../../flow/types'
+
+export const BlockButtons = ({ onRemove, onSave = () => true }: { onRemove: () => any, onSave: (data: any) => any}) => (
     <div className="ui right aligned grid">
         <div className="sixteen wide column">
             <div className="ui labeled icon buttons">
@@ -25,7 +27,7 @@ BlockButtons.propTypes = {
     onRemove: React.PropTypes.func.isRequired
 };
 
-export const BlockDefaults = ({ data = {}, type }) => {
+export const BlockDefaults = ({ data = {}, type }: { data: Block, type: BlockType}) => {
     const defaultData = {
         ordering: 0,
         enabled: true,
@@ -65,14 +67,17 @@ BlockDefaults.propTypes = {
 
 
 export class ListBlock extends React.Component {
+    state: { _items: Array<any> };
+    getItemsFromProps: (props: any) => Array<any>;
+
     getItems() {
         return this.state._items;
     }
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = { _items: this.getItemsFromProps(props) };
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: any) {
         const nextItems = this.getItemsFromProps(nextProps);
         const shallowEq = _.chain(this.state._items)
             .zip(nextItems)
@@ -81,10 +86,10 @@ export class ListBlock extends React.Component {
         if (!shallowEq)
             this.setState({ _items: nextItems });
     }
-    addItem(item) {
+    addItem(item: {}) {
         this.setState({ _items: [...this.state._items, item] });
     }
-    removeItem(idx) {
+    removeItem(idx: number) {
         const { _items } = this.state;
         this.setState({ _items: [..._items.slice(0, idx), ..._items.slice(idx + 1)] });
     }

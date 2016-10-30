@@ -3,6 +3,7 @@ import { list, create, update, remove, guardResponse } from '../utility/api'
 import { addNotification } from './notifications'
 
 import type { Dispatch, Action } from '../flow/redux'
+import type { Block, Id } from '../flow/types'
 
 export const BLOCKS_FETCHED = 'BLOCKS_FETCHED';
 export const BLOCK_CREATED = 'BLOCK_CREATED';
@@ -17,32 +18,27 @@ const blocksFetched = (blocks): Action => ({
     blocks
 });
 
-const blockCreated = (block): Action => ({
+const blockCreated = (block: Block): Action => ({
     type: BLOCK_CREATED,
     block
 });
 
-const blockUpdated = (block, id): Action => ({
+const blockUpdated = (block: Block, id: Id): Action => ({
     type: BLOCK_UPDATED,
     id,
     block
 });
 
-const blockRemoved = (id): Action => ({
+const blockRemoved = (id: Id): Action => ({
     type: BLOCK_REMOVED,
     id
 });
 
-const blockTypesFetched = (data): Action => ({
+const blockTypesFetched = (data: Id): Action => ({
     type: BLOCK_TYPES_FETCHED,
     data
 });
 
-
-export type BlockType = {
-    id: string,
-    type: string
-};
 
 export const fetchBlocks = (): Action => (
     (dispatch: Dispatch) => guardResponse(
@@ -51,7 +47,7 @@ export const fetchBlocks = (): Action => (
     )
 );
 
-export const createBlock = (data: BlockType): Action => (
+export const createBlock = (data: Block): Action => (
     (dispatch: Dispatch) => guardResponse(
         create('/manager/api/blocks', data)
             .then((data) => dispatch(blockCreated(data)))
@@ -59,7 +55,7 @@ export const createBlock = (data: BlockType): Action => (
     )
 );
 
-export const updateBlock = (data: BlockType): Action => (
+export const updateBlock = (data: Block): Action => (
     (dispatch: Dispatch) => guardResponse(
         update(`/manager/api/blocks/${encodeURIComponent(data.id)}`, data)
             .then((data) => dispatch(blockUpdated(data, data.id)))

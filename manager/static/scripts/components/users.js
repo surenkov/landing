@@ -15,7 +15,7 @@ import {
 import { prefetch, Preloader } from './partial/prefetch'
 
 import type { Action } from '../flow/redux'
-import type { User } from '../actions/users'
+import type { User } from '../flow/types'
 
 
 class UsersViewComponent extends React.Component {

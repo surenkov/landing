@@ -1,21 +1,15 @@
 // @flow
-import { list, create, update, remove, guardResponse } from '../utility/api'
+import { get, list, create, update, remove, guardResponse } from '../utility/api'
 import { addNotification } from './notifications'
 
 import type { Action, Dispatch } from '../flow/redux'
+import type { User } from '../flow/types'
 
 export const USERS_FETCHED = 'USERS_FETCHED';
 export const USER_FETCHED = 'USER_FETCHED';
 export const USER_CREATED = 'USER_CREATED';
 export const USER_UPDATED = 'USER_UPDATED';
 export const USER_REMOVED = 'USER_REMOVED';
-
-export type User = {
-    id: string,
-    role: 'admin' | 'manager',
-    name: string,
-    email: string
-};
 
 const usersFetched = (users: Array<User>): Action => ({
     type: USERS_FETCHED,
@@ -54,7 +48,7 @@ export const fetchUsers = (): Action => (
 export const fetchUser = (id: string): Action => (
     (dispatch: Dispatch) => guardResponse(
         get(`/manager/api/users/${encodeURIComponent(id)}`)
-            .then((data) => dispatch(userFetched(user)))
+            .then((data) => dispatch(userFetched(data)))
     )
 );
 
@@ -75,8 +69,8 @@ export const updateUser = (user: User): Action => (
 );
 
 
-export const removeUser = (id) => (
-    (dispatch) => guardResponse(
+export const removeUser = (id: string) => (
+    (dispatch: Dispatch) => guardResponse(
         remove(`/manager/api/users/${encodeURIComponent(id)}`)
             .then(() => dispatch(userRemoved(id)))
             .then(() => dispatch(addNotification({type: 'success', title: 'Пользователь удалён.'})))
