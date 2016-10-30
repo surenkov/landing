@@ -1,5 +1,6 @@
 // @flow
 import { combineReducers } from 'redux'
+
 import {
     BLOCKS_FETCHED,
     BLOCK_CREATED,
@@ -7,9 +8,12 @@ import {
     BLOCK_REMOVED,
     BLOCK_TYPES_FETCHED
 } from '../actions/blocks'
-import type { State, Action } from '../flow/redux'
+import type { Action } from '../flow/redux'
+import type { BlockState, TypeState } from '../flow/types'
 
-const objects = (state: State = {}, action: Action) => {
+
+
+const objects = (state: BlockState = {}, action: Action) => {
     switch (action.type) {
         case BLOCKS_FETCHED:
             return { ...state, ...action.blocks };
@@ -35,7 +39,7 @@ const objects = (state: State = {}, action: Action) => {
     }
 };
 
-const types = (state: State = {}, action: Action) => {
+const types = (state: TypeState = {}, action: Action) => {
     switch (action.type) {
         case BLOCK_TYPES_FETCHED:
             return { ...state, ...action.data };

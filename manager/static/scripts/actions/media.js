@@ -1,6 +1,7 @@
 // @flow
 import { list, upload, remove, guardResponse } from '../utility/api'
 import type { Dispatch, Action } from '../flow/redux'
+import type { Media } from '../flow/types'
 
 export const MEDIA_FETCHED = 'MEDIA_FETCHED';
 export const MEDIA_UPLOADED = 'MEDIA_UPLOADED';
@@ -12,7 +13,7 @@ const mediaFetched = (data): Action => ({
     data
 });
 
-const mediaUploaded = (data): Action => ({
+const mediaUploaded = (data: Media): Action => ({
     type: MEDIA_UPLOADED,
     data
 });
@@ -23,8 +24,6 @@ const mediaDeleted = (id: string): Action => ({
 });
 
 
-type Media = { id: string };
-
 export const fetchMedia = (): Action => (
     (dispatch: Dispatch) => guardResponse(
         list('/manager/api/media')
@@ -32,7 +31,7 @@ export const fetchMedia = (): Action => (
     )
 );
 
-export const uploadMedia = (file: Media): Action => (
+export const uploadMedia = (file: HTMLInputElement): Action => (
     (dispatch: Dispatch) => {
         let formData = new FormData();
         formData.append('file', file);

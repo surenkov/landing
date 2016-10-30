@@ -7,7 +7,7 @@ import { logOutUser } from '../actions/auth'
 import { RolesAllowed } from './auth'
 
 import type { Action } from '../flow/redux'
-import type { User } from '../actions/users'
+import type { User } from '../flow/types'
 
 const MenuComponent = ({ user, onLogout }: { user: User, onLogout: Action }) => (
     <div className="ui top fixed stackable menu">

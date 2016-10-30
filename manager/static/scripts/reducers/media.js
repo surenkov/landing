@@ -4,9 +4,10 @@ import {
     MEDIA_UPLOADED,
     MEDIA_DELETED
 } from '../actions/media'
-import type { State, Action } from '../flow/redux'
+import type { Action } from '../flow/redux'
+import type { MediaState } from '../flow/types'
 
-export default (state: State = {}, action: Action) => {
+export default (state: MediaState = {}, action: Action) => {
     switch (action.type) {
         case MEDIA_FETCHED:
             return {

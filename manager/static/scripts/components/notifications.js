@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import { removeNotification } from '../actions/notifications'
-import type { NotificationSpec } from '../actions/notifications'
+import type { NotificationSpec } from '../flow/types'
 import type { Action } from '../flow/redux'
 
 
@@ -41,6 +41,6 @@ const NotificationComponent = ({ data, onRemove }) => (
 );
 
 export const Notifications = connect(
-    (state) => ({ notifications: state.notifications }),
+    ({ notifications }) => ({ notifications }),
     (dispatch) =>({ onRemove: (id) => dispatch(removeNotification(id)) })
 )(NotificationsList);

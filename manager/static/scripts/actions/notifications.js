@@ -1,25 +1,10 @@
 // @flow
 import type { Action, Dispatch } from '../flow/redux'
+import type { Notification } from '../flow/types'
 
 export const ADD_NOTIFICATION = 'NOTIFICATIONS_ADD';
 export const REMOVE_NOTIFICATION = 'NOTIFICATIONS_REMOVE';
 export const CLEAR_NOTIFICATIONS = 'NOTIFICATIONS_CLEAR';
-
-
-type NotificationType = 'info' | 'success' | 'warning' | 'error';
-
-export type Notification = {
-    type: NotificationType,
-    title?: string,
-    message?: string
-};
-
-export type NotificationSpec = {
-    id: number,
-    type: NotificationType,
-    notify: Notification
-};
-
 
 let notificationId = 0;
 

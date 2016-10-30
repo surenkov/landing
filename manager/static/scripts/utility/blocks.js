@@ -1,9 +1,7 @@
 // @flow
 import React from 'react'
+import type { Block, BlockType } from '../flow/types';
 
-
-type Type = { type: string };
-type Block = ReactClass<{}> | string;
 
 const componentContainer = new Map();
 
@@ -14,5 +12,5 @@ export const getBlock = (blockType: string): Block =>
     componentContainer.get(blockType) || 'span';
 
 
-export const createBlockForm = (data: {}, type: Type, props: {} = {}) =>
+export const createBlockForm = (data: Block, type: BlockType, props: {} = {}) =>
     React.createElement(getBlock(type.type), { data, type, ...props });

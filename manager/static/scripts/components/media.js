@@ -136,12 +136,20 @@ class MediaSelectDummyModal extends React.Component {
         onClose: () => {},
         show: false
     };
+    state: {
+        loaded: boolean,
+        modal: 'hidden' | 'hide' | 'show' | 'visible';
+    };
+    loadMedia: () => Promise<any>;
+
     constructor(props) {
         super(props);
         this.loadMedia = _.debounce(
-            this.loadMedia.bind(this),
+            () => this.props.onLoad().then(
+                () => this.setState({ loaded: true })
+            ),
             1000,
-            { leading: true, trailing: false }
+            { leading: true, trailing: false}
         );
         this.state = { loaded: false, modal: 'hidden' };
     }
@@ -173,11 +181,6 @@ class MediaSelectDummyModal extends React.Component {
 
         if (!loaded && modal == 'show')
             this.loadMedia();
-    }
-    loadMedia() {
-        this.props.onLoad().then(
-            () => this.setState({ loaded: true })
-        );
     }
     render() {
         const { media } = this.props;

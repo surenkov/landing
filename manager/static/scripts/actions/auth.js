@@ -3,15 +3,11 @@ import { addNotification } from './notifications'
 import { checkStatus } from '../utility/api'
 
 import type { Dispatch, Action } from '../flow/redux'
+import type { Credentials } from '../flow/types'
 
 export const USER_LOG_IN = 'USER_LOG_IN';
 export const USER_LOG_OUT = 'USER_LOG_OUT';
 
-
-type Credentials = {
-    email: string,
-    password: string
-};
 
 export const logInUser = ({ email, password }: Credentials) => (
     (dispatch: Dispatch) => fetch('/manager/api/auth', {
