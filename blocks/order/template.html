@@ -1,3 +1,13 @@
-<div>
-    Zayavochka
-</div>
+<section class="dark contacts" id="{{ block.id }}">
+    <article>
+        <h2>{{ block.title }}</h2>
+        <p class="success hidden">{{ block.success_message }}</p>
+        <p class="fail hidden">{{ block.fail_message }}</p>
+        <form method="POST" action="{{ url_for('send_mail', id=block.id) }}" data-form-id="{{ block.id }}">
+            <input title="Имя" name="name" placeholder="Как вас зовут?" type="text" />
+            <input title="Телефон или email" name="email_or_phone" placeholder="Телефон или email" type="text" />
+            <textarea title="Заказ" name="order_message" placeholder="Опишите вашу ситуацию"></textarea>
+            <button type="submit">{{ block.button_text }}</button>
+        </form>
+    </article>
+</section>

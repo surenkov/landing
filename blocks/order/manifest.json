@@ -5,6 +5,7 @@
     "manager.js"
   ],
   "landing_assets": [
-    "landing.js"
+    "landing.js",
+    "landing.scss"
   ]
 }

@@ -1,0 +1,21 @@
+.contacts {
+  form {
+    padding: 0 !important;
+  }
+}
+.fail, .success {
+  font-weight: bold;
+  text-align: center;
+  display: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+.success {
+  color: greenyellow;
+}
+
+.fail {
+  color: indianred;
+}

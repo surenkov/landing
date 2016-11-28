@@ -4,7 +4,7 @@ from landing import landing_app, landing
 from .utility.templates import render_blocks
 
 
-@landing_app.route('/')
+@landing_app.route('/', endpoint='index')
 def landing_view():
     landing_inst = landing()
     render = partial(render_blocks, landing=landing_inst)
