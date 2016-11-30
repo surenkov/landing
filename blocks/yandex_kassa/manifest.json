@@ -1,0 +1,10 @@
+{
+  "name": "yandex_kassa",
+  "enabled": true,
+  "manager_assets": [
+    "assets/manager.js"
+  ],
+  "landing_assets": [
+    "assets/landing.js"
+  ]
+}

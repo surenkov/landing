@@ -5,7 +5,7 @@ import React from 'react'
 
 import { registerBlock } from 'utility/blocks'
 import { BlockButtons, BlockDefaults, ListBlock } from 'components/partial/blocks'
-import { BlockDropdown, TextInput } from 'components/partial/inputs'
+import { TextInput } from 'components/partial/inputs'
 import Formsy from 'formsy-react'
 
 
